@@ -88,7 +88,6 @@ exports.login = catchAsync(async (req: Request, res: Response, next: NextFunctio
     const { password, email } = req.body;
     if (!password || !email) return next(new AppError("Please provide email and password", 400));
     const user = await User.findOne({ email }).select("+password");
-    console.log(user);
     if (!user || !(await user.correctPassword(password)))
       return next(new AppError("Email or Password are not correct", 401));
     sendResponse(res, user, 200);
@@ -117,7 +116,6 @@ exports.protect = catchAsync(async (req: Request | any, res: Response, next: Nex
   if (user.changedPasswordAfter(decoded.iat))
     return next(new AppError("User recently changed his password ! please login again...", 401));
   req.user = user;
-  console.log(user)
   next();
 });
 

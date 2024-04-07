@@ -7,7 +7,7 @@ import Wave from "./Wave";
 const Landing = () => {
   const { color } = useColor();
   return (
-    <section className="flex  flex-wrap items-center relative overflow-hidden justify-between gap-20 p-20">
+    <section className="flex space  flex-wrap items-center relative overflow-hidden pt-32 justify-between gap-20 p-20">
       <Image src="/sun1.png" width={250} height={250} alt="effect" className="absolute z-[1] top-14 left-1" />
       <div className="flex flex-col gap-10 flex-[20%] z-10">
         <h1 className=" text-gray-50 text-[5rem] font-bold ">

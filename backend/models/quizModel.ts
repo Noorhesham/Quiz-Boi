@@ -69,15 +69,14 @@ quizSchema.virtual("likes", {
   foreignField: "quiz",
 });
 
-quizSchema.pre(/^find/, function (this: any, next) {
-  this.find({ published: { $ne: false } });
-  this.populate({ path: "likes", select: "-__v -quiz" });
-  next();
-});
+// quizSchema.pre(/^find/, function (this: any, next) {
+//   this.find({ published: { $ne: false } })
+//   next();
+// });
 quizSchema.pre<any>("findOne", function (next: any) {
   this.populate({
     path: "author",
-    select: "name photo",
+    select: "name id _id photo",
   })
     .populate({
       path: "usersAttempted",

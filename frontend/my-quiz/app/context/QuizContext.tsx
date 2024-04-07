@@ -14,20 +14,20 @@ const QuizContext = createContext<QuizContextType | any>(undefined);
 
 export const QuizProvider = ({ children }: { children: React.ReactNode }) => {
   const [answers, setAnswers] = useState<{ answer: number; id: string }[]>(function () {
-    const storedValue = global?.localStorage.getItem("answers");
+    const storedValue = global?.localStorage?.getItem("answers");
     return storedValue ? JSON.parse(storedValue) : [];
   });
   const [questionIndex, setQuestionIndex] = useState(function () {
-    const storedValue = global?.localStorage.getItem("questionIndex");
+    const storedValue = global?.localStorage?.getItem("questionIndex");
     return storedValue ? JSON.parse(storedValue) : 0;
   });
   const [progress, setProgress] = useState(function () {
-    const storedValue = global?.localStorage.getItem("progress");
+    const storedValue = global?.localStorage?.getItem("progress");
     return storedValue ? JSON.parse(storedValue) : 0;
   });
   const [submitting, setSubmitting] = useState(false);
   const [timer, setTimer] = useState(function () {
-    const storedValue = global?.localStorage.getItem("timer");
+    const storedValue = global?.localStorage?.getItem("timer");
     return storedValue ? parseInt(storedValue, 10) : 60;
   });
 

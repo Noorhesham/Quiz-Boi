@@ -13,6 +13,7 @@ export const dynamic = "force-dynamic";
 
 const page = async ({ params }: { params: { id: string } }) => {
   const { quiz }: { quiz: QuizProps } = await GetQuiz(params.id);
+  console.log(quiz);
   if (!quiz) return <NotFound text="This Quiz is not available" />;
   return (
     <main className="text-gray-50 flex flex-col gap-3 p-10 ">

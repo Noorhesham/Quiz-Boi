@@ -1,4 +1,4 @@
-import { AddLike } from "@/actions/AddLike";
+import { AddLike, RemoveLike } from "@/actions/AddLike";
 import { CompleteQuiz } from "@/actions/CompleteQuiz";
 import { DeleteQuestion as DeleteQuestionApi } from "@/actions/DeleteQuestion";
 import { PublishQuiz as PublishQuizApi } from "@/actions/PublishQuiz";
@@ -129,3 +129,22 @@ export const useLikeQuiz = () => {
   });
   return { LikeQuiz, isSuccess, isPending, error };
 };
+export const useUnlikeQuiz = () => {
+  const {
+    mutate: unLikeQuiz,
+    error,
+    isSuccess,
+    isPending,
+  } = useMutation({
+    mutationFn:async (id: string) =>await  RemoveLike(id),
+    onSuccess: (data) => {
+      console.log(data);
+      if (data.error) throw new Error(data.message);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+  return { unLikeQuiz, isSuccess, isPending, error };
+};
+

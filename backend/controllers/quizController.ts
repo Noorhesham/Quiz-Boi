@@ -8,6 +8,7 @@ import multer from "multer";
 import sharp, { FormatEnum } from "sharp";
 import { UserProps } from "../types";
 import Question from "../models/questionModel";
+import ApiFeatures from "../utils/ApiFeatures";
 const catchAsync = require("../utils/catchError");
 declare module "express-serve-static-core" {
   interface Request {
@@ -111,9 +112,9 @@ exports.unLikeQuiz = catchAsync(async (req: Request | any, res: Response, next: 
 });
 
 exports.checkIfAuthor = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const quiz = await Quiz.findById(req.params.quizId || req.params.id);
-  if (quiz?.author?.id !== req.user.id && req.user.role !== "admin")
-    return next(new AppError(`You cannot edit someone's else quiz.`, 403));
+  const quiz = await Quiz.findById(req.params.id);
+  console.log(quiz?.author?._id !== req.user.id ,quiz?.author._id,req.user.id)
+  if (quiz?.author?.id !== req.user.id && req.user.role !== "admin") return next(new AppError(`You cannot edit someone's else quiz.`, 403));
   next();
 });
 
@@ -129,7 +130,14 @@ exports.solveQuiz = catchAsync(async (req: Request, res: Response, next: NextFun
 
 const quizFactory = new Factory(Quiz, "quiz");
 exports.uploadQuiz = quizFactory.createOne();
-exports.getAllQuizes = quizFactory.getAll({ path: "author", select: "name photo " }, "-questions -published");
+exports.getAllQuizes = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  let filters = {};
+  if (req.params.quizId) filters = { quizId: req.params.quizId };
+  let query = Quiz.find(filters).populate({ path: "author", select: "name photo " }).populate({ path: "likes" });
+  const quizzes = await new ApiFeatures(query, req.query).filter().paginate().sort().limitFields().query;
+  if (!quizzes) return next(new AppError(`There is no quiz found with that id`, 404));
+  res.status(200).json({ status: "success", results: quizzes.length, data: { quizzes } });
+});
 exports.getQuiz = quizFactory.getOne("id", { path: "questions" });
 exports.updateQuiz = quizFactory.updateOne();
 exports.deleteQuiz = quizFactory.deleteOne();

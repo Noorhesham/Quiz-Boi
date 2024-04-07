@@ -19,8 +19,8 @@ export interface QuizProps {
   color: string;
   description: string;
   author: UserProps;
-  likesCount: number;
-  usersAttempted:[string]
+  likes: [number];
+  usersAttempted: [string];
 }
 
 export interface QuestionProps {

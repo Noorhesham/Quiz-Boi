@@ -7,6 +7,7 @@
   transition: all;
   transition-duration: 0.5s;
 }
+
 .skyblue {
   background-image: linear-gradient(to bottom left, #3765d8, #12b0fc);
   transition: all;
@@ -40,7 +41,12 @@
 .purple span {
   @apply bg-gradient-to-r from-purple-500 via-violet-600 to-pink-500 bg-clip-text text-transparent;
 }
-
+.space {
+  background-image: url("/space.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 /* .background:hover {
   background-image: linear-gradient(to bottom left, #ff786efb, #ffb070f6);
 } */
