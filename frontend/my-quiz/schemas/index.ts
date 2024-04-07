@@ -40,7 +40,7 @@ export const QuestionSchema = z.object({
 export const QuizSchema = z.object({
   title: z.string().nonempty({ message: "You must add a title to your quiz" }),
   description: z.string().optional(),
-  questionNum: z.number(),
+  questionNum: z.any(),
   tags: z
     .array(z.string())
     .min(1, { message: "At least one tag is required" })
