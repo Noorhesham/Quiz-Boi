@@ -2,13 +2,111 @@
 @tailwind components;
 @tailwind utilities;
 
-.background {
-  background-image: linear-gradient(to bottom right, #ff776e, #ffb170);
+.orange {
+  background-image: linear-gradient(to bottom left, #ff6458, #f9b15e);
   transition: all;
+  transition-duration: 0.5s;
 }
+.skyblue {
+  background-image: linear-gradient(to bottom left, #3765d8, #12b0fc);
+  transition: all;
+  transition-duration: 0.5s;
+}
+.skyblue span {
+  @apply bg-gradient-to-r from-blue-500 via-sky-600 to-sky-500 bg-clip-text text-transparent;
+}
+.pink {
+  background-image: linear-gradient(to bottom left, #d66db8, #e27a96);
+  transition: all;
+  transition-duration: 0.5s;
+}
+.pink span {
+  @apply bg-gradient-to-r from-pink-500 via-red-600 to-pink-500 bg-clip-text text-transparent;
+}
+.green {
+  background-image: linear-gradient(to bottom left, #34a25c, #51cd83);
+  transition: all;
+  transition-duration: 0.5s;
+}
+.green span {
+  @apply bg-gradient-to-r from-green-500 via-green-600 to-green-500 bg-clip-text text-transparent;
+}
+
+.purple {
+  background-image: linear-gradient(to bottom left, #40389d, #a452c9);
+  transition: all;
+  transition-duration: 0.5s;
+}
+.purple span {
+  @apply bg-gradient-to-r from-purple-500 via-violet-600 to-pink-500 bg-clip-text text-transparent;
+}
+
 /* .background:hover {
   background-image: linear-gradient(to bottom left, #ff786efb, #ffb070f6);
 } */
+.orange span {
+  @apply bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent;
+}
+.wave {
+  background-image: url("/wave.png");
+  background-size: 1000px 100px;
+  height: 100px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  animation: animate ease-in-out 4s infinite;
+}
+
+.wave.wave1 {
+  z-index: 100;
+  opacity: 1;
+  background-position-x: 400px;
+}
+
+.wave.wave2 {
+  z-index: 99;
+  opacity: 0.5;
+  background-position-x: 300px;
+}
+
+.wave.wave3 {
+  z-index: 98;
+  opacity: 0.2;
+  background-position-x: 200px;
+}
+
+.wave.wave4 {
+  animation: wave2 15s linear infinite;
+  z-index: 99;
+  opacity: 0.7;
+  animation-delay: -5s;
+  background-position-x: 100px;
+}
+
+@keyframes animate {
+  0%,
+  100% {
+    background-position-x: 0;
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    background-position-x: 1000px;
+  }
+}
+
+@keyframes wave2 {
+  0% {
+    background-position-x: 0;
+  }
+  100% {
+    background-position-x: -1000px;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

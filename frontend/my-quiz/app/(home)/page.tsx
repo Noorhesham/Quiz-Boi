@@ -1,7 +1,15 @@
 import { API_URL } from "@/constants";
-
+import Welcome from "../components/Welcome";
+import Landing from "../components/Landing";
+import Feed from "../components/Feed";
+export const dynamic = "force-dynamic";
 export default async function Home() {
-  const questions = await fetch(`${API_URL}/quiz`).then((res) => res.json());
-
-  return <main className="flex h-[100vh] items-stretch justify-center"></main>;
+  const quizzes = await fetch(`${API_URL}/quiz`).then((res) => res.json());
+  return (
+    <main className="flex min-h-[100vh] flex-col relative  items-stretch justify-center">
+      <Landing />
+      <Welcome />
+      <Feed quizzes={quizzes.data.quiz} />
+    </main>
+  );
 }

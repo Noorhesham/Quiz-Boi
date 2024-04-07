@@ -2,6 +2,7 @@ import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
+  mode: "jit",
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
@@ -47,12 +48,12 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        primarycolor:{
-          DEFAULT:"var(--primary-color)"
+        primarycolor: {
+          DEFAULT: "var(--primary-color)",
         },
-        secondarycolor:{
-          DEFAULT:"var(--secondary--color)"
-        }
+        secondarycolor: {
+          DEFAULT: "var(--secondary--color)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -13,28 +13,37 @@ class Factory {
   }
   createOne = () =>
     catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+      console.log(req.body);
       const newDoc = await this.Model.create(req.body);
       res.status(200).json({ status: "success", data: { [this.name]: newDoc } });
     });
-  getAll = () =>
+  getAll = (popOptions?: any,select?:string) =>
     catchAsync(async (req: Request, res: Response, next: NextFunction) => {
       let filters = {};
       if (req.params.quizId) filters = { quizId: req.params.quizId };
-      const docs = await new ApiFeatures(this.Model.find(filters), req.query).filter().paginate().sort().limitFields()
-        .query;
+      let query = this.Model.find(filters);
+      if (popOptions) query.populate(popOptions)
+      if(select) query.select(select);
+      const docs = await new ApiFeatures(query, req.query).filter().paginate().sort().limitFields().query;
       if (!docs) return next(new AppError(`There is no ${this.name} found with that id`, 404));
       res.status(200).json({ status: "success", results: docs.length, data: { [this.name]: docs } });
     });
 
-  getOne = () =>
+  getOne = (id = "id", popOptions?: any) =>
     catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-      const doc = await this.Model.findById(req.params.id);
+      let query = this.Model.findById(req.params?.[id]);
+      popOptions && query.populate(popOptions);
+      const doc = await query;
       if (!doc) return next(new AppError(`There is no ${this.name} found with that id`, 404));
-      res.status(200).json({ status: "success", data: { [this.name]: doc } });
+      res.status(200).json({ status: "success", data: { [this.name.toLowerCase()]: doc } });
     });
   updateOne = () =>
     catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-      const editedDoc = await this.Model.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true });
+      console.log(req.params);
+      const editedDoc = await this.Model.findByIdAndUpdate(req.params.id || req.params.quizId, req.body, {
+        runValidators: true,
+        new: true,
+      });
       if (!editedDoc) return next(new AppError(`There is no ${this.name} found with that id`, 404));
       res.status(201).json({ status: "success", data: { [this.name]: editedDoc } });
     });

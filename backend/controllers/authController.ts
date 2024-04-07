@@ -59,7 +59,7 @@ exports.signup = catchAsync(async (req: Request, res: Response, next: NextFuncti
       email: req.body.email,
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
-      passwordChangeAt: req.body.passwordChangeAt,
+      passwordChangeAt: req.body.passwordChangeAt,role:req.body.role
     });
     sendResponse(res, newUser, 201);
   }
@@ -117,6 +117,7 @@ exports.protect = catchAsync(async (req: Request | any, res: Response, next: Nex
   if (user.changedPasswordAfter(decoded.iat))
     return next(new AppError("User recently changed his password ! please login again...", 401));
   req.user = user;
+  console.log(user)
   next();
 });
 

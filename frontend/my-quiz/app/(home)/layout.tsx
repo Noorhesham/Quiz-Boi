@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Jost } from "next/font/google";
 import "../globals.css";
 import NavBar from "../components/NavBar";
-
-const inter = Jost({ subsets: ["latin"] });
+import Provider from "@/utils/Provider";
+import { ColorProvider } from "../context/ColorContext";
+import ColorWrapper from "../components/ColorWrapper";
+import { QuizProvider } from "../context/QuizContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,11 +17,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <NavBar />
-        {children}
-      </body>
-    </html>
+    <Provider>
+      <ColorProvider>
+        <QuizProvider>
+          <ColorWrapper>
+              <NavBar />
+              {children}
+          </ColorWrapper>
+        </QuizProvider>
+      </ColorProvider>
+    </Provider>
   );
 }

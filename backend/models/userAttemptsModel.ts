@@ -5,6 +5,9 @@ interface UserAttemptProps extends Document {
   quizId: mongoose.Types.ObjectId;
   points: number;
   username: string;
+  answers: Array<number>;
+  attemptedAt?: Date;
+  percentage:number
 }
 
 const userAttemptSchema = new Schema<UserAttemptProps>({
@@ -26,19 +29,23 @@ const userAttemptSchema = new Schema<UserAttemptProps>({
       return !this.userId;
     },
   },
+  answers: { type: [{answer:Number,id:Schema.Types.ObjectId}], required: true },
   points: {
     type: Number,
     required: true,
     default: 0,
   },
+  percentage:{type:Number},
+  attemptedAt: { type: Date, default: new Date(Date.now()) },
 });
-userAttemptSchema.index({ quizId: 1, userId: 1, username: 1 }, { unique: true }); //the user and the quiz of each attempt compined must be unique
 userAttemptSchema.pre<any>(/^find/, function (next: any) {
   this.populate({
     path: "quizId",
-    select: "title tags questionNum",
+    select: "title tags ",
   });
   next();
 });
+
+
 const UserAttempt: Model<UserAttemptProps> = mongoose.model<UserAttemptProps>("UserAttempt", userAttemptSchema);
 export default UserAttempt;

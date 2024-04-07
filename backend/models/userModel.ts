@@ -14,7 +14,7 @@ const userSchema = new Schema<UserProps>(
       lowerCase: true,
       validate: [validator.isEmail, "please provide a valid email.."],
     },
-    photo: String,
+    photo: { type: String, default: `avatar${Math.trunc(Math.random() * 5) + 1}.jpg` },
     password: {
       type: String,
       minlength: 6,
@@ -23,16 +23,16 @@ const userSchema = new Schema<UserProps>(
         validator: function (this: UserProps, value: string) {
           // Skip validation if googleAccessToken is provided
           if (this.googleAccessToken) return true;
-          return !!value
+          return !!value;
         },
-        message: 'Please provide your password.',
+        message: "Please provide your password.",
       },
     },
     passwordConfirm: {
       type: String,
       validate: {
         validator: function (this: UserProps, value: string) {
-          if(this.googleAccessToken) return true
+          if (this.googleAccessToken) return true;
           return value === this.password;
         },
         message: "Passwords do not match.",
@@ -48,6 +48,12 @@ const userSchema = new Schema<UserProps>(
     },
     passwordResetToken: String,
     passwordResetExpires: Date,
+    likedTopics: [String],
+    following: {
+      type: [{ type: Schema.Types.ObjectId, ref: "User" }],
+      default: [],
+    },
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -55,7 +61,7 @@ const userSchema = new Schema<UserProps>(
 userSchema.pre("save", async function (next) {
   //makin sure the password is created new or updated cause
   //i wont encrybt it if i updated somethingelse
-  if(this.googleAccessToken) return next()
+  if (this.googleAccessToken) return next();
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 12);
   this.passwordConfirm = undefined; //required input =>not required to be persisted in the DB;
@@ -64,7 +70,7 @@ userSchema.pre("save", async function (next) {
 //updating the password middleware
 userSchema.pre("save", function (next) {
   //i check if the password is not new or is not modified so it means that the password changed /updated
-  if(this.googleAccessToken) return next()
+  if (this.googleAccessToken) return next();
   if (!this.isModified("password") || this.isNew) return next();
   this.passwordChangeAt = Date.now() - 1000;
   next();
@@ -72,6 +78,14 @@ userSchema.pre("save", function (next) {
 
 userSchema.pre(/^find/, function (this: any, next) {
   this.find({ active: { $ne: false } });
+  this.populate({ path: "following" }).populate({ path: "followers" });
+  next();
+});
+userSchema.pre("findOne", function (this: any, next) {
+  this.find({ active: { $ne: false } });
+  this.populate({ path: "quizzes", select: "title coverImage  tags published -author " })
+    .populate({ path: "likedQuizzes", select: "quiz -user  " })
+    .populate({ path: "attemptedQuizzes" });
   next();
 });
 
@@ -96,6 +110,13 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
+userSchema.methods.follow = function (userId: string) {
+  if (!this.following.includes(userId)) this.following.push(userId);
+};
+
+userSchema.methods.unfollow = function (userId: string) {
+  this.following = this.following.filter((id: string) => id.toString() !== userId.toString());
+};
 userSchema.virtual("quizzes", {
   ref: "Quiz",
   localField: "_id",

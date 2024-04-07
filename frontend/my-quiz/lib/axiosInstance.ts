@@ -1,7 +1,7 @@
 import { API_URL } from "@/constants";
 import axios from "axios";
-const API = axios.create({ baseURL: API_URL });
-
+ const API = axios.create({ baseURL: API_URL });
+export const Axios=axios.create({baseURL:API_URL})
 API.interceptors.request.use((req: any) => {
   const jwtCookie = document.cookie.split(";").find((cookie) => cookie.trim().startsWith("jwt="));
   if (jwtCookie) {

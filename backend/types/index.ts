@@ -15,6 +15,9 @@ export interface UserProps extends Document {
     passwordResetToken: String,
     googleAccessToken:String
     passwordResetExpires: Date,
+    following: mongoose.Types.ObjectId[];
+    followers: mongoose.Types.ObjectId[];
+    likedTopics?:string
     socials?:{instagram:string,facebook:string,linkedin:string}
   }
   

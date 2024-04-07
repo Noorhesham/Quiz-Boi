@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Jost } from "next/font/google";
 import "./globals.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Google_Client } from "@/constants";
-
-const inter = Inter({ subsets: ["latin"] });
+import { ColorProvider } from "./context/ColorContext";
+const inter = Jost({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,17 +12,16 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({
-  children, 
+  children,
 }: Readonly<{
-  children: React.ReactNode,
+  children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <GoogleOAuthProvider clientId={Google_Client}>
-        <body className={inter.className}>
-          {children}
-        </body>
+        <ColorProvider>
+          <body className={inter.className}>{children}</body>
+        </ColorProvider>
       </GoogleOAuthProvider>
     </html>
   );

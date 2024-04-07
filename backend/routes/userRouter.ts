@@ -5,6 +5,11 @@ const router = express.Router();
 
 router.post("/signup", authController.signup);
 router.post("/login", authController.login);
-router.get("/me", authController.protect,userController.getMe,userController.getUser);
+router.post("/logout", authController.logout);
+router.use(authController.protect);
+router.get("/me", userController.getMe, userController.getUser);
+router.patch("/updateMe", userController.uploadUserPhoto,userController.resizeUserPhoto, userController.updateMe);
+router.post("/userId/follow", userController.followUser);
+router.post("/userId/unfollow", userController.unfollowUser);
 router.get("/:id", userController.getUser);
 module.exports = router;

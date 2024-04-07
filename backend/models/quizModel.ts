@@ -2,25 +2,21 @@ import mongoose, { Schema, Document } from "mongoose";
 const slugify = require("slugify");
 interface QuizProps extends Document {
   title: string;
-  questions: Array<QuestionProps>;
+  questions: Array<mongoose.Types.ObjectId>;
+  description: string;
   author: mongoose.Types.ObjectId;
   likes: Array<mongoose.Types.ObjectId>;
   usersAttempted: Array<mongoose.Types.ObjectId>;
   questionNum: number;
-  answerNum: number;
   comments: [mongoose.Types.ObjectId];
   tags: [string];
   slug: string;
   createdAt: Date;
-}
-
-interface QuestionProps {
-  question: string;
-  answers: Array<{ answer: String; photo: string }>;
-  correctAnswerIndex: number;
-}
-function validateQuestionsLength(this: any) {
-  return this.questions?.length === this.questionNum;
+  coverImage?: string;
+  duration: number;
+  published: boolean;
+  numberOfQuestions?: number;
+  color: "orange" | "pink" | "blue" | "purble" | "green";
 }
 
 const quizSchema = new Schema<QuizProps>(
@@ -32,6 +28,7 @@ const quizSchema = new Schema<QuizProps>(
       maxlength: [20, "Name of quiz is too long"],
       minlength: [4, "Name of quiz is too short"],
     },
+    coverImage: { type: String, default: `quiz${Math.trunc(Math.random() * 5) + 1}.png` },
     createdAt: { type: Date, default: Date.now() },
     tags: { type: [String], minlength: [1, "Provide at least one topic to the quiz"] },
     author: {
@@ -41,56 +38,26 @@ const quizSchema = new Schema<QuizProps>(
     },
     questionNum: {
       type: Number,
-      required: true,
-    },
-    answerNum: {
-      type: Number,
-      required: true,
     },
     questions: {
-      type: [
-        {
-          question: {
-            type: String,
-            required: true,
-          },
-          photo: String,
-          answers: {
-            type: [
-              {
-                answer: {
-                  type: String,
-                  required: true,
-                },
-                photo: String,
-              },
-            ],
-            validate: {
-              validator: function (this: any, answers: any[], answerNum: number) {
-                console.log(this)
-                return answers?.length === this.parent()?.answerNum;
-              },
-              message: "Number of answers does not match answerNum",
-            },
-          },
-          correctAnswerIndex: {
-            type: Number,
-            required: true,
-          },
-        },
-      ],
+      type: [Schema.Types.ObjectId],
+      ref: "Question",
       required: true,
-      validate: [validateQuestionsLength, "Number of questions does not match questionNum(max length) you entered"],
     },
-    usersAttempted:[{type: Schema.Types.ObjectId,ref:'UserAttempt'}]
+    duration: { type: Number },
+    usersAttempted: [{ type: Schema.Types.ObjectId, ref: "UserAttempt" }],
+    published: { type: Boolean, default: false },
+    color: { type: String, default: "orange" },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 quizSchema.pre("save", function (next) {
   this.slug = slugify(this.title, { lower: true });
+  this.numberOfQuestions = this.questions.length;
   next();
 });
+
 quizSchema.virtual("comments", {
   ref: "Comments",
   foreignField: "quizId",
@@ -102,20 +69,12 @@ quizSchema.virtual("likes", {
   foreignField: "quiz",
 });
 
-// quizSchema.virtual("usersAttempted", {
-//   ref: "UserAttempt",
-//   localField: "_id",
-//   foreignField: "quizId",
-// });
-
-quizSchema.virtual("likesCount").get(function (this: any) {
-  return this.likes?.length;
+quizSchema.pre(/^find/, function (this: any, next) {
+  this.find({ published: { $ne: false } });
+  this.populate({ path: "likes", select: "-__v -quiz" });
+  next();
 });
-quizSchema.virtual("commentsCount").get(function (this: any) {
-  return this.comments?.length;
-});
-
-quizSchema.pre<any>('findOne', function (next: any) {
+quizSchema.pre<any>("findOne", function (next: any) {
   this.populate({
     path: "author",
     select: "name photo",
@@ -128,7 +87,6 @@ quizSchema.pre<any>('findOne', function (next: any) {
       path: "comments",
       select: "content user -quizId",
     })
-    .populate({ path: "likes", select: "-__v -quiz" });
   next();
 });
 

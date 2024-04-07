@@ -1,16 +1,22 @@
 "use client";
-import Link from "next/link";
+import { IoChevronBack } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 
 interface BackButtonProps {
-  href: string;
+  onClick: () => void;
   label: string;
 }
-const BackButton = ({ href, label }: BackButtonProps) => {
+const BackButton = ({ onClick, label }: BackButtonProps) => {
+ 
   return (
-    <Button variant="link" className="font-normal w-full" size="sm" asChild>
-      <Link href={href}>{label}</Link>
-    </Button>
+    <button
+      onClick={(e)=>{
+        e.preventDefault()
+        onClick()}} 
+      className="flex w-fit hover:text-red-600 hover:underline self-start justify-start ml-[-50px] mt-[-10px] items-center font-normal "
+    >
+      <IoChevronBack /> {label}
+    </button>
   );
 };
 export default BackButton;

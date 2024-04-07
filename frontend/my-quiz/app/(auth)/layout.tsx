@@ -7,13 +7,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <main className="flex h-[100vh] items-stretch justify-center">
-          {children}
-          <Slider />
-        </main>
-      </body>
-    </html>
+    <main className="flex h-[100vh] items-stretch justify-center">
+      {children}
+      <Slider />
+    </main>
   );
 }

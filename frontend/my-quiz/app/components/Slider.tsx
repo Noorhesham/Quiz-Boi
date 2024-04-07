@@ -2,10 +2,13 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import Slide from "./Slide";
+import { useColor } from "../context/ColorContext";
 const Slider = () => {
+  const { color } = useColor();
+
   return (
     <Carousel
-      className="background  w-[45%] bg-gray-100 "
+      className={`${color}  w-[45%] bg-gray-100 `}
       opts={{ loop: true }}
       plugins={[
         Autoplay({

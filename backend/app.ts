@@ -3,9 +3,11 @@ import AppError from "./utils/AppError";
 const userRouter = require("./routes/userRouter");
 const quizRouter = require("./routes/quizRouter");
 const commentsRouter = require("./routes/commentsRouter");
+const questionRouter = require("./routes/questionRouter");
 const globalErrorHandler = require("./controllers/errorController");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -13,10 +15,8 @@ app.use(express.json({ limit: "10kb" }));
 app.use(cookieParser());
 app.use(express.static(`${__dirname}/public`));
 app.use(cors({ origin: "http://localhost:3001", methods: "GET,POST,PUT,DELETE" }));
-app.use((req, res, next) => {
-  console.log("mewooewe", req.cookies);
-  next();
-});
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/quiz", quizRouter);
