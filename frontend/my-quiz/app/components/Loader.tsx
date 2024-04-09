@@ -5,10 +5,7 @@ import { createPortal } from "react-dom";
 import { IoMdExit } from "react-icons/io";
 
 const Loader = ({ text, image }: { text?: string; image?: string }) => {
-  const [close, setClose] = useState(false);
-  return createPortal(
-    <AnimatePresence>
-      {!close && (
+  return <AnimatePresence>
         <motion.section
           key="loader"
           initial={{ x: 0, y: -50, opacity: 0 }}
@@ -32,10 +29,8 @@ const Loader = ({ text, image }: { text?: string; image?: string }) => {
             <span>🐧😺</span>
           </div>
         </motion.section>
-      )}
-    </AnimatePresence>,
-    document?.body
-  );
+    </AnimatePresence>
+  
 };
 
 export default Loader;
