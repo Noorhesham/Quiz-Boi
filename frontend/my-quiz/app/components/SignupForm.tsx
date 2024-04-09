@@ -26,7 +26,7 @@ const SignupForm = () => {
       email: "",
       password: "",
       passwordConfirm: "",
-      name: "Spider-Man",
+      name: "",
     },
   });
   const { handleSubmit, control, reset, getValues } = form;
