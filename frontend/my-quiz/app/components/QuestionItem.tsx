@@ -8,15 +8,15 @@ import ConfirmQuizSolve from "./ConfirmQuizSolve";
 import Answer from "./Answer";
 
 const QuestionItem = ({ question, len }: { question: QuestionProps; len: number }) => {
-  const { handleNext, questionIndex, handleQuizEnd, answers ,handlePrev} = useQuiz();
+  const { handleNext, questionIndex, handleQuizEnd, answers, handlePrev } = useQuiz();
   const [answer, setAnswer] = useState<{ answer: number | undefined; id: string }>();
   const { color } = useColor();
 
   return (
-    <div className={`flex flex-col  gap-2 w-full  lg:w-[80%] rounded-lg py-5 px-10`}>
+    <div className={`flex flex-col  gap-2  max-w-full lg:w-[80%] rounded-lg py-3 md:py-5  md:px-10`}>
       {question.coverImage && <img src={question?.coverImage} className="w-[20rem]" />}
-      <div className="bg-white shadow-md   py-10 px-20 relative border-gray-300 border-2 rounded-md">
-        <h2 className="  text-2xl text-left text-gray-800 font-semibold">{question.question}</h2>
+      <div className="bg-white shadow-md   px-5 py-3 md:py-10 md:px-20 relative border-gray-300 border-2 rounded-md">
+        <h2 className="  text-base md:text-2xl text-left text-gray-800 font-semibold">{question.question}</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 w-full p-3 gap-4 ">
         {question.answers.map((a, i) => (

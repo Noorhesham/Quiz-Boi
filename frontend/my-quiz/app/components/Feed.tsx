@@ -8,7 +8,7 @@ import Categories from "./Categories";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Empty } from "./Empty";
 
-const Feed = ({ quizzes }: { quizzes: Array<QuizProps> }) => {
+const Feed = ({ quizzes,categories }: { quizzes: Array<QuizProps> ,categories:any}) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -33,7 +33,7 @@ const Feed = ({ quizzes }: { quizzes: Array<QuizProps> }) => {
           Reset Categories
         </h3>
       </div>
-      <Categories setCategorey={handleSearch} />
+      <Categories categories={categories} setCategorey={handleSearch} />
       {quizzes.length === 0 && (
         <Empty image="/bad.png" text={`There are no quizzes associated with ${searchParams.get("categorey")} yet !`} />
       )}

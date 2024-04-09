@@ -12,7 +12,7 @@ const page = async () => {
   return (
     <section className="pt-20  flex items-center justify-center flex-col">
       <UserCard mine={true} user={user} />
-      <div className=" grid grid-cols-4">
+      <div className=" grid grid-cols-1 md:grid-cols-4">
         <div className=" col-span-2">
           <ProfileTabs user={user} />
         </div>

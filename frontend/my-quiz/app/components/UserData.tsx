@@ -1,7 +1,7 @@
 "use client";
 import { useGetStats } from "@/utils/queryFunctions";
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
 import Spinner from "./Spinner";
 
 const UserData = () => {
@@ -15,14 +15,17 @@ const UserData = () => {
   ];
   console.log(stats);
   return (
-    <BarChart className=" text-gray-800" width={730} height={250} data={data}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis tick={{ fill: "gray" }} dataKey="name" />
-      <YAxis tick={{ fill: "gray" }} domain={[0, 100]} tickCount={6} />
-      <Tooltip />
-      <Legend />
-      <Bar dataKey="value" fill="white" />
-    </BarChart>
+    <ResponsiveContainer width="95%" height={400}>
+  <BarChart className="text-gray-800" width={730} height={250} data={data}>
+    <CartesianGrid strokeDasharray="3 3" />
+    <XAxis tick={{ fill: 'gray' }} dataKey="name" />
+    <YAxis tick={{ fill: 'gray' }} domain={[0, 100]} tickCount={6} />
+    <Tooltip />
+    <Legend />
+    <Bar dataKey="value" fill="white" />
+  </BarChart>
+  </ResponsiveContainer>
+
   );
 };
 

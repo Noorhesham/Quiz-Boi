@@ -109,8 +109,8 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
 
   return (
     <Form {...form}>
-      {isPending && <Spinner/>}
-      <form onSubmit={handleSubmit(onSubmit)} className=" space-y-1 md:space-y-4 md:p-16 md:pb-5 md:pt-5">
+      {isPending && <Spinner />}
+      <form onSubmit={handleSubmit(onSubmit)} className=" space-y-3 md:space-y-4 md:p-16 md:pb-5 md:pt-5">
         <AddPhotoForm
           selectedImage={selectedImage}
           question={question}
@@ -125,7 +125,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
           isPending={isPending}
           error={error?.question?.message}
         />
-        <div className="grid gap-2 grid-cols-2 items-center">
+        <div className="grid gap-5 grid-cols-2 items-center">
           {getValues("answers").map((val: any, i: number) => (
             <AnswerBox
               key={i}
@@ -151,27 +151,29 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
             text={`Add Explaination for the answer to make it more benefit for the people 😺😺`}
           />
         )}
-        <div className=" mt-2 flex items-center gap-5">
+        <div className=" mt-2 flex justify-center items-center gap-5">
           <button
             onClick={(e) => {
               e.preventDefault();
               setForceUpdateFlag((prevFlag) => !prevFlag);
               handleAddAnswer();
             }}
-            className={` text-[#fa989f] border-[#f6aaaf] hover:bg-gray-100 duration-200 py-2 px-4 flex items-center gap-2 font-semibold text-sm md:text-base cursor-pointer border-2  rounded-lg`}
+            className={` text-[#fa989f] border-[#f6aaaf] hover:bg-gray-100 duration-200 py-2 px-2 md:px-4 flex items-center gap-2 font-semibold text-sm md:text-base cursor-pointer border-2  rounded-lg`}
           >
             <IoAddCircleOutline /> <span>Add Answer</span>
           </button>
-         {!question?.explain&&<button
-            onClick={(e) => {
-              e.preventDefault();
-              setExplain((e) => !e);
-              if (explain === false) setValue("explain", "");
-            }}
-            className={` text-[#fa989f] border-[#f6aaaf] hover:bg-gray-100 duration-200 py-2 px-4 flex items-center gap-2 font-semibold text-sm md:text-base cursor-pointer border-2  rounded-lg`}
-          >
-            <IoAddCircleOutline /> <span>{explain ? "Remove Explaination" : "Add Explaination"}</span>
-          </button>}
+          {!question?.explain && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setExplain((e) => !e);
+                if (explain === false) setValue("explain", "");
+              }}
+              className={` text-[#fa989f] border-[#f6aaaf] hover:bg-gray-100 duration-200 py-2 px-2  md:px-4 flex items-center gap-2 font-semibold text-sm md:text-base cursor-pointer border-2  rounded-lg`}
+            >
+              <IoAddCircleOutline /> <span>{explain ? "Remove Explaination" : "Add Explaination"}</span>
+            </button>
+          )}
         </div>
         <div className="space-y-4">
           <Button size="lg" className={` my-4 w-full py-5 ${color} text-white`} type="submit" disabled={isPending}>

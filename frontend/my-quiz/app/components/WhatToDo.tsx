@@ -5,7 +5,7 @@ import UploadQuizForm from "./UploadQuizForm";
 import DialogCustom from "./DialogCustom";
 import { useColor } from "../context/ColorContext";
 import YouAreNotAuth from "./YouAreNotAuth";
-const WhatToDo = ({ text,logged }: { text: string,logged:boolean }) => {
+const WhatToDo = ({ text, logged }: { text: string; logged: boolean }) => {
   const { color } = useColor();
   return (
     <div className={`${color} flex gap-2 flex-col  backdrop-blur-xl py-4 px-8 rounded-lg shadow-md`}>
@@ -16,7 +16,7 @@ const WhatToDo = ({ text,logged }: { text: string,logged:boolean }) => {
       </div>
       <DialogCustom
         title="Publish Your Quiz Now !"
-        content={logged?<UploadQuizForm />:<YouAreNotAuth/>}
+        content={logged ? <UploadQuizForm /> : <YouAreNotAuth />}
         btn={
           <Button className=" text-gray-800 text-sm md:text-xl hover:bg-gray-200 bg-white rounded-xl self-end">
             Start

@@ -19,11 +19,11 @@ export default async function RootLayout({
   return (
     <Provider>
       <ColorProvider>
-          <ColorWrapper>
-              <NavBar />
-              {children}
-              <Footer/>
-          </ColorWrapper>
+        <ColorWrapper>
+          <NavBar />
+          {children}
+          {/* <Footer/> */}
+        </ColorWrapper>
       </ColorProvider>
     </Provider>
   );
