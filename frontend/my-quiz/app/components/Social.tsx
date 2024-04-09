@@ -50,7 +50,7 @@ const Social = ({ action }: { action: "signup" | "login" }) => {
   }
   const login = useGoogleLogin({ onSuccess: handleGoogleLoginSuccess });
   return (
-    <div className="flex justify-between items-center ">
+    <div className="flex fl justify-between items-center ">
       <div className="flex items-center gap-x-2">
         <h3 className=" text-gray-600  mr-5">{action === "login" ? "Sign in with" : "Sign up with"}</h3>
         <Button type="button" onClick={() => login()} size="lg" className=" rounded-full py-4 px-3" variant="outline">
