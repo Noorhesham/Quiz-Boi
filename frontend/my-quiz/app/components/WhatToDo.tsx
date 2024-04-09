@@ -9,7 +9,7 @@ const WhatToDo = ({ text, logged }: { text: string; logged: boolean }) => {
   const { color } = useColor();
   return (
     <div className={`${color} flex gap-2 flex-col  backdrop-blur-xl py-4 px-8 rounded-lg shadow-md`}>
-      <Image className=" self-end" width={250} height={250} src={`/${text}.png`} alt="TODO" />
+      <Image className=" self-end" width={250} height={250} src={`${text}`} alt="TODO" />
       <div className="flex flex-col items-center self-start">
         <h2 className=" font-bold text-3xl text-white">{text}</h2>
         <h5 className=" text-gray-100 text-xl font-normal">Quiz</h5>
