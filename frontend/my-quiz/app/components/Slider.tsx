@@ -8,7 +8,7 @@ const Slider = () => {
 
   return (
     <Carousel
-      className={`${color}  w-[45%] bg-gray-100 `}
+      className={`${color} hidden md:block  w-[45%] bg-gray-100 `}
       opts={{ loop: true }}
       plugins={[
         Autoplay({
