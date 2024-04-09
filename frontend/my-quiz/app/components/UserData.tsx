@@ -15,17 +15,16 @@ const UserData = () => {
   ];
   console.log(stats);
   return (
-    <ResponsiveContainer width="95%" height={400}>
-  <BarChart className="text-gray-800" width={730} height={250} data={data}>
-    <CartesianGrid strokeDasharray="3 3" />
-    <XAxis tick={{ fill: 'gray' }} dataKey="name" />
-    <YAxis tick={{ fill: 'gray' }} domain={[0, 100]} tickCount={6} />
-    <Tooltip />
-    <Legend />
-    <Bar dataKey="value" fill="white" />
-  </BarChart>
-  </ResponsiveContainer>
-
+    <ResponsiveContainer width="100%" height={400}>
+      <BarChart className="text-gray-800" width={730} height={250} data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis tick={{ fill: "gray" }} dataKey="name" />
+        <YAxis tick={{ fill: "gray" }} domain={[0, 100]} tickCount={6} />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="value" fill="white" />
+      </BarChart>
+    </ResponsiveContainer>
   );
 };
 
