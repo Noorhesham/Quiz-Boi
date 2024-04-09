@@ -6,6 +6,9 @@ export interface UserProps {
   quizzes: Array<any>;
   likedQuizzes: Array<any>;
   attemptedQuizzes: Array<any>;
+  followers:Array<any>
+  following:Array<any>
+  _id:string
 }
 export interface QuizProps {
   title: string;
@@ -21,6 +24,7 @@ export interface QuizProps {
   author: UserProps;
   likes: [number];
   usersAttempted: [string];
+  comments:[any]
 }
 
 export interface QuestionProps {
@@ -30,4 +34,5 @@ export interface QuestionProps {
   _id: string;
   coverImage?: string;
   explain?: string;
+  points:number
 }

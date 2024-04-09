@@ -17,19 +17,16 @@ const Loader = ({ text, image }: { text?: string; image?: string }) => {
           transition={{ duration: 0.5 }}
           className="fixed shadow-lg top-0 z-50 max-h-[100vh] overflow-hidden w-full h-full bg-gray-50/40 backdrop-blur-sm  bg-gray-50 py-16 px-32 rounded-xl  flex-col flex justify-center items-center"
         >
-          <button onClick={() => setClose(true)} className="text-gray-300 mt-4 text-5xl self-end mr-[-6rem]">
-            <IoMdExit />
-          </button>
           <motion.img
             initial={{ y: -10 }}
             animate={{ y: -100 }}
             transition={{ repeat: Infinity, duration: 1.5, repeatType: "reverse", ease: "easeInOut" }}
             alt="loading-Image"
-            className="w-[35rem] animate-pulse"
+            className="md:w-[35rem] w-[60rem] animate-pulse"
             src={image ? image : "/loading.png"}
           />
           <div className="flex items-center">
-            <h3 className=" text-gray-800 font-semibold text-2xl ">
+            <h3 className=" text-gray-800 font-semibold text-center text-sm w-full md:text-2xl ">
               {text ? text : "We are Loading the Page For You !"}
             </h3>
             <span>🐧😺</span>

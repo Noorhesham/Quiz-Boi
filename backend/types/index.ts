@@ -19,5 +19,6 @@ export interface UserProps extends Document {
     followers: mongoose.Types.ObjectId[];
     likedTopics?:string
     socials?:{instagram:string,facebook:string,linkedin:string}
+    isthirdParty?:boolean
   }
   

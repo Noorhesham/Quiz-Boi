@@ -14,7 +14,7 @@ const userSchema = new Schema<UserProps>(
       lowerCase: true,
       validate: [validator.isEmail, "please provide a valid email.."],
     },
-    photo: { type: String, default: `avatar${Math.trunc(Math.random() * 5) + 1}.jpg` },
+    photo: { type: String, default: `https://res.cloudinary.com/dtmvl9re1/image/upload/v1712582898/i6f0b5jxsbeu1lod336a.jpg` },
     password: {
       type: String,
       minlength: 6,
@@ -53,6 +53,7 @@ const userSchema = new Schema<UserProps>(
       type: [{ type: Schema.Types.ObjectId, ref: "User" }],
       default: [],
     },
+    isthirdParty:{type:Boolean,default:false},
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
@@ -65,6 +66,7 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 12);
   this.passwordConfirm = undefined; //required input =>not required to be persisted in the DB;
+  next()
 });
 
 //updating the password middleware
@@ -76,15 +78,15 @@ userSchema.pre("save", function (next) {
   next();
 });
 
-userSchema.pre(/^find/, function (this: any, next) {
-  this.find({ active: { $ne: false } });
-  this.populate({ path: "following" }).populate({ path: "followers" });
-  next();
-});
+// userSchema.pre(/^find/, function (this: any, next) {
+//   this.find({ active: { $ne: false } });
+//   this.populate({ path: "following" }).populate({ path: "followers" });
+//   next();
+// });
 userSchema.pre("findOne", function (this: any, next) {
   this.find({ active: { $ne: false } });
-  this.populate({ path: "quizzes", select: "title coverImage  tags published -author " })
-    .populate({ path: "likedQuizzes", select: "quiz -user  " })
+  this.populate({ path: "quizzes", })
+    .populate({ path: "likedQuizzes",  })
     .populate({ path: "attemptedQuizzes" });
   next();
 });
@@ -110,13 +112,6 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-userSchema.methods.follow = function (userId: string) {
-  if (!this.following.includes(userId)) this.following.push(userId);
-};
-
-userSchema.methods.unfollow = function (userId: string) {
-  this.following = this.following.filter((id: string) => id.toString() !== userId.toString());
-};
 userSchema.virtual("quizzes", {
   ref: "Quiz",
   localField: "_id",

@@ -16,7 +16,7 @@ const ConfirmQuizSolve = ({
   const { id }: { id: string } = useParams();
   const { user, isLoading, error: error2 } = useGetUser();
   const { SubmitQuiz, isPending, error } = useSubmitQuiz();
-  const { handleQuizEnd, timer, answers } = useQuiz();
+  const { setSubmitting,handleQuizEnd } = useQuiz();
   let data: any;
   if (user) data = { answers:values, userId: user._id };
   return (
@@ -45,8 +45,8 @@ const ConfirmQuizSolve = ({
         }
         <Button
           onClick={() => {
+            setSubmitting(true)
             SubmitQuiz({ values: data, quizId: id });
-            handleQuizEnd();
           }}
           variant="default"
         >

@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, useTransition } from "react";
 import CardWrapper from "./CardWrapper";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import FormError from "./FormError";
@@ -11,10 +10,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { SignupSchema } from "@/schemas";
-import { login } from "@/actions/login";
 import Social from "./Social";
 import { signup } from "@/actions/signup";
 import { useRouter } from "next/navigation";
+import PasswordInput from "./PasswordInput";
 
 const SignupForm = () => {
   const [error, setFormError] = useState<string | undefined>("");
@@ -53,82 +52,24 @@ const SignupForm = () => {
           <form onSubmit={handleSubmit(onSubmit)} className=" space-y-4 md:p-16 md:pb-0 md:pt-5">
             <div>
               <div className=" space-y-5">
-                <FormField
-                  control={control}
+                <PasswordInput
                   name="name"
-                  render={({ field }) => (
-                    <FormItem className=" relative">
-                      <FormLabel className=" text-gray-400">Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          className=" py-6 px-3  rounded-lg text-black"
-                          disabled={isPending}
-                          {...field}
-                          placeholder="spider-man"
-                          type="text"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
+                  text="Name"
+                  placeholder="spider-man"
+                  type="text"
                   control={control}
+                  disabled={isPending}
+                />
+                <PasswordInput
                   name="email"
-                  render={({ field }) => (
-                    <FormItem className=" relative">
-                      <FormLabel className=" text-gray-400">Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          className=" py-6 px-3  rounded-lg text-black"
-                          disabled={isPending}
-                          {...field}
-                          placeholder="meow@gmail.com"
-                          type="email"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
+                  text="Email"
+                  placeholder="meow@gmail.com"
+                  type="email"
                   control={control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem className=" relative ">
-                      <FormLabel className=" text-gray-400">Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="py-6 px-3 rounded-lg text-black"
-                          disabled={isPending}
-                          {...field}
-                          placeholder="******"
-                          type="password"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  disabled={isPending}
                 />
-                <FormField
-                  control={control}
-                  name="passwordConfirm"
-                  render={({ field }) => (
-                    <FormItem className=" relative ">
-                      <FormLabel className=" text-gray-400">Confirm your Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="py-6 px-3 rounded-lg text-black"
-                          disabled={isPending}
-                          {...field}
-                          placeholder="******"
-                          type="password"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <PasswordInput name="password" control={control} disabled={isPending} />
+                <PasswordInput name="passwordConfirm" control={control} disabled={isPending} />
               </div>
             </div>
             <FormError message={error} />

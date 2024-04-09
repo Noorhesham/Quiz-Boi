@@ -15,6 +15,7 @@ class Factory {
     catchAsync(async (req: Request, res: Response, next: NextFunction) => {
       console.log(req.body);
       const newDoc = await this.Model.create(req.body);
+      console.log(newDoc)
       res.status(200).json({ status: "success", data: { [this.name]: newDoc } });
     });
   getAll = (popOptions?: any,select?:string) =>

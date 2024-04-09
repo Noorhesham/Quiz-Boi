@@ -13,7 +13,6 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { QuestionProps } from "@/types";
 import { EditQuestion } from "@/actions/EditQuestion";
-import Loader from "./Loader";
 import AddPhotoForm from "./AddPhotoForm";
 import { useColor } from "../context/ColorContext";
 import TextInput from "./QuestionInput";

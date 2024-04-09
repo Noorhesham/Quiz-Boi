@@ -5,7 +5,7 @@ import UserAttempt from "../models/userAttemptsModel";
 import Factory from "./handlerFactory";
 import Likes from "../models/likesModel";
 import multer from "multer";
-import sharp, { FormatEnum } from "sharp";
+import cloudinary from "../utils/cloudinary";
 import { UserProps } from "../types";
 import Question from "../models/questionModel";
 import ApiFeatures from "../utils/ApiFeatures";
@@ -29,13 +29,14 @@ const upload = multer({ storage: multerStorage, fileFilter: multerFilter, limits
 exports.upload = upload.single("coverImage");
 exports.resizeQuizPhoto = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   console.log(req.body, req.file);
-  console.log(req.body, req.file);
   if (!req.file) return next();
-  const ext = req.file.mimetype.split("/")[1];
-  const formatKey = ext as keyof FormatEnum;
-  console.log(ext, `quiz-${req.user.id}.${ext}`, formatKey);
-  req.body.coverImage = `question-${req.user.id}-${Date.now()}.${ext}`;
-  sharp(req.file.buffer).toFile(`public/img/quizzes/${req.body.coverImage}`);
+  const b64 = Buffer.from(req.file.buffer).toString("base64");
+  let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+  const cldRes = await cloudinary.uploader.upload(dataURI, {
+    resource_type: "auto",
+  });
+  console.log(cldRes.secure_url);
+  req.body.coverImage = cldRes.secure_url;
   next();
 });
 
@@ -62,6 +63,7 @@ exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: Next
       username,
       quizId,
       answers,
+      points:0
     });
     quiz.usersAttempted.push(userAttempt._id);
   } else {
@@ -77,10 +79,11 @@ exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: Next
       console.log("Question not found for ID:", req.body.answers[i].id);
       continue;
     }
-    if (question.correctAnswerIndex === req.body.answers[i].answer) userAttempt.points += question.points || 10;
+    if (question.correctAnswerIndex === +req.body.answers[i].answer) userAttempt.points += question.points || 10;
     totalPoints += question.points || 10;
     userAttempt.percentage = (userAttempt.points / totalPoints) * 100;
     userAttempt.answers = answers;
+    userAttempt.totalPoints=totalPoints
     userAttempt.attemptedAt = new Date(Date.now());
     quiz.usersAttempted = quiz.usersAttempted.filter((id) => id !== userAttempt?._id);
     quiz.usersAttempted.push(userAttempt._id);
@@ -112,9 +115,11 @@ exports.unLikeQuiz = catchAsync(async (req: Request | any, res: Response, next: 
 });
 
 exports.checkIfAuthor = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const quiz = await Quiz.findById(req.params.id);
-  console.log(quiz?.author?._id !== req.user.id ,quiz?.author._id,req.user.id)
-  if (quiz?.author?.id !== req.user.id && req.user.role !== "admin") return next(new AppError(`You cannot edit someone's else quiz.`, 403));
+  console.log(req.params);
+  const quiz = await Quiz.findById(req.params.id || req.params.quizId);
+  console.log(quiz?.author?._id !== req.user.id, quiz?.author._id, req.user.id);
+  if (quiz?.author?.id !== req.user.id && req.user.role !== "admin")
+    return next(new AppError(`You cannot edit someone's else quiz.`, 403));
   next();
 });
 
@@ -124,6 +129,10 @@ exports.solveQuiz = catchAsync(async (req: Request, res: Response, next: NextFun
     select: "-correctAnswerIndex -explaination",
   });
   if (!quiz) return next(new AppError("could not find a quiz with that id!", 404));
+  const attempt = quiz?.usersAttempted.filter((a: any) => a.userId === req.body.userId);
+  //@ts-ignore
+  if (attempt.attemptedAt && attempt.attemptedAt >= new Date(Date.now() - 12 * 60 * 60 * 1000))
+    return next(new AppError("Attempt made within the last 12 hours. Cannot update.", 403));
   res.status(201).json({ status: "success", data: { quiz } });
   next();
 });
@@ -133,11 +142,18 @@ exports.uploadQuiz = quizFactory.createOne();
 exports.getAllQuizes = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   let filters = {};
   if (req.params.quizId) filters = { quizId: req.params.quizId };
-  let query = Quiz.find(filters).populate({ path: "author", select: "name photo " }).populate({ path: "likes" });
+  //@ts-ignore
+  filters.published = true;
+  let query = Quiz.find(filters)
+    .populate({ path: "author", select: "name photo " })
+    .populate({ path: "likes" })
+    .populate({ path: "comments" });
   const quizzes = await new ApiFeatures(query, req.query).filter().paginate().sort().limitFields().query;
+  console.log(quizzes);
   if (!quizzes) return next(new AppError(`There is no quiz found with that id`, 404));
   res.status(200).json({ status: "success", results: quizzes.length, data: { quizzes } });
 });
+
 exports.getQuiz = quizFactory.getOne("id", { path: "questions" });
 exports.updateQuiz = quizFactory.updateOne();
 exports.deleteQuiz = quizFactory.deleteOne();

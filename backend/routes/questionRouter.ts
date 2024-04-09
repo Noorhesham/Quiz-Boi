@@ -5,7 +5,7 @@ const questionsController = require("../controllers/questionsController");
 const router = express.Router({ mergeParams: true });
 
 router
-  .route("")
+  .route("/")
   .get(questionsController.getAllQuestions)
   .post(
     authController.protect,
@@ -14,12 +14,12 @@ router
     questionsController.resizeQuizPhoto,
     questionsController.addQuestionToQuiz
   );
-router.use(authController.protect);
 router
   .route("/:questionId")
   .get(questionsController.getQuestion)
-  .delete(quizController.checkIfAuthor, questionsController.deleteQuestionFromQuiz)
+  .delete(authController.protect,quizController.checkIfAuthor, questionsController.deleteQuestionFromQuiz)
   .patch(
+    authController.protect,
     quizController.checkIfAuthor,
     questionsController.upload,
     questionsController.resizeQuizPhoto,

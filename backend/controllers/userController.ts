@@ -3,7 +3,7 @@ import AppError from "../utils/AppError";
 import User from "../models/userModel";
 import Factory from "./handlerFactory";
 import multer from "multer";
-import sharp, { FormatEnum } from "sharp";
+import cloudinary from "../utils/cloudinary";
 import { UserProps } from "../types";
 const catchAsync = require("../utils/catchError");
 declare module "express-serve-static-core" {
@@ -11,16 +11,6 @@ declare module "express-serve-static-core" {
     user: UserProps;
   }
 }
-
-// const multerStorage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "public/img/users");
-//   },
-//   filename: (req: Request, file, cb) => {
-//     const ext = file.mimetype.split("/")[1];
-//     cb(null, `user-${req.user.id}.${ext}`);
-//   },
-// });
 
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req: Request, file: Express.Multer.File, cb: any) => {
@@ -30,15 +20,19 @@ const multerFilter = (req: Request, file: Express.Multer.File, cb: any) => {
     cb(new AppError("Not an image", 400), false);
   }
 };
+
 const upload = multer({ storage: multerStorage, fileFilter: multerFilter, limits: { fileSize: 10 * 1024 * 1024 } });
-exports.uploadUserPhoto = upload.single("photo");
-exports.resizeUserPhoto = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+exports.upload = upload.single("photo");
+exports.resizeQuizPhoto = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  console.log(req.body, req.file);
   if (!req.file) return next();
-  const ext = req.file.mimetype.split("/")[1];
-  const formatKey = ext as keyof FormatEnum;
-  console.log(ext, `user-${req.user.id}.${ext}`,formatKey);
-  req.file.filename = `user-${req.user.id}.${ext}`;
-  sharp(req.file.buffer).resize(500, 500).toFormat(`${formatKey}`).toFile(`public/img/users/${req.file.filename}`);
+  const b64 = Buffer.from(req.file.buffer).toString("base64");
+  let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+  const cldRes = await cloudinary.uploader.upload(dataURI, {
+    resource_type: "auto",
+  });
+  console.log(cldRes.secure_url);
+  req.body.photo = cldRes.secure_url;
   next();
 });
 
@@ -51,8 +45,14 @@ const filteredObj: any = (obj: any, ...allowedFields: any) => {
 };
 
 exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const user = await User.findById(req.params.id)
-    
+  const user = await User.findById(req.params.id);
+
+  if (!user) return next(new AppError("cannot find this user", 404));
+  res.status(200).json({ status: "success", data: { user } });
+});
+exports.getDetails = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const user = await User.findById(req.params.id).populate({ path: "likedQuizzes" });
+
   if (!user) return next(new AppError("cannot find this user", 404));
   res.status(200).json({ status: "success", data: { user } });
 });
@@ -68,8 +68,6 @@ exports.updateMe = catchAsync(async (req: Request, res: Response, next: NextFunc
     return next(new AppError("you cannot update password in this route", 400));
   //2)update user doc
   const updatedData = filteredObj(req.body, "name", "email", "photo");
-  if (req.file) updatedData.photo = req.file.filename;
-  console.log(req.body, req.file);
   const updatedUser = await User.findByIdAndUpdate(req.user.id, updatedData, {
     new: true,
     runValidators: true,
@@ -79,24 +77,26 @@ exports.updateMe = catchAsync(async (req: Request, res: Response, next: NextFunc
 
 exports.followUser = catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
   const currentUser = req.user;
-  const userToFollow = await User.findById(req.params.userId);
+  const userToFollow = await User.findById(req.params.id);
   console.log(userToFollow, currentUser);
-  if (!userToFollow) return next(new AppError("cannot find this user", 404));
-  currentUser.follow(req.params.userId);
+  if (!userToFollow) return next(new AppError("You are already following this user.", 400));
+  if (currentUser.following.includes(req.params.id)) return next(new AppError("cannot find this user", 404));
+  currentUser.following.push(req.params.id);
   userToFollow.followers.push(currentUser._id);
   await Promise.all([currentUser.save(), userToFollow.save()]);
   res.status(200).json({ status: "success", data: { currentUser } });
 });
 
 exports.unfollowUser = catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
-  const currentUser = req.user;
-  const userToUnfollow = await User.findById(req.params.userId);
-  if (userToUnfollow) {
-    userToUnfollow.followers = userToUnfollow.followers.filter((userId: String) => userId !== currentUser._id);
-    await userToUnfollow.save();
-  }
+  const { id } = req.params;
+  const currentUser = req.user; 
+  if (!currentUser.following.includes(id))  return next(new AppError("You are not following this user.", 400));
+  currentUser.following = currentUser.following.filter((id:String) => id.toString() !== req.params.id);
   await currentUser.save();
-  res.status(200).json({ status: "success", data: { currentUser } });
+  const followedUser = await User.findById(id);
+  followedUser.followers = followedUser.followers.filter((id:String) => id.toString() !== currentUser._id.toString());
+  await followedUser.save();
+  res.status(200).json({ message: 'Successfully unfollowed user.' });
 });
 const userFactory = new Factory(User, "user");
 exports.getAllUsers = userFactory.getAll();

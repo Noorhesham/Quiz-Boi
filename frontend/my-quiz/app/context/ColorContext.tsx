@@ -10,7 +10,7 @@ const colorContext = createContext<ColorContextType | undefined>(undefined);
 function ColorProvider({ children }: { children: React.ReactNode }) {
   const [color, setColor] = useState(function () {
     const storedValue = global?.localStorage?.getItem("color");
-    return storedValue ? JSON.parse(storedValue) : "purble";
+    return storedValue ? JSON.parse(storedValue) : "purple";
   });
   useEffect(
     function () {

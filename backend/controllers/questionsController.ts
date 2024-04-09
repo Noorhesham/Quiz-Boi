@@ -4,7 +4,7 @@ import AppError from "../utils/AppError";
 import Question from "../models/questionModel";
 import Factory from "./handlerFactory";
 import multer from "multer";
-import sharp, { FormatEnum } from "sharp";
+import cloudinary from "../utils/cloudinary";
 import { UserProps } from "../types";
 const catchAsync = require("../utils/catchError");
 declare module "express-serve-static-core" {
@@ -23,26 +23,28 @@ const multerFilter = (req: Request, file: Express.Multer.File, cb: any) => {
 };
 
 const upload = multer({ storage: multerStorage, fileFilter: multerFilter, limits: { fileSize: 10 * 1024 * 1024 } });
-exports.upload=  upload.single("coverImage");
+exports.upload = upload.single("coverImage");
 exports.resizeQuizPhoto = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  console.log(req.body,req.file)
+  console.log(req.body, req.file);
   if (!req.file) return next();
-  const ext = req.file.mimetype.split("/")[1];
-  const formatKey = ext as keyof FormatEnum;
-  console.log(ext, `question-${req.user.id}-${Date.now()}.${ext}`,formatKey);
-  req.body.coverImage= `question-${req.user.id}-${Date.now()}.${ext}`;
-  sharp(req.file.buffer).toFile(`public/img/questions/${req.body.coverImage}`);
+  const b64 = Buffer.from(req.file.buffer).toString("base64");
+  let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+  const cldRes = await cloudinary.uploader.upload(dataURI, {
+    resource_type: "auto",
+  });
+  console.log(cldRes.secure_url)
+  req.body.coverImage = cldRes.secure_url;
   next();
 });
 
 exports.addQuestionToQuiz = catchAsync(async (req: any, res: Response, next: NextFunction) => {
-  const { question, answers, correctAnswerIndex ,explain} = req.body;
+  const { question, answers, correctAnswerIndex, explain,coverImage } = req.body;
   const newQuestion = await Question.create({
     question,
     answers,
     correctAnswerIndex,
     quiz: req.params.quizId,
-    explain
+    explain,coverImage
   });
   const quiz = await Quiz.findById(req.params.quizId);
   if (!quiz) return next(new AppError("quiz not found", 404));
@@ -56,12 +58,12 @@ exports.deleteQuestionFromQuiz = catchAsync(async (req: any, res: Response, next
   if (!quiz) {
     return next(new AppError("Quiz not found", 404));
   }
-  console.log(quiz)
-  const newQuestions = quiz.questions.filter(question=>question._id!==req.params.questionId);
-  if (!newQuestions ) {
+  console.log(quiz);
+  const newQuestions = quiz.questions.filter((question) => question._id !== req.params.questionId);
+  if (!newQuestions) {
     return next(new AppError("Question not found in the quiz", 404));
   }
-  quiz.questions=newQuestions
+  quiz.questions = newQuestions;
   await quiz.save();
   const deletedQuestion = await Question.findByIdAndDelete(req.params.questionId);
   if (!deletedQuestion) {
@@ -70,18 +72,19 @@ exports.deleteQuestionFromQuiz = catchAsync(async (req: any, res: Response, next
   res.status(201).json({ status: "success", data: null });
 });
 
-exports.editQuestionFromQuiz =catchAsync(async (req: any, res: Response, next: NextFunction) => {
-  const quiz = await Quiz.findOne({ questions: req.params.questionId });
+exports.editQuestionFromQuiz = catchAsync(async (req: any, res: Response, next: NextFunction) => {
+  const quiz = await Quiz.findById(req.params.quizId);
+  console.log(quiz, req.params);
   if (!quiz) {
     return next(new AppError("Quiz not found", 404));
   }
-  const editedQuestion = await Question.findByIdAndUpdate(req.params.questionId,req.body);
-  if (editedQuestion?.coverImage) editedQuestion.coverImage=req.body.coverImage
+  const editedQuestion = await Question.findByIdAndUpdate(req.params.questionId, req.body);
+  if (editedQuestion?.coverImage) editedQuestion.coverImage = req.body.coverImage;
   if (!editedQuestion) {
     return next(new AppError("Question not found", 404));
   }
   res.status(201).json({ status: "success", data: editedQuestion });
-})
-const questionFactory=new Factory(Question,'Question')
-exports.getQuestion=questionFactory.getOne('questionId')
-exports.getAllQuestions=questionFactory.getAll()
+});
+const questionFactory = new Factory(Question, "Question");
+exports.getQuestion = questionFactory.getOne("questionId");
+exports.getAllQuestions = questionFactory.getAll();

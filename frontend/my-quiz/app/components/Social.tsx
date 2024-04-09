@@ -21,7 +21,11 @@ const Social = ({ action }: { action: "signup" | "login" }) => {
         .then((res: any) => {
           console.log(res);
           if (res.error) setFormError(res.message);
-          else router.push("/");
+          else {
+
+            Cookies.set("jwt", res.data.token);
+            router.push("/");
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -31,8 +35,10 @@ const Social = ({ action }: { action: "signup" | "login" }) => {
       loginGoogle(accessToken)
         .then((res) => {
           console.log(res);
+          //@ts-ignore
           if (res.error) setFormError(res.message);
           else {
+
             Cookies.set("jwt", res.data.token);
             router.push("/");
           }

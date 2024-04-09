@@ -1,13 +1,18 @@
 import React from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useQuiz } from "../context/QuizContext";
 
-const Timer = ({ value }: { value: number }) => {
-  const mins = Math.floor(value / 60);
-  const secs = value % 60;
+const Timer = () => {
+  const {timer}=useQuiz()
+  const mins = Math.floor(timer / 60);
+  const secs = timer % 60;
   return (
-    <div className=" absolute left-[47%] z-10  top-10 " style={{ width: 70, height: 70 }}>
-      <CircularProgressbar value={value} text={`${mins < 10 && 0}${mins}:${(secs < 10 && 0) || ""}${secs}`} />
+    <div
+      className=" text-pink-400 font-semibold fill-pink-400 absolute left-[50%] translate-x-[-50%] z-10  top-8 "
+      style={{ width: 70, height: 70 }}
+    >
+      <CircularProgressbar value={timer} text={`${mins < 10 && 0}${mins}:${(secs < 10 && 0) || ""}${secs}`} />
     </div>
   );
 };

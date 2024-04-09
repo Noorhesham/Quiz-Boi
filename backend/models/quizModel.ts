@@ -16,7 +16,7 @@ interface QuizProps extends Document {
   duration: number;
   published: boolean;
   numberOfQuestions?: number;
-  color: "orange" | "pink" | "blue" | "purble" | "green";
+  color: "orange" | "pink" | "blue" | "purple" | "green";
 }
 
 const quizSchema = new Schema<QuizProps>(
@@ -47,7 +47,7 @@ const quizSchema = new Schema<QuizProps>(
     duration: { type: Number },
     usersAttempted: [{ type: Schema.Types.ObjectId, ref: "UserAttempt" }],
     published: { type: Boolean, default: false },
-    color: { type: String, default: "orange" },
+    color: { type: String, default: "purple" },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -69,23 +69,26 @@ quizSchema.virtual("likes", {
   foreignField: "quiz",
 });
 
-// quizSchema.pre(/^find/, function (this: any, next) {
-//   this.find({ published: { $ne: false } })
-//   next();
-// });
-quizSchema.pre<any>("findOne", function (next: any) {
+quizSchema.pre(/^find/, function (this: any, next) {
   this.populate({
-    path: "author",
-    select: "name id _id photo",
+    path: "likes",
   })
     .populate({
-      path: "usersAttempted",
-      select: "-__v ",
+      path: "author",
+      select: "name id _id photo",
     })
     .populate({
       path: "comments",
-      select: "content user -quizId",
-    })
+      select: "content user ",
+    });
+  next();
+});
+quizSchema.pre<any>("findOne", function (next: any) {
+  this.populate({
+    path: "usersAttempted",
+    select: "-__v ",
+  });
+
   next();
 });
 

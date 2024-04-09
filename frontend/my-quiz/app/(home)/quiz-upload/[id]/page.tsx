@@ -16,7 +16,7 @@ const page = async ({ params }: { params: { id: string } }) => {
   console.log(quiz);
   if (!quiz) return <NotFound text="This Quiz is not available" />;
   return (
-    <main className="text-gray-50 flex flex-col gap-3 p-10 ">
+    <main className="text-gray-50 pt-20 flex flex-col gap-3 p-10 ">
       <div className="flex justify-between items-center">
         <Heading text={`Your ${quiz.title} quiz is here ! Get prepared to publish it !`} />
         <EditQuizBtn quiz={quiz} />

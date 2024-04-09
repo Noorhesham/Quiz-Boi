@@ -12,11 +12,11 @@ const AnswersNum = ({ control, isPending, }: { control: any; isPending: boolean,
           Duration
           </FormLabel>
           <FormControl>
-            <Input
+            <Input min={1}
               className="md:py-6 md:px-3  w-fit  rounded-lg text-black"
               disabled={isPending}
               {...field}
-              placeholder="1"
+              placeholder='1'
               type="number"
             />
           </FormControl>

@@ -2,8 +2,10 @@ import express, { NextFunction, Request, Response } from "express";
 import AppError from "./utils/AppError";
 const userRouter = require("./routes/userRouter");
 const quizRouter = require("./routes/quizRouter");
-const commentsRouter = require("./routes/commentsRouter");
 const questionRouter = require("./routes/questionRouter");
+const commentsRouter = require("./routes/commentsRouter");
+const attemptRouter = require("./routes/attemptRouter");
+const tagsRouter = require("./routes/tagsRouter");
 const globalErrorHandler = require("./controllers/errorController");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -20,7 +22,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/quiz", quizRouter);
+app.use("/api/v1/question", questionRouter);
 app.use("/api/v1/comments", commentsRouter);
+app.use("/api/v1/attempts", attemptRouter);
+app.use("/api/v1/tags", tagsRouter);
 
 app.all("*", (err: any, req: Request, res: Response, next: NextFunction) => {
   next(new AppError(`cant find ${req.originalUrl} on this server`, 404));

@@ -7,7 +7,12 @@
   transition: all;
   transition-duration: 0.5s;
 }
-
+.quizbg {
+  background-image: url("/quiz.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 .skyblue {
   background-image: linear-gradient(to bottom left, #3765d8, #12b0fc);
   transition: all;
@@ -53,6 +58,12 @@
 .orange span {
   @apply bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent;
 }
+.CircularProgressbar-path {
+  stroke: #d66db8 !important;
+}
+.CircularProgressbar-text {
+  fill: #e27a96 !important;
+}
 .wave {
   background-image: url("/wave.png");
   background-size: 1000px 100px;
@@ -89,7 +100,73 @@
   animation-delay: -5s;
   background-position-x: 100px;
 }
+.LazyLoad {
+  opacity: 0;
+  transition: all 1s ease-in-out;
+}
 
+.is-visible {
+  opacity: 1;
+}
+.spacer {
+  aspect-ratio: 960/300;
+  background-image: url("/layer2.svg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.blob-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.blob {
+  top: 126px;
+  left: 89px;
+  width: 250px;
+  position: absolute;
+  height: 250px;
+  background: radial-gradient(circle, #c62368, #ff0066); /* Gradient from C62368 to FF0066 */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  animation: animate-hug 5s infinite alternate; /* Apply the animation to the blob */
+}
+
+.blob-content {
+  position: relative; /* Ensure the text stays in the center */
+  z-index: 1; /* Ensure the text is above the blob */
+}
+
+@keyframes animate-hug {
+  0% {
+    border-radius: 50%; /* Initial shape */
+    transform: scale(1);
+  }
+  25% {
+    border-radius: 60% 40% 30% 50%; /* Change shape */
+    transform: translate(10%, 10%) scale(1.2);
+  }
+  50% {
+    border-radius: 40% 60% 40% 60%; /* Change shape */
+    transform: translate(-10%, 10%) scale(1.4);
+  }
+  75% {
+    border-radius: 60% 30% 60% 60%; /* Change shape */
+    transform: translate(10%, -10%) scale(1.2);
+  }
+  100% {
+    border-radius: 50%; /* Return to initial shape */
+    transform: scale(1);
+  }
+}
 @keyframes animate {
   0%,
   100% {

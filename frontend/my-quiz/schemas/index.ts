@@ -45,7 +45,7 @@ export const QuizSchema = z.object({
     .array(z.string())
     .min(1, { message: "At least one tag is required" })
     .max(3, { message: " 3 tags is the max" }),
-  duration: z.string().min(1, { message: "Duration must be specified" }),
+  duration: z.any(),
   coverImage: z
     .any()
     .optional()
@@ -58,3 +58,22 @@ export const QuizSchema = z.object({
       return !files || !files[0] || ACCEPTED_IMAGE_MIME_TYPES.includes(files[0].type);
     }, "Only .jpg, .jpeg, .png, and .webp formats are supported."),
 });
+export const UpdateSchema = z
+  .object({
+    name: z.string().min(3, { message: "You must add a name of at least 3 characters 😿!" }),
+    email: z.string().email({ message: "Email is required 😿" }),
+    photo: z
+    .any()
+    .optional()
+  })
+ ;
+ export const UpdatePasswordSchema = z
+  .object({
+    passwordCurrent: z.string().min(1, { message: "Password is required 😿" }),
+    password: z.string().min(6, { message: "Enter At Least 6 Characters 😿" }),
+    passwordConfirm: z.string().min(1, { message: "You must confirm your password 😿" }),
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: "Passwords must be the same ! 😿",
+    path: ["passwordConfirm"],
+  });

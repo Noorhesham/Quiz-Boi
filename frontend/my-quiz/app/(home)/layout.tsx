@@ -4,7 +4,7 @@ import NavBar from "../components/NavBar";
 import Provider from "@/utils/Provider";
 import { ColorProvider } from "../context/ColorContext";
 import ColorWrapper from "../components/ColorWrapper";
-import { QuizProvider } from "../context/QuizContext";
+import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,12 +19,11 @@ export default async function RootLayout({
   return (
     <Provider>
       <ColorProvider>
-        <QuizProvider>
           <ColorWrapper>
               <NavBar />
               {children}
+              <Footer/>
           </ColorWrapper>
-        </QuizProvider>
       </ColorProvider>
     </Provider>
   );

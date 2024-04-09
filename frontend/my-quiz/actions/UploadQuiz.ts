@@ -1,9 +1,7 @@
 "use server";
 import { API_URL } from "@/constants";
-import { QuizSchema } from "@/schemas";
 import axios from "axios";
 import { cookies } from "next/headers";
-import { z } from "zod";
 export const UploadQuiz = async (values: any) => {
 
   try {

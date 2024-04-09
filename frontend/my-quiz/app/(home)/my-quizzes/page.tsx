@@ -1,7 +1,9 @@
 import { getUser } from "@/actions/getUser";
 import DialogCustom from "@/app/components/DialogCustom";
 import { Empty } from "@/app/components/Empty";
+import GlobalButton from "@/app/components/GlobalButton";
 import Heading from "@/app/components/Heading";
+import MyButton from "@/app/components/MyButton";
 import Quiz from "@/app/components/Quiz";
 import Spinner from "@/app/components/Spinner";
 import UploadQuizForm from "@/app/components/UploadQuizForm";
@@ -19,12 +21,12 @@ const page = async ({
   const user = await getUser();
   console.log(searchParams?.upload === "");
   return (
-    <section className=" py-10 px-20 bg-gray-100 rounded-md min-h-[80vh] ">
-      <Heading dark={true} text="My Quizzes" />
+    <section className=" py-10 pt-32 px-20  rounded-md min-h-[80vh] ">
+      <Heading text="My Quizzes" />
       {user.quizzes.length < 1 && (
         <Empty text="You created no quizzes yet !">
           <DialogCustom
-            btn={<Button>Create one now</Button>}
+            btn={<GlobalButton text="Create one now" />}
             content={<UploadQuizForm setOpen={searchParams && searchParams?.upload === ""} />}
           />
         </Empty>
@@ -39,7 +41,7 @@ const page = async ({
       <div className="flex gap-40 items-center fixed right-10 bottom-5">
         <DialogCustom
           isopen={searchParams && searchParams?.upload === ""}
-          btn={<Button>Create one now</Button>}
+          btn={<GlobalButton text="Create one now" />}
           content={<UploadQuizForm />}
         />
       </div>

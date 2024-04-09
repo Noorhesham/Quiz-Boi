@@ -3,15 +3,13 @@ const authController = require("../controllers/authController");
 const quizController = require("../controllers/quizController");
 const questionRouter = require("./questionRouter");
 const commentsRouter = require("./commentsRouter");
+const attemptRouter = require("./attemptRouter");
 
 const router = express.Router();
 
 router.use("/:quizId/comments", commentsRouter);
+router.use("/:quizId/attempts", attemptRouter);
 router.use("/:quizId/question", questionRouter);
-router
-  .route("/:quizId/publish")
-  .patch(authController.protect, quizController.checkIfAuthor, quizController.publishQuiz);
-
 router
   .route("/")
   .get(quizController.getAllQuizes)
@@ -22,6 +20,10 @@ router
     quizController.addAuthor,
     quizController.uploadQuiz
   );
+
+router
+  .route("/:quizId/publish")
+  .patch(authController.protect, quizController.checkIfAuthor, quizController.publishQuiz);
 
 router.post("/:quizId/completed", quizController.completeQuiz);
 router.get("/:quizId/solve", quizController.solveQuiz);
@@ -40,5 +42,7 @@ router
     quizController.updateQuiz
   )
   .delete(authController.protect, quizController.checkIfAuthor, quizController.deleteQuiz);
+router.route("/:id/public").get(quizController.getQuiz);
+
 
 module.exports = router;

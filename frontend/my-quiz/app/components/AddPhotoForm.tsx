@@ -1,37 +1,37 @@
 import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { IMAGE_URL } from "@/constants";
-import { QuestionProps, QuizProps } from "@/types";
-import React from "react";
+import { QuestionProps, QuizProps, UserProps } from "@/types";
+import React, { use } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { MdModeEdit } from "react-icons/md";
 import InputImage from "./InputImage";
 import { useColor } from "../context/ColorContext";
 
 const AddPhotoForm = ({
-  setSelectedImage,
+  setSelectedImage,name,
   control,
   quiz,
   selectedImage,
-  question,
+  question,user
 }: {
-  setSelectedImage: (f: any) => void;
+  setSelectedImage: (f: any) => void;name?:string,
   control: any;
   quiz?: QuizProps;
   selectedImage: any;
-  question?: QuestionProps;
+  question?: QuestionProps;user?:UserProps
 }) => {
   const { color } = useColor();
   const backStyles = ` relative hover:backdrop-blur-sm rounded-lg hover:bg-red-200 cursor-pointer flex items-center flex-col backdrop-blur-lg  group duration-150`;
   return (
     <FormField
       control={control}
-      name="coverImage"
+      name={name?name:`coverImage`}
       render={({ field }: { field: any }) => (
         <FormItem>
           <FormControl>
             <>
               <label>
-                {!quiz?.coverImage && !question?.coverImage && !selectedImage ? (
+                {!quiz?.coverImage && !question?.coverImage && !selectedImage &&!user?.photo? (
                   <div
                     className={`flex flex-col hover:opacity-90 cursor-pointer text-gray-50 rounded-lg gap-3 py-6 px-12 items-center  ${color}`}
                   >
@@ -51,10 +51,12 @@ const AddPhotoForm = ({
                       alt={(quiz && quiz.title) || (question && question.question)}
                       src={
                         selectedImage
-                          ? URL.createObjectURL(selectedImage)
-                          : question
-                          ? `${IMAGE_URL}/questions/${question.coverImage}`
-                          : `${IMAGE_URL}/quizzes/${quiz && quiz.coverImage}`
+                        ? URL.createObjectURL(selectedImage)
+                        : user
+                        ? user.photo
+                        : question
+                        ? question.coverImage
+                        : quiz?.coverImage
                       }
                     />
                   </div>

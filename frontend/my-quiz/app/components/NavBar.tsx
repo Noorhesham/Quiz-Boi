@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "./Avatar";
 import MiniLogo from "./MiniLogo";
 import { Button } from "@/components/ui/button";
@@ -13,23 +13,29 @@ const NavBar = () => {
   const [nav, setNav] = useState(false);
   const { color } = useColor();
   const { user, isLoading, error } = useGetUser();
+  const [lastScrollY, setLastScrollY] = useState(0);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY >= 80) {
+        setNav(true);
+      } else {
+        setNav(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   if (isLoading) return <Loader />;
-
-  const changeBackground = () => {
-    if (window.scrollY >= 80) {
-      setNav(true);
-    } else {
-      setNav(false);
-    }
-  };
-
-  window.addEventListener("scroll", changeBackground);
 
   return (
     <header
       className={`${
-        nav ? "bg-gray-200 shadow-md duration-150" : ""
+        nav ? "bg-gray-200  bg-opacity-45 shadow-md duration-150" : " bg-transparent"
       } fixed z-50 top-0 left-0 w-full transition-all ease-in-out`}
     >
       <nav className="py-3 px-8 flex items-center justify-between w-full">

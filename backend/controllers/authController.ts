@@ -28,7 +28,6 @@ const sendResponse = (res: Response, user: UserProps, code: number) => {
   res.status(code).json({ status: "success", token, data: { user } });
 };
 
-
 exports.signup = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   if (req.body.googleAccessToken) {
     const { googleAccessToken } = req.body;
@@ -43,23 +42,26 @@ exports.signup = catchAsync(async (req: Request, res: Response, next: NextFuncti
         const lastName = response.data.family_name;
         const email = response.data.email;
         const picture = response.data.picture;
+        const isthirdParty=true
         const existingUser = await User.findOne({ email });
         if (existingUser) return next(new AppError("User already exist!", 400));
-        console.log(googleAccessToken,response)
-        const result = await User.create({ email, name:`${firstName} ${lastName}`, photo: picture });
-        console.log(result,response)
+        console.log(googleAccessToken, response);
+        const result = await User.create({ email, name: `${firstName} ${lastName}`, photo: picture,isthirdParty });
+        console.log(result, response);
         sendResponse(res, result, 201);
       })
-      .catch((err:any) =>{
-        console.log(err)
-        return next(new AppError("invalid token!", 400))});
+      .catch((err: any) => {
+        console.log(err);
+        return next(new AppError("invalid token!", 400));
+      });
   } else {
     const newUser = await User.create({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
-      passwordChangeAt: req.body.passwordChangeAt,role:req.body.role
+      passwordChangeAt: req.body.passwordChangeAt,
+      role: req.body.role,
     });
     sendResponse(res, newUser, 201);
   }
@@ -81,6 +83,7 @@ exports.login = catchAsync(async (req: Request, res: Response, next: NextFunctio
         const picture = response.data.picture;
         const existingUser = await User.findOne({ email });
         if (!existingUser) return next(new AppError("User dont exist!", 404));
+        console.log(existingUser)
         sendResponse(res, existingUser, 201);
       })
       .catch(() => next(new AppError("invalid token!", 400)));
@@ -130,4 +133,18 @@ exports.restrictTo = (...roles: [string]) => {
 exports.forgetPassword = catchAsync(async (req: any, res: Response, next: NextFunction) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
+});
+exports.updatePassword = catchAsync(async (req: any, res: Response, next: NextFunction) => {
+  console.log(req.body)
+  const { passwordCurrent, password, passwordConfirm } = req.body;
+  //1)get user from collection
+  const user = await User.findById(req.user.id).select("+password");
+
+  //2)posted password is correct
+  if (!(await user.correctPassword(passwordCurrent))) return next(new AppError("password is not correct", 401));
+  user.password = password;
+  user.passwordConfirm = passwordConfirm;
+  await user.save();
+  //3)log the user in
+  sendResponse(res, user, 200);
 });
