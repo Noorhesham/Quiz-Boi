@@ -19,7 +19,7 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json({ limit: "10kb" }));
 app.use(cookieParser());
 app.use(express_1.default.static(`${__dirname}/public`));
-app.use(cors({ origin: "http://localhost:3001", methods: "GET,POST,PUT,DELETE" }));
+app.use(cors());
 app.use(express_1.default.urlencoded({ extended: true, limit: "10kb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/v1/users", userRouter);
