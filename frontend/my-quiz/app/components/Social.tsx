@@ -22,7 +22,6 @@ const Social = ({ action }: { action: "signup" | "login" }) => {
           console.log(res);
           if (res.error) setFormError(res.message);
           else {
-
             Cookies.set("jwt", res.data.token);
             router.push("/");
           }
@@ -38,7 +37,6 @@ const Social = ({ action }: { action: "signup" | "login" }) => {
           //@ts-ignore
           if (res.error) setFormError(res.message);
           else {
-
             Cookies.set("jwt", res.data.token);
             router.push("/");
           }
@@ -50,7 +48,7 @@ const Social = ({ action }: { action: "signup" | "login" }) => {
   }
   const login = useGoogleLogin({ onSuccess: handleGoogleLoginSuccess });
   return (
-    <div className="flex fl justify-between items-center ">
+    <div className="flex flex-wrap justify-between items-center ">
       <div className="flex items-center gap-x-2">
         <h3 className=" text-gray-600  mr-5">{action === "login" ? "Sign in with" : "Sign up with"}</h3>
         <Button type="button" onClick={() => login()} size="lg" className=" rounded-full py-4 px-3" variant="outline">

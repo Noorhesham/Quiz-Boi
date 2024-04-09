@@ -10,12 +10,13 @@ const TaggingComponent = ({ control, defaultVal }: { control: any; defaultVal?: 
   const { color } = useColor();
   const [selected, setSelected] = useState([]);
   const { tags, isLoading } = useGetTags();
+  console.log(tags)
   //@ts-ignore
   const formattedTags = tags?.map((tag: string) => ({ label: tag.tag, value: tag.tag }));
   useEffect(() => {
     if (defaultVal) {
       //@ts-ignore
-      setSelected(defaultVal.map((tag: string) => ({ label: tag.tag, value: tag.tag })));
+      setSelected(defaultVal?.map((tag: string) => ({ label: tag.tag, value: tag.tag })));
     }
   }, [defaultVal]);
   return (
