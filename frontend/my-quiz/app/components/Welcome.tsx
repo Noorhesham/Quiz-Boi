@@ -16,8 +16,8 @@ const Welcome = () => {
         We wish you a great day ! What are you planning to do today !
       </p>
       <div className="flex flex-col md:flex-row items-center gap-5">
-        <WhatToDo logged={user!!} text={"/create.png"} />
-        <WhatToDo logged={user!!} text={"/play.png"} />
+        <WhatToDo img="Create" logged={user!!} text={"/create.png"} />
+        <WhatToDo img="Play" logged={user!!} text={"/play.png"} />
       </div>
     </div>
   );
