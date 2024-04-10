@@ -95,7 +95,7 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
     setAnswers([]);
     setQuestionIndex(0);
     setProgress(0);
-    setTimer(0)
+    localStorage.removeItem("timer");
   };
   const handleQuizEnd = function () {
     handleReset();
@@ -107,10 +107,10 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
   };
   useEffect(
     function () {
-      if (id === localStorage.getItem("currentquiz")) return;
-      handleQuizEnd();
+      if (id === Id) return;
       setId(id);
       localStorage.setItem("currentquiz", Id);
+      handleQuizEnd();
     },
     [Id]
   );
