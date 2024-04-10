@@ -13,8 +13,7 @@ const QuestionResults = ({
   const myAnswer = answers.find((answer) => answer.id === question._id)?.answer;
   console.log(myAnswer, answers, question.correctAnswerIndex);
   return (
-    <div className={`flex flex-col mb-auto  gap-2  self-stretch  rounded-lg py-3 px-6`}>
-      {question.coverImage && <img src={question?.coverImage} className="w-[20rem]" />}
+    <div className={`flex flex-col  mb-auto  gap-2  self-stretch  rounded-lg py-3 px-6`}>
       <div className="bg-white shadow-md mt-auto mb-auto min-h-[10rem] flex flex-col gap-3   py-5 px-10 relative border-gray-300 border-2 rounded-md">
         <h2 className="  text-xl text-left text-gray-800 font-semibold">{question.question}</h2>
         {question.explain && (
