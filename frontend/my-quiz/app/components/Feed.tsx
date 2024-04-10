@@ -37,7 +37,7 @@ const Feed = ({ quizzes,categories }: { quizzes: Array<QuizProps> ,categories:an
       {quizzes.length === 0 && (
         <Empty image="/bad.png" text={`There are no quizzes associated with ${searchParams.get("categorey")} yet !`} />
       )}
-      <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center p-10 gap-5">
+      <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5">
         {quizzes?.map((quiz,i) => (
           <QuizCard key={i} quiz={quiz} />
         ))}
