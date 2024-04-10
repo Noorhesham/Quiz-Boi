@@ -38,7 +38,7 @@ const QuestionResults = ({
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2  p-3 gap-4 ">
-        {question.answers.map((a, i) => (
+        {question.answers?.map((a, i) => (
           <AnswerResult yourAnswer={myAnswer} key={i} correct={question.correctAnswerIndex} i={i} text={a} />
         ))}
       </div>
