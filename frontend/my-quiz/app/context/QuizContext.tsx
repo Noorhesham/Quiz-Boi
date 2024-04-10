@@ -1,4 +1,4 @@
-"use client";
+q"use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface QuizContextType {
@@ -107,7 +107,7 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
   };
   useEffect(
     function () {
-      if (id === localStorage.getItem("currentquiz")) return;
+      if (id === Id) return;
       handleQuizEnd();
       setId(id);
       localStorage.setItem("currentquiz", Id);
