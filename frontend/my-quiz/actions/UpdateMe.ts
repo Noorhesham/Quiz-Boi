@@ -16,6 +16,7 @@ export const UpdateMe = async (values: any) => {
       },
     });
     revalidatePath('/')
+    revalidatePath('/user/:id')
     return res.data;
   } catch (err: any) {
     if (err.response.data) return err.response.data;
