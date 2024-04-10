@@ -7,7 +7,7 @@ export const FilterQuizzesHome = async (filter:string,page?:number,) => {
         const res = await axios.get(`${API_URL}/quiz`);
       return res.data.data.quizzes;
       }
-      const res = await axios.get(`${API_URL}/quiz?tags=${filter}&page=${page||1}&limit=10`);
+      const res = await axios.get(`${API_URL}/quiz?tags=${filter}`);
       return res.data.data.quizzes;
     } catch (err: any) {
       console.log(err);

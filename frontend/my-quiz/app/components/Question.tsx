@@ -10,12 +10,12 @@ import Confirm from "./Confirm";
 
 const Question = ({ question, index }: { question: QuestionProps; index: number }) => {
   return (
-    <div className=" flex items-center justify-between bg-gray-100 hover:bg-gray-200 py-2 px-4 rounded-md">
+    <div className=" flex items-center flex-wrap justify-between bg-gray-100 hover:bg-gray-200 py-2 px-4 rounded-md">
       <div className="flex gap-3 items-center">
         <Order index={index} />
-        <h2 className="  font-semibold text-2xl text-gray-800">{question.question} ?</h2>
+        <h2 className="  font-semibold text-lg md:text-2xl text-gray-800">{question.question} ?</h2>
       </div>
-      <div className="flex  gap-3 text-xl items-center">
+      <div className="flex  gap-3 text-sm md:text-xl items-center">
         <DialogCustom
           content={<Confirm questionId={question._id} />}
           btn={<FaTrash className=" hover:text-red-300 duration-150 text-red-500 cursor-pointer  " />}

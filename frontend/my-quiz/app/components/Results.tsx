@@ -11,7 +11,7 @@ const Results = ({ list, answers }: { list: Array<string>; answers: Array<{ answ
   return (
     <>
       <Heading text="Review Your Results Here ..." />
-      <section className="grid grid-cols-2 mt-5 auto-rows-fr gap-4 items-stretch justify-center">
+      <section className="grid grid-cols-1 md:grid-cols-2 mt-5 auto-rows-fr gap-4 items-stretch justify-center">
         {isLoading && <Spinner />}{" "}
         {questions &&
           questions.map((question: QuestionProps, i: number) => (

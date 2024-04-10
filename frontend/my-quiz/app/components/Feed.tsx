@@ -24,7 +24,7 @@ const Feed = ({ quizzes,categories }: { quizzes: Array<QuizProps> ,categories:an
   }
   return (
     <section className=" pt-5">
-      <div className="p-8 flex md:flex-row flex-col items-center justify-between">
+      <div className="p-8 flex md:flex-row flex-col items-stretch justify-between">
         <Heading text="Find your desired quiz now !" />
         <h3
           onClick={() => handleSearch("")}
@@ -38,8 +38,8 @@ const Feed = ({ quizzes,categories }: { quizzes: Array<QuizProps> ,categories:an
         <Empty image="/bad.png" text={`There are no quizzes associated with ${searchParams.get("categorey")} yet !`} />
       )}
       <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center p-10 gap-5">
-        {quizzes?.map((quiz) => (
-          <QuizCard quiz={quiz} />
+        {quizzes?.map((quiz,i) => (
+          <QuizCard key={i} quiz={quiz} />
         ))}
       </div>
     </section>

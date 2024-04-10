@@ -2,8 +2,6 @@ import Welcome from "../components/Welcome";
 import Landing from "../components/Landing";
 import Feed from "../components/Feed";
 import { FilterQuizzesHome } from "@/actions/FilterQuizHome";
-import { Suspense } from "react";
-import Spinner from "../components/Spinner";
 import { GetTags } from "@/actions/GetTags";
 export const dynamic = "force-dynamic";
 export default async function Home({
@@ -22,7 +20,7 @@ export default async function Home({
     <main className="flex w-full \  min-h-[100vh] flex-col relative  items-stretch justify-center">
       <Landing />
       <Welcome />
-      <Suspense fallback={<Spinner />}>{<Feed categories={categories} quizzes={quizzes} />}</Suspense>
+      {<Feed categories={categories} quizzes={quizzes} />}
     </main>
   );
 }

@@ -10,7 +10,7 @@ const Categories = ({ setCategorey,categories }: { setCategorey: any,categories:
         <CategoreyCard large={true} tag={categories?.[0]} setCategorey={setCategorey} />
         <div className=" grid grid-cols-1 sm:grid-cols-2  justify-items-center  md:grid-cols-3 gap-4">
           {categories?.slice(1, 5).map((tag: any) => (
-            <CategoreyCard tag={tag} setCategorey={setCategorey} />
+            <CategoreyCard key={tag} tag={tag} setCategorey={setCategorey} />
           ))}
         </div>
       </section>
