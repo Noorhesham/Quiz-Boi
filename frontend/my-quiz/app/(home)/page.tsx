@@ -3,7 +3,7 @@ import Landing from "../components/Landing";
 import Feed from "../components/Feed";
 import { FilterQuizzesHome } from "@/actions/FilterQuizHome";
 import { GetTags } from "@/actions/GetTags";
-export const dynamic = "force-dynamic";
+
 export default async function Home({
   searchParams,
 }: {
