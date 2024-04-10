@@ -107,10 +107,10 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
   };
   useEffect(
     function () {
-      if (id === Id) return;
-      handleQuizEnd();
+      if (id === Id) return:
       setId(id);
       localStorage.setItem("currentquiz", Id);
+      handleQuizEnd()
     },
     [Id]
   );
