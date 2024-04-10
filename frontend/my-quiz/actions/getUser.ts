@@ -1,4 +1,4 @@
-"use server";
+
 import { API_URL } from "@/constants";
 import { cookies } from "next/headers";
 import { GetQuizPublic } from "./GetQuiz";
