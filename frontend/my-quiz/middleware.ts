@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getUser } from "./actions/getUser";
 import { authRoutes, publicRoutes } from "./routes";
@@ -12,11 +11,13 @@ export async function middleware(request: NextRequest) {
 
   const isPublicRoute = publicRoutes.includes(pathname) || isDynamicUserProfileRoute;
   const isAuthRoute = authRoutes.includes(pathname);
-
-  if (isLogged && isAuthRoute) return Response.redirect(new URL("/", request.nextUrl));
+  if (isAuthRoute) {
+    if (isLogged) return Response.redirect(new URL("/", nextUrl));
+    return null;
+  }
   if (!isLogged && !isPublicRoute) return Response.redirect(new URL("/login", request.nextUrl));
 
-  return NextResponse.next();
+  return null
 }
 export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
