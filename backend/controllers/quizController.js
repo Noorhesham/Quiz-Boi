@@ -49,7 +49,7 @@ exports.completeQuiz = catchAsync(async (req, res, next) => {
     const quiz = await quizModel_1.default.findById(quizId);
     if (!quiz)
         return next(new AppError_1.default("Could not find a quiz with that ID!", 404));
-    let userAttempt = await userAttemptsModel_1.default.findOne({ username, userId });
+    let userAttempt = await userAttemptsModel_1.default.findOne({ quizId, userId });
     console.log(userAttempt);
     if (!userAttempt) {
         userAttempt = await userAttemptsModel_1.default.create({
