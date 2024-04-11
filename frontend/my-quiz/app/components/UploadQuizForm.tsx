@@ -60,7 +60,6 @@ const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) 
             console.log(res);
             if (res.error) {
               setFormError(res.message || res.error.errors);
-              reset();
             } else {
               setOpen && setOpen(false);
               router.refresh();

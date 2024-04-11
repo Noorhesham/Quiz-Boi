@@ -14,6 +14,7 @@ import { logout as logoutAPI } from "@/actions/logout";
 import { useQuiz } from "@/app/context/QuizContext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export const useGetUser = () => {
   const queryClient = useQueryClient();
@@ -254,6 +255,7 @@ export const useFollow = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.error) throw new Error(data.message);
+      toast.success(`User ${data.currentUser.name} is followed Successfully`)
     },
     onError: (err) => {
       console.log(err);
@@ -272,9 +274,11 @@ export const useUnFollow = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.error) throw new Error(data.message);
+      toast.success('User Unfollowed Successfully')
     },
     onError: (err) => {
       console.log(err);
+      toast.error(err.message)
     },
   });
   return { UnFollowUser, isSuccess, isPending, error };

@@ -4,6 +4,9 @@ import NavBar from "../components/NavBar";
 import Provider from "@/utils/Provider";
 import { ColorProvider } from "../context/ColorContext";
 import ColorWrapper from "../components/ColorWrapper";
+import { ToastContainer, } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
@@ -20,6 +23,17 @@ export default async function RootLayout({
     <Provider>
       <ColorProvider>
         <ColorWrapper>
+        <ToastContainer
+          position="top-center"
+          autoClose={2500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={true}
+          pauseOnFocusLoss
+          pauseOnHover={false}
+          theme="light"
+        />
           <NavBar />
           {children}
           {/* <Footer/> */}
