@@ -1,7 +1,5 @@
 "use client";
-import { useGetQuestions } from "@/utils/queryFunctions";
 import React from "react";
-import Spinner from "./Spinner";
 import { QuestionProps } from "@/types";
 import QuestionResults from "./QuestionResults";
 import Heading from "./Heading";

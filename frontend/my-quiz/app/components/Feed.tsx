@@ -26,12 +26,12 @@ const Feed = ({ quizzes,categories }: { quizzes: Array<QuizProps> ,categories:an
     <section className=" pt-5">
       <div className="p-8 flex md:flex-row flex-col items-stretch justify-between">
         <Heading text="Find your desired quiz now !" />
-        <h3
+        <a
           onClick={() => handleSearch("")}
           className="text-3xl font-semibold text-red-400 hover:underline cursor-pointer duration-150"
         >
           Reset Categories
-        </h3>
+        </a>
       </div>
       <Categories categories={categories} setCategorey={handleSearch} />
       {quizzes.length === 0 && (
