@@ -1,4 +1,5 @@
 import { GetQuiz } from "@/actions/GetQuiz";
+import { getUser } from "@/actions/getUser";
 import AddQuestionIcon from "@/app/components/AddQuestionIcon";
 import EditQuizBtn from "@/app/components/EditQuizBtn";
 import { Empty } from "@/app/components/Empty";
@@ -8,10 +9,13 @@ import PublishQuiz from "@/app/components/PublishQuiz";
 import Question from "@/app/components/Question";
 import Topic from "@/app/components/Topic";
 import { QuestionProps, QuizProps } from "@/types";
+import { redirect } from "next/navigation";
 import React from "react";
 export const dynamic = "force-dynamic";
 
 const page = async ({ params }: { params: { id: string } }) => {
+  const user=await getUser()
+  if(!user)  return redirect("/");
   const { quiz }: { quiz: QuizProps } = await GetQuiz(params.id);
   console.log(quiz);
   if (!quiz) return <NotFound text="This Quiz is not available" />;
