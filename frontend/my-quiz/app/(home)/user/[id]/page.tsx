@@ -5,7 +5,6 @@ import React from "react";
 
 const page = async ({ params }: { params: { id: string } }) => {
   const user = await getPublicUser(params.id);
-  console.log(user)
   return (
     <section className="pt-20  flex items-center justify-center flex-col">
       <div className="flex flex-col items-center">

@@ -3,8 +3,8 @@ const router = express.Router();
 const cloudinary = require("../cloudinary");
 const upload = require("../multer");
 
-router.post("/upload", upload.single("image"), function (req, res) {
-  cloudinary.uploader.upload(req.file.path, function (err, result) {
+router.post("/upload", upload.single("image"), function (req:any, res:any) {
+  cloudinary.uploader.upload(req.file.path, function (err:any, result:any) {
     if (err) {
       console.log(err);
       return res.status(500).json({

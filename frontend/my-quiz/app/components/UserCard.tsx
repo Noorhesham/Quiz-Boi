@@ -13,7 +13,7 @@ const UserCard = ({ user, mine = false }: { user: UserProps; mine: boolean }) =>
   return (
     <div className="flex w-full self-start flex-col items-center  py-4 px-8 ">
       <div className=" p-1">
-        <img src={user?.photo || "/avatar1.jpg"} className="w-[8rem] h-[8rem] rounded-full" />
+        <img src={user?.photo} className="w-[8rem] h-[8rem] rounded-full" />
       </div>
       <div className="flex text-gray-100 items-center text-lg p-3 flex-col gap-2">
         <h1>{user.name}</h1>
