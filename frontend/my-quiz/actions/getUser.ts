@@ -50,7 +50,7 @@ export const getUserDetails = async () => {
 };
 export const getPublicUser = async (id: String) => {
   try {
-    const user = await fetch(`${API_URL}/users/public/${id}`).then((res) => res.json());
+    const user = await fetch(`${API_URL}/users/public/${id}`,{next:{revalidate:1}}).then((res) => res.json());
     const likedQuizzes = await Promise.all(user.data?.user.likedQuizzes.map((q: any) => GetQuizPublic(q.quiz)));
     if (user.data?.user) {
       return {
