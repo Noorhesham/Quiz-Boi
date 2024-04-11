@@ -9,7 +9,7 @@ const Comments = ({ quiz ,}: { quiz: QuizProps ,}) => {
       {quiz.comments.length <= 0 ? (
         <Empty text="No comment yet 😺..be the first to comment !" />
       ) : (
-        <div className="flex flex-col h-[40vh] items-start py-3 px-6 border-2 bg-gray-200 overflow-y-scroll rounded-lg border-gray-300 gap-2">
+        <div className="flex flex-col h-[40vh]  py-3 px-6 border-2 bg-gray-200 overflow-y-scroll rounded-lg border-gray-300 gap-2">
           {quiz.comments.map((comment) => (
           <Comment comment={comment} />
           ))}

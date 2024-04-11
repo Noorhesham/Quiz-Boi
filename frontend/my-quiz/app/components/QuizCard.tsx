@@ -1,3 +1,4 @@
+"use client"
 import { QuizProps } from "@/types";
 import React, { useState } from "react";
 import Author from "./Author";
@@ -13,14 +14,14 @@ const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; 
   const [hover, setHover] = useState(false);
   return (
     <div
-      className="relative cursor-pointer md:w-[20rem] rounded-md bg-white items-start flex flex-col"
+      className="relative cursor-pointer rounded-md bg-white items-start flex flex-col"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className="relative w-full h-full">
+      <div className="relative flex text-center justify-center  items-center w-full h-full ">
        { <DialogueQuiz
           content={<QuizShow quiz={quiz} />}
-          btn={<img className="rounded-md w-full h-full" src={`${quiz.coverImage}` || "/quiz3.png"} alt={quiz.title} />}
+          btn={<img className="rounded-md  aspect-[1/1] object-cover w-full" src={`${quiz.coverImage}` || "/quiz3.png"} alt={quiz.title} />}
         />}
 
         <AnimatePresence>

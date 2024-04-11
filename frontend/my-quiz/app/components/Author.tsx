@@ -10,7 +10,7 @@ const Author = ({ author, quiz,hover=true }: { author: UserProps; quiz: QuizProp
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
-       <div className="flex relative items-center justify-between w-full gap-2">
+       <div className="flex self-end relative items-center justify-between w-full gap-2">
           <User author={author} />
           <div className="flex items-center p-2 gap-2">
             <Like count={quiz.likes?.length} id={quiz._id} />

@@ -326,3 +326,15 @@ export const useGetTags = () => {
   });
   return { tags, isLoading, error };
 };
+
+export const useGetQuizzes= (catergorey:string,page:number) => {
+  const {
+    data: quizzes,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [`quizzes`],
+    queryFn: async () => await FilterQuizzesHome(catergorey,page),
+  });
+  return { quizzes, isLoading, error };
+};
