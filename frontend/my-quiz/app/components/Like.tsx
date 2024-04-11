@@ -6,8 +6,8 @@ import YouAreNotAuth from "./YouAreNotAuth";
 import { useRouter } from "next/navigation";
 
 const Like = ({ id, count, icon }: { id: string; count?: number; icon?: any }) => {
-  const { LikeQuiz, error, isSuccess } = useLikeQuiz();
-  const { unLikeQuiz, error: error2, isSuccess: isSucces2 } = useUnlikeQuiz();
+  const { LikeQuiz, isPending,error, isSuccess } = useLikeQuiz();
+  const { unLikeQuiz, isPending:isPending2,error: error2, isSuccess: isSucces2 } = useUnlikeQuiz();
   const { user } = useGetUser();
   const [isLiked, setIsLiked] = useState(user?.likedQuizzes.some((like: any) => like.quiz === id));
   const [likes, setLikes] = useState(count);
@@ -32,7 +32,7 @@ const Like = ({ id, count, icon }: { id: string; count?: number; icon?: any }) =
         {(error || error2) && (
           <DialogCustom btn={""} title={error?.message || error2?.message} content={<YouAreNotAuth />} isopen={true} />
         )}{" "}
-        <button
+        <button disabled={isPending||isPending2}
           className={`${
             isLiked && "text-pink-500 "
           } flex items-center gap-1 active:text-pink-500 text-gray-400 cursor-pointer text-lg hover:text-pink-500 duration-500`}

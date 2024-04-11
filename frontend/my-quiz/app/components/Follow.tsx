@@ -7,9 +7,9 @@ import DialogCustom from "./DialogCustom";
 import YouAreNotAuth from "./YouAreNotAuth";
 
 const Follow = ({ id }: { id: string }) => {
-  const { FollowUser, error, isSuccess } = useFollow();
+  const { FollowUser, isPending,error, isSuccess } = useFollow();
   const [auth, setisAuth] = useState(true);
-  const { UnFollowUser, error: error2, isSuccess: isSucces2 } = useUnFollow();
+  const { UnFollowUser,isPending:isPending2, error: error2, isSuccess: isSucces2 } = useUnFollow();
   const { user } = useGetUser();
   const [isFollowed, setIsFollowed] = useState(user?.following.some((follower: any) => follower === id));
   const router = useRouter();
@@ -33,7 +33,7 @@ const Follow = ({ id }: { id: string }) => {
           isopen={true}
         />
       )}{" "}
-      <Button
+      <Button disabled={isPending||isPending2}
         onClick={handleFollowClick}
         className={` ${
           isFollowed ? "bg-pink-400 text-gray-100" : "bg-gray-100 text-gray-800"

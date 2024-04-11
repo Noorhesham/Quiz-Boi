@@ -3,7 +3,7 @@ import { Follow, UnFollow } from "@/actions/AddFollow";
 import { AddLike, RemoveLike } from "@/actions/AddLike";
 import { CompleteQuiz } from "@/actions/CompleteQuiz";
 import { DeleteQuestion as DeleteQuestionApi } from "@/actions/DeleteQuestion";
-import {   FilterQuizzesHome } from "@/actions/FilterQuizHome";
+import { FilterQuizzesHome } from "@/actions/FilterQuizHome";
 import { GetQuestions } from "@/actions/GetQuestion";
 import { GetStats } from "@/actions/GetStats";
 import { GetTags } from "@/actions/GetTags";
@@ -73,9 +73,12 @@ export const useDeleteQuestion = () => {
     },
     onSuccess: (data) => {
       if (data.error) throw new Error(data.message);
+      toast.success(`Question deleted Successfully`);
     },
     onError: (err) => {
       console.log(err);
+      toast.error(err.message);
+
     },
   });
   return { DeleteQuestion, isSuccess, isPending, error };
@@ -90,9 +93,12 @@ export const usePublishQuiz = () => {
     mutationFn: (id: string) => PublishQuizApi(id),
     onSuccess: (data) => {
       if (data.error) throw new Error(data.message);
+      toast.success(`Quiz published Successfully`);
     },
     onError: (err) => {
       console.log(err);
+      toast.error(err.message);
+
     },
   });
   return { PublishQuiz, isSuccess, isPending, error };
@@ -153,9 +159,12 @@ export const useLikeQuiz = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.error) throw new Error(data.message);
+      toast.success(`Like removed Successfully`);
     },
     onError: (err) => {
       console.log(err);
+      toast.error(err.message);
+
     },
   });
   return { LikeQuiz, isSuccess, isPending, error };
@@ -171,9 +180,12 @@ export const useUnlikeQuiz = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.error) throw new Error(data.message);
+      toast.success(`Like added Successfully`);
     },
     onError: (err) => {
       console.log(err);
+      toast.error(err.message);
+
     },
   });
   return { unLikeQuiz, isSuccess, isPending, error };
@@ -193,10 +205,13 @@ export const useAddComment = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.error) throw new Error(data.message);
+      toast.success(`Comment is Added successfully Successfully`);
       return data;
     },
     onError: (err) => {
       console.log(err);
+      toast.error(err.message);
+
     },
   });
   return { AddCommentToQuiz, isPending, error, isSuccess };
@@ -215,10 +230,12 @@ export const useEditComment = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.error) throw new Error(data.message);
+      toast.success(`Comment is Edited successfully Successfully`);
       return data;
     },
     onError: (err) => {
       console.log(err);
+      toast.error(err.message);
     },
   });
   return { EditCommentFromQuiz, isPending, error, isSuccess };
@@ -236,10 +253,12 @@ export const usedeleteComment = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.error) throw new Error(data.message);
+      toast.success(`Comment is deleted successfully Successfully`);
       return data;
     },
     onError: (err) => {
       console.log(err);
+      toast.error(err.message);
     },
   });
   return { RemoveCommentFromQuiz, isPending, error, isSuccess };
@@ -255,10 +274,11 @@ export const useFollow = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.error) throw new Error(data.message);
-      toast.success(`User ${data.currentUser.name} is followed Successfully`)
+      toast.success(`User ${data.currentUser.name} is followed Successfully`);
     },
     onError: (err) => {
       console.log(err);
+      toast.error(err.message);
     },
   });
   return { FollowUser, isSuccess, isPending, error };
@@ -274,11 +294,11 @@ export const useUnFollow = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.error) throw new Error(data.message);
-      toast.success('User Unfollowed Successfully')
+      toast.success("User Unfollowed Successfully");
     },
     onError: (err) => {
       console.log(err);
-      toast.error(err.message)
+      toast.error(err.message);
     },
   });
   return { UnFollowUser, isSuccess, isPending, error };
@@ -295,14 +315,14 @@ export const useGetQuestions = (arr: Array<string>) => {
   });
   return { questions, isLoading, error };
 };
-export const FilterQuizzes = (category: string,page?:number) => {
+export const FilterQuizzes = (category: string, page?: number) => {
   const {
     data: quizzes,
     isLoading,
     error,
   } = useQuery({
     queryKey: [`quizzes${category}`],
-    queryFn: async () => await FilterQuizzesHome(category,page),
+    queryFn: async () => await FilterQuizzesHome(category, page),
   });
   return { quizzes, isLoading, error };
 };
@@ -331,14 +351,14 @@ export const useGetTags = () => {
   return { tags, isLoading, error };
 };
 
-export const useGetQuizzes= (catergorey:string,page:number) => {
+export const useGetQuizzes = (catergorey: string, page: number) => {
   const {
     data: quizzes,
     isLoading,
     error,
   } = useQuery({
     queryKey: [`quizzes`],
-    queryFn: async () => await FilterQuizzesHome(catergorey,page),
+    queryFn: async () => await FilterQuizzesHome(catergorey, page),
   });
   return { quizzes, isLoading, error };
 };
