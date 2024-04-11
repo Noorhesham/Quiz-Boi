@@ -51,7 +51,13 @@ export const getUserDetails = async () => {
 export const getPublicUser = async (id: String) => {
   try {
     const user = await fetch(`${API_URL}/users/public/${id}`).then((res) => res.json());
-    if (user.data?.user) return user.data.user;
+    const likedQuizzes = await Promise.all(user.data?.user.likedQuizzes.map((q: any) => GetQuizPublic(q.quiz)));
+    if (user.data?.user) {
+      return {
+        ...user.data.user,
+        likedQuizzes: likedQuizzes,
+      };
+    }
   } catch (err: any) {
     console.log(err);
     if (err.response.data) return err.response.data;
