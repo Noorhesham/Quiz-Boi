@@ -30,7 +30,7 @@ const quizSchema = new mongoose_1.Schema({
         type: String,
         required: [true, "quiz must have a title"],
         trim: true,
-        maxlength: [20, "Name of quiz is too long"],
+        maxlength: [40, "Name of quiz is too long"],
         minlength: [4, "Name of quiz is too short"],
     },
     coverImage: { type: String, default: `quiz${Math.trunc(Math.random() * 5) + 1}.png` },
