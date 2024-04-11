@@ -98,6 +98,7 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
     localStorage.removeItem("timer");
   };
   const handleQuizEnd = function () {
+    setStart(false)
     handleReset();
     localStorage.removeItem("timer");
     localStorage.removeItem("answers");
