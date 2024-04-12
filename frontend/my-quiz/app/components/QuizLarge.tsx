@@ -6,11 +6,13 @@ import { useQuiz } from "../context/QuizContext";
 import Timer from "./Timer";
 import TimeOver from "./TimeOver";
 
+
 const QuizLarge = ({ quiz }: { quiz: QuizProps }) => {
   !localStorage.getItem("timer") && localStorage.setItem("timer", JSON.stringify(+quiz.duration * 60 || 60));
   const { questionIndex, progress, timer, answers } = useQuiz();
   //we set the timer in the local stoarage to be the duration of the quiz
   const len = quiz.questions.length; //num questions
+
 
   return (
     <div className="flex flex-col items-center   md:w-[80%] ">

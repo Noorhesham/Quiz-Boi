@@ -12,6 +12,8 @@ import { MdModeEdit } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import { API_URL } from "@/constants";
+import Share from "./Share";
 
 const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; card?: boolean; edit?: boolean ,href?:string}) => {
   const [hover, setHover] = useState(false);
@@ -44,6 +46,7 @@ const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; 
                 <div className="rounded-full  p-1 bg-white hover:text-opacity-90 duration-150 text-gray-900 font-semibold text-center">
                   <Like id={quiz._id} icon={<FiHeart />} />
                 </div>
+                  <Share link={`https://quiz-boi.vercel.app/quiz/${quiz._id}`}/>
                 {edit && (
                   <div className="rounded-full  p-1 bg-white hover:text-opacity-90 duration-150 text-gray-900 font-semibold text-center">
                     <Link href={`/quiz-upload/${quiz._id}`}>

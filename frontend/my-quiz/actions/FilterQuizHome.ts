@@ -3,7 +3,7 @@ import { API_URL } from "@/constants";
 export const FilterQuizzesHome = async (filter:string,page?:number,) => {
     try {
       if(!filter){
-        const res = await fetch(`${API_URL}/quiz?page=${page||1}&limit=10`, {next: { revalidate: 600 }});
+        const res = await fetch(`${API_URL}/quiz?page=${page||1}&limit=12`, {next: { revalidate: 600 }});
 
         const data=await res.json()
         console.log(data)

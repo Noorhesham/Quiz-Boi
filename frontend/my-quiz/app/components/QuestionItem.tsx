@@ -20,7 +20,7 @@ const QuestionItem = ({ question, len }: { question: QuestionProps; len: number 
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 w-full p-3 gap-4 ">
         {question.answers.map((a, i) => (
-          <Answer i={i} id={question._id} answer={answer} setAnswer={setAnswer} text={a} />
+          <Answer key={i} i={i} id={question._id} answer={answer} setAnswer={setAnswer} text={a} />
         ))}
       </div>
       {answers.length !== len ? (
