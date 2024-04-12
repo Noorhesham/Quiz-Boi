@@ -4,6 +4,7 @@ import Feed from "../components/Feed";
 import { GetTags } from "@/actions/GetTags";
 import { FilterQuizzesHome } from "@/actions/FilterQuizHome";
 import NotFound from "../components/NotFound";
+
 export const dynamic='force-dynamic'
 export default async function Page({
   searchParams,
