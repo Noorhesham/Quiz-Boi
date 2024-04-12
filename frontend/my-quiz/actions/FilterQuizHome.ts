@@ -3,13 +3,13 @@ import { API_URL } from "@/constants";
 export const FilterQuizzesHome = async (filter:string,page?:number,) => {
     try {
       if(!filter){
-        const res = await fetch(`${API_URL}/quiz?page=${page||1}&limit=10`,{ revalidate: 10 });
+        const res = await fetch(`${API_URL}/quiz?page=${page||1}&limit=10`, {next: { revalidate: 600 }});
 
         const data=await res.json()
         console.log(data)
       return data;
       }
-      const res = await fetch(`${API_URL}/quiz?tags=${filter}&page=${page||1}&limit=10`);
+      const res = await fetch(`${API_URL}/quiz?tags=${filter}&page=${page||1}&limit=10`, {next: { revalidate: 600 }});
 
       const data=await res.json()
       console.log(data)

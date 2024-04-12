@@ -15,7 +15,7 @@ export default async function Page({
   };
 }) {
   const categorey = searchParams?.categorey || "";
-  const page = searchParams?.page || 1;
+  const page = searchParams?.page || 1; 
   const { data, totalPages, totalResults, results } = await FilterQuizzesHome(categorey, page);
   const categories = await GetTags();
   const isNext = page < totalPages && results < totalResults;
