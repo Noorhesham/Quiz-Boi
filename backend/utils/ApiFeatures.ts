@@ -11,10 +11,12 @@ class ApiFeatures<T extends Document> {
     this.queryString = queryString;
   }
   filter() {
-    const queryStr = JSON.stringify(this.queryString);
-    queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    this.query = this.query.find(JSON.parse(queryStr));
-    console.log(this.query,queryStr)
+    const queryObj = { ...this.queryString }; //i take the raw object from the url
+    const excludeFields = ['page', 'sort', 'limit', 'fields']; //i exclude the fields from it 
+    excludeFields.forEach((el) => delete queryObj[el]);
+    let queryStr = JSON.stringify(queryObj); //i turn it to a string to replace the $
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    this.query = this.query.find(JSON.parse(queryStr)); //back to object again to use in the query
     return this;
   }
   sort() {

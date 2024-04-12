@@ -1,4 +1,3 @@
-"use client"
 import { QuizProps } from "@/types";
 import React, { useState } from "react";
 import Author from "./Author";
@@ -10,6 +9,9 @@ import DialogueQuiz from "./DialogueQuiz";
 import Link from "next/link";
 import { MdModeEdit } from "react-icons/md";
 import { Button } from "@/components/ui/button";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
 const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; card?: boolean; edit?: boolean ,href?:string}) => {
   const [hover, setHover] = useState(false);
   return (
@@ -21,7 +23,7 @@ const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; 
       <div className="relative flex text-center justify-center  items-center w-full h-full ">
        { <DialogueQuiz
           content={<QuizShow quiz={quiz} />}
-          btn={<img className="rounded-md  aspect-[1/1] object-cover w-full" src={`${quiz.coverImage}` || "/quiz3.png"} alt={quiz.title} />}
+          btn={<LazyLoadImage effect="blur" className="rounded-md  aspect-[1/1] object-cover w-full" src={`${quiz.coverImage}` || "/quiz3.png"} alt={quiz.title} />}
         />}
 
         <AnimatePresence>

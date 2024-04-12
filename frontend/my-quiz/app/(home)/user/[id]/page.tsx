@@ -2,7 +2,7 @@ import { getPublicUser } from "@/actions/getUser";
 import ProfileTabs from "@/app/components/ProfileTabs";
 import UserCard from "@/app/components/UserCard";
 import React from "react";
-
+export const dynamic = 'force-dynamic'
 const page = async ({ params }: { params: { id: string } }) => {
   const user = await getPublicUser(params.id);
   return (

@@ -4,14 +4,14 @@ import axios from "axios";
 export const FilterQuizzesHome = async (filter:string,page?:number,) => {
     try {
       if(!filter){
-        const res = await fetch(`${API_URL}/quiz`);
+        const res = await fetch(`${API_URL}/quiz?page=${page||1}&limit=3`);
         if (!res.ok) {
           throw new Error(`Failed to fetch: ${res.status}`);
         }
         const data=await res.json()
       return data.data.quizzes;
       }
-      const res = await fetch(`${API_URL}/quiz?tags=${filter}`);
+      const res = await fetch(`${API_URL}/quiz?tags=${filter}&page=${page||1}&limit=3`);
       if (!res.ok) {
         throw new Error(`Failed to fetch: ${res.status}`);
       }
