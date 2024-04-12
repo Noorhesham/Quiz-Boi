@@ -125,7 +125,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
           isPending={isPending}
           error={error?.question?.message}
         />
-        <div className="grid gap-5 grid-cols-2 items-center">
+        <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 items-center">
           {getValues("answers").map((val: any, i: number) => (
             <AnswerBox
               key={i}

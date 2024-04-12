@@ -50,7 +50,7 @@ const Feed = ({
         <div className="flex items-center gap-10">
           <button
             onClick={() => handleSearch("")}
-            className="text-3xl font-semibold text-red-400 hover:underline hover:text-red-500 cursor-pointer duration-150"
+            className=" text-lg md:text-3xl font-semibold text-red-400 hover:underline hover:text-red-500 cursor-pointer duration-150"
           >
             Reset Categories
           </button>
@@ -61,7 +61,7 @@ const Feed = ({
             btn={
               <button
                 onClick={() => handleSearch("")}
-                className="text-3xl flex items-center font-semibold text-red-400 underline hover:text-red-500 cursor-pointer duration-150"
+                className=" text-lg md:text-3xl flex items-center font-semibold text-red-400 underline hover:text-red-500 cursor-pointer duration-150"
               >
                 View All <IoIosArrowForward />
               </button>
