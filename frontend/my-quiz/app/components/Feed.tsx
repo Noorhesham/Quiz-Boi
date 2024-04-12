@@ -12,7 +12,7 @@ import AllCategories from "./AllCategories";
 import { IoIosArrowForward } from "react-icons/io";
 import PaginationHome from "./Pagination";
 
-const Feed = ({ quizzes, categories }: { quizzes: Array<QuizProps>; categories: any }) => {
+const Feed = ({ quizzes, categories,totalPages }: { quizzes: Array<QuizProps>; categories: any,totalPages:number }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -60,7 +60,7 @@ const Feed = ({ quizzes, categories }: { quizzes: Array<QuizProps>; categories: 
         </div>
       </div>
       <Categories categories={categories} setCategorey={handleSearch} />
-      {quizzes?.length === 0 && (
+      {(quizzes?.length === 0||!quizzes) && (
         <Empty image="/bad.png" text={`There are no quizzes associated with ${searchParams.get("categorey")} yet !`} />
       )}
       <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5">
@@ -68,7 +68,7 @@ const Feed = ({ quizzes, categories }: { quizzes: Array<QuizProps>; categories: 
           <QuizCard key={i} quiz={quiz} />
         ))}
       </div>
-      <PaginationHome onClick={handlePagination}/>
+      <PaginationHome totalPages={totalPages} length={quizzes.length} onClick={handlePagination}/>
     </section>
   );
 };

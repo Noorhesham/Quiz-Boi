@@ -1,5 +1,4 @@
 import { API_URL } from "@/constants";
-import axios from "axios";
 
 export const FilterQuizzesHome = async (filter:string,page?:number,) => {
     try {
@@ -9,17 +8,18 @@ export const FilterQuizzesHome = async (filter:string,page?:number,) => {
           throw new Error(`Failed to fetch: ${res.status}`);
         }
         const data=await res.json()
-      return data.data.quizzes;
+        console.log(data)
+      return data;
       }
       const res = await fetch(`${API_URL}/quiz?tags=${filter}&page=${page||1}&limit=3`);
       if (!res.ok) {
         throw new Error(`Failed to fetch: ${res.status}`);
       }
       const data=await res.json()
-      return data.data.quizzes;
+      return data;
     } catch (err: any) {
       console.log(err);
-      if (err.response.data) return err.response.data;
+      if (err.response) return err.response;
       if (err.message === "Failed to fetch")
         err.message = `Unable to reach the server. Please check your internet connection...`;
       throw err;

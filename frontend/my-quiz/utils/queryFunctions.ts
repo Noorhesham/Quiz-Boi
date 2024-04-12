@@ -134,8 +134,8 @@ export const useSubmitQuiz = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.status === "success") {
-        router.push(`/quiz/${data.data.userAttempt._id}/results`);
         handleQuizEnd();
+        router.push(`/quiz/${data.data.userAttempt._id}/results`);
       }
       if (data.error) {
         throw new Error(data.message);

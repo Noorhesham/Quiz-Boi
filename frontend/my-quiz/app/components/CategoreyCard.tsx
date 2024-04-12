@@ -13,13 +13,13 @@ const CategoreyCard = ({ tag, setCategorey, large = false }: { tag: any; setCate
         {large ? (
           <div key={tag?.tag}>
             <div
+              onClick={() => setCategorey(tag.tag)}
               onMouseEnter={() => setHover(true)}
               onMouseLeave={() => setHover(false)}
               className="h-96 relative cursor-pointer bg-gray-200 rounded-lg overflow-hidden"
             >
               <LazyLoadImage
                 effect="blur"
-                onClick={() => setCategorey(tag.tag)}
                 src={tag?.photo}
                 alt={tag?.tag}
                 className="w-full h-full rounded-lg object-cover object-top"
@@ -28,20 +28,20 @@ const CategoreyCard = ({ tag, setCategorey, large = false }: { tag: any; setCate
             </div>
           </div>
         ) : (
-            <div
-              onMouseEnter={() => setHover(true)}
-              onMouseLeave={() => setHover(false)}
-              onClick={() => setCategorey(tag.tag)}
-              className="h-48 cursor-pointer  relative w-48 bg-gray-200 rounded-lg "
-            >
-              <LazyLoadImage
-                effect="blur"
-                src={tag.photo}
-                alt={tag.tag}
-                className="w-full rounded-lg h-full object-cover aspect-[1/1]"
-              />
-              <AnimatePresence>{hover && <CategoreyCadHover tag={tag.tag} />}</AnimatePresence>
-            </div>
+          <div
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            onClick={() => setCategorey(tag.tag)}
+            className="h-48 cursor-pointer  relative w-48 bg-gray-200 rounded-lg "
+          >
+            <LazyLoadImage
+              effect="blur"
+              src={tag.photo}
+              alt={tag.tag}
+              className="w-full rounded-lg h-full object-cover aspect-[1/1]"
+            />
+            <AnimatePresence>{hover && <CategoreyCadHover tag={tag.tag} />}</AnimatePresence>
+          </div>
         )}
       </HoverCardTrigger>
       <HoverCardContent className="w-80">

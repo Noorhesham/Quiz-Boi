@@ -15,7 +15,7 @@ const ConfirmQuizSolve = ({
 }) => {
   const { id }: { id: string } = useParams();
   const { user, isLoading, error: error2 } = useGetUser();
-  const { SubmitQuiz, isPending, error } = useSubmitQuiz();
+  const { SubmitQuiz, isPending, error,isSuccess } = useSubmitQuiz();
   const { setSubmitting,handleQuizEnd } = useQuiz();
   let data: any;
   if (user) data = { answers:values, userId: user._id };

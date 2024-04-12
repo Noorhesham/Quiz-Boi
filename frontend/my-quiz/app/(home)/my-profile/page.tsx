@@ -1,4 +1,4 @@
-import { getUser, getUserDetails } from "@/actions/getUser";
+import { getUserDetails } from "@/actions/getUser";
 import ProfileTabs from "@/app/components/ProfileTabs";
 import UserCard from "@/app/components/UserCard";
 import UserData from "@/app/components/UserData";

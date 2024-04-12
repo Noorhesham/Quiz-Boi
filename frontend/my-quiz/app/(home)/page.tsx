@@ -14,13 +14,15 @@ export default async function Page({
 }) {
   const categorey = searchParams?.categorey || "";
   const page = searchParams?.page || 1;
-  const quizzes = await FilterQuizzesHome(categorey, page);
+  const {data,totalPages,totalResults} = await FilterQuizzesHome(categorey, page);
   const categories=await GetTags()
+  console.log(totalPages)
+  const isNext=page<totalPages
   return (
     <main className="flex w-full min-h-[100vh] flex-col relative  items-stretch justify-center">
       <Landing />
       <Welcome />
-      <Feed categories={categories} quizzes={quizzes} />
+      <Feed categories={categories} totalPages={totalPages} quizzes={data.quizzes} />
     </main>
   );
 }

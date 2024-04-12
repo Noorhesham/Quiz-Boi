@@ -56,7 +56,7 @@ const QuestionItem = ({ question, len }: { question: QuestionProps; len: number 
             <Button
               size="lg"
               variant="default"
-              className={` rounded-full hover:bg-red-400 self-center my-4 w-[70%] py-5  text-white`}
+              className={` rounded-full text-center justify-self-center mx-auto hover:bg-red-400 self-center my-4 w-[70%] py-5  text-white`}
             >
               Publish
             </Button>
