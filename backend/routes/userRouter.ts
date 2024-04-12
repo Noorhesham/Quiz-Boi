@@ -7,7 +7,6 @@ router.post("/signup", authController.signup);
 router.post("/login", authController.login);
 router.post("/logout", authController.logout);
 router.route("/public/:id").get( userController.getDetails);
-router.get("/public-mini/:id", userController.getuser);
 router.use(authController.protect);
 router.get("/me", userController.getMe, userController.getUser);
 router.get("/me-details", userController.getMe, userController.getDetails);
