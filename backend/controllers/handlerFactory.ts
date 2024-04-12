@@ -32,13 +32,13 @@ class Factory {
       .sort()
       .limitFields();
     const docs = await paginatedQuery;
+    console.log("mewowow",docs)
 
     // Execute the query to get the total count of documents
     const totalResults = await totalDocsQuery;
 
     // Calculate the total number of pages
     const totalPages = Math.ceil(totalResults / (queryString.limit || 10));
-    console.log("mewowow",totalPages,totalResults)
       if (!docs) return next(new AppError(`There is no ${this.name} found with that id`, 404));
       res.status(200).json({ status: "success", results: docs.length,totalPages,totalResults, data: { [this.name]: docs } });
     });

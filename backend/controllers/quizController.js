@@ -145,10 +145,28 @@ exports.getAllQuizes = catchAsync(async (req, res, next) => {
         .populate({ path: "author", select: "name photo " })
         .populate({ path: "likes" })
         .populate({ path: "comments" });
-    const quizzes = await new ApiFeatures_1.default(query, req.query).filter().paginate().sort().limitFields().query;
-    if (!quizzes)
-        return next(new AppError_1.default(`There is no quiz found with that id`, 404));
-    res.status(200).json({ status: "success", results: quizzes.length, data: { quizzes } });
+    // Create a separate query to get the total count of documents
+    const totalDocsQuery = quizModel_1.default.find(filters).countDocuments();
+    const { query: paginatedQuery, queryString } = new ApiFeatures_1.default(query, req.query)
+        .filter()
+        .paginate()
+        .sort()
+        .limitFields();
+    const quizzes = await paginatedQuery;
+    // Execute the query to get the total count of documents
+    const totalResults = await totalDocsQuery;
+    // Calculate the total number of pages
+    const totalPages = Math.ceil(totalResults / (queryString.limit || 10));
+    if (!quizzes || quizzes.length === 0) {
+        return next(new AppError_1.default(`There are no quizzes found with that id`, 404));
+    }
+    res.status(200).json({
+        status: "success",
+        results: quizzes.length,
+        totalResults,
+        totalPages,
+        data: { quizzes },
+    });
 });
 exports.getQuiz = quizFactory.getOne("id", { path: "questions" });
 exports.updateQuiz = quizFactory.updateOne();
