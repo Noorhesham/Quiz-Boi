@@ -23,11 +23,24 @@ class Factory {
       let filters = {};
       if (req.params.quizId) filters = { quizId: req.params.quizId };
       let query = this.Model.find(filters);
+      const totalDocsQuery = this.Model.find(filters).countDocuments();
       if (popOptions) query.populate(popOptions)
       if(select) query.select(select);
-      const docs = await new ApiFeatures(query, req.query).filter().paginate().sort().limitFields().query;
+      const { query: paginatedQuery, queryString } = new ApiFeatures(query, req.query)
+      .filter()
+      .paginate()
+      .sort()
+      .limitFields();
+    const docs = await paginatedQuery;
+
+    // Execute the query to get the total count of documents
+    const totalResults = await totalDocsQuery;
+
+    // Calculate the total number of pages
+    const totalPages = Math.ceil(totalResults / (queryString.limit || 10));
+    console.log("mewowow",totalPages,totalResults)
       if (!docs) return next(new AppError(`There is no ${this.name} found with that id`, 404));
-      res.status(200).json({ status: "success", results: docs.length, data: { [this.name]: docs } });
+      res.status(200).json({ status: "success", results: docs.length,totalPages,totalResults, data: { [this.name]: docs } });
     });
 
   getOne = (id = "id", popOptions?: any) =>

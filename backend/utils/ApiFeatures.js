@@ -39,5 +39,10 @@ class ApiFeatures {
         this.query = this.query.skip(skip).limit(limit);
         return this;
     }
+    async getTotalPages() {
+        const totalDocs = await this.query.countDocuments();
+        const limit = +this.queryString.limit || 100;
+        return Math.ceil(totalDocs / limit);
+    }
 }
 exports.default = ApiFeatures;

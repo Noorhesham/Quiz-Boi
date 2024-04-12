@@ -146,7 +146,6 @@ exports.getAllQuizes = catchAsync(async (req, res, next) => {
         .populate({ path: "likes" })
         .populate({ path: "comments" });
     const quizzes = await new ApiFeatures_1.default(query, req.query).filter().paginate().sort().limitFields().query;
-    console.log(quizzes);
     if (!quizzes)
         return next(new AppError_1.default(`There is no quiz found with that id`, 404));
     res.status(200).json({ status: "success", results: quizzes.length, data: { quizzes } });
