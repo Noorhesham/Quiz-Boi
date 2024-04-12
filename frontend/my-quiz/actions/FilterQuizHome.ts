@@ -3,19 +3,16 @@ import { API_URL } from "@/constants";
 export const FilterQuizzesHome = async (filter:string,page?:number,) => {
     try {
       if(!filter){
-        const res = await fetch(`${API_URL}/quiz?page=${page||1}&limit=3`);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch: ${res.status}`);
-        }
+        const res = await fetch(`${API_URL}/quiz?page=${page||1}&limit=10`);
+
         const data=await res.json()
         console.log(data)
       return data;
       }
-      const res = await fetch(`${API_URL}/quiz?tags=${filter}&page=${page||1}&limit=3`);
-      if (!res.ok) {
-        throw new Error(`Failed to fetch: ${res.status}`);
-      }
+      const res = await fetch(`${API_URL}/quiz?tags=${filter}&page=${page||1}&limit=10`);
+
       const data=await res.json()
+      console.log(data)
       return data;
     } catch (err: any) {
       console.log(err);

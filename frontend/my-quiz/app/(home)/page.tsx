@@ -3,6 +3,7 @@ import Landing from "../components/Landing";
 import Feed from "../components/Feed";
 import { GetTags } from "@/actions/GetTags";
 import { FilterQuizzesHome } from "@/actions/FilterQuizHome";
+import NotFound from "../components/NotFound";
 
 export default async function Page({
   searchParams,
@@ -14,15 +15,15 @@ export default async function Page({
 }) {
   const categorey = searchParams?.categorey || "";
   const page = searchParams?.page || 1;
-  const {data,totalPages,totalResults} = await FilterQuizzesHome(categorey, page);
-  const categories=await GetTags()
-  console.log(totalPages)
-  const isNext=page<totalPages
+  const { data, totalPages, totalResults, results } = await FilterQuizzesHome(categorey, page);
+  const categories = await GetTags();
+  const isNext = page < totalPages && results < totalResults;
+  if (!data) return <NotFound text="there are no quizzes" />;
   return (
     <main className="flex w-full min-h-[100vh] flex-col relative  items-stretch justify-center">
       <Landing />
       <Welcome />
-      <Feed categories={categories} totalPages={totalPages} quizzes={data.quizzes} />
+      {<Feed hasNext={isNext} categories={categories} totalPages={totalPages} quizzes={data?.quizzes} />}
     </main>
   );
 }

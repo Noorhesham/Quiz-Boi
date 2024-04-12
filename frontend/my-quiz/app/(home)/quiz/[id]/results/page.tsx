@@ -9,7 +9,7 @@ const page = async ({ params }: { params: { id: string } }) => {
   const list=await Promise.all(questions.map((question:any) => GetQuestions(question)))
   const answers = attempt.answers;
   const howGood =
-    attempt.percentage <= 20
+    (attempt.percentage <= 20||attempt.percentage<=0)
       ? "bad"
       : attempt.percentage <= 34
       ? "ok"

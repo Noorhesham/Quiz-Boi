@@ -14,6 +14,8 @@ import Social from "./Social";
 import { signup } from "@/actions/signup";
 import { useRouter } from "next/navigation";
 import PasswordInput from "./PasswordInput";
+import Spinner from "./Spinner";
+import { toast } from "react-toastify";
 
 const SignupForm = () => {
   const [error, setFormError] = useState<string | undefined>("");
@@ -40,7 +42,9 @@ const SignupForm = () => {
           if (res.error) {
             setFormError(res.message);
             reset();
-          } else router.push("/");
+          } else{ 
+            toast.success('Hey!Welcome to quiz boi.. Get ready to start your knowledge and entertainment journey!😺🚀🌌 ')
+            router.push("/");}
         })
         .catch(() => setFormError("something went wrong !"));
     });
@@ -48,6 +52,8 @@ const SignupForm = () => {
   return (
     <section className="flex flex-col items-center justify-center p-5 py-3 w-full ">
       <CardWrapper heading="" headerLabel="" backButtonHref="#" backButtonLabel="back">
+        {isPending&&<Spinner/>}
+        
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className=" space-y-4 md:p-16 md:pb-0 md:pt-5">
             <div>

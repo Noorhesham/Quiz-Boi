@@ -15,6 +15,8 @@ import { login } from "@/actions/login";
 import Social from "./Social";
 import { useRouter } from "next/navigation";
 import Loader from "./Loader";
+import Spinner from "./Spinner";
+import { toast } from "react-toastify";
 
 const LoginForm = () => {
   const [error, setFormError] = useState<string | undefined>("");
@@ -39,7 +41,10 @@ const LoginForm = () => {
           if (res.error) {
             setFormError(res.message);
             reset();
-          } else router.push("/");
+          } else {
+            router.push("/");
+            toast.success('You are Logged in successfully !😺🚀🌌 ')
+          }
         })
         .catch(() => setFormError("something went wrong !"));
     });
@@ -52,6 +57,7 @@ const LoginForm = () => {
         backButtonHref="#"
         backButtonLabel="back"
       >
+        {isPending && <Spinner />}
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className=" space-y-6 md:p-16 md:pb-5 md:pt-5">
             <div>

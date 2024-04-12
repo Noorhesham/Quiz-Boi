@@ -12,7 +12,17 @@ import AllCategories from "./AllCategories";
 import { IoIosArrowForward } from "react-icons/io";
 import PaginationHome from "./Pagination";
 
-const Feed = ({ quizzes, categories,totalPages }: { quizzes: Array<QuizProps>; categories: any,totalPages:number }) => {
+const Feed = ({
+  quizzes,
+  categories,
+  totalPages,
+  hasNext,
+}: {
+  quizzes: Array<QuizProps>;
+  categories: any;
+  totalPages: number;
+  hasNext: boolean;
+}) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -20,17 +30,17 @@ const Feed = ({ quizzes, categories,totalPages }: { quizzes: Array<QuizProps>; c
     const params = new URLSearchParams(searchParams);
     if (term) {
       params.set("categorey", term);
-      params.set("page","1")
+      params.set("page", "1");
     } else {
       params.delete("categorey");
     }
     replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
-  function handlePagination(page:string){
+  function handlePagination(page: string) {
     const params = new URLSearchParams(searchParams);
-    console.log(page)
-    if (page) params.set("page",page)
-    else params.delete("page"); 
+    console.log(page);
+    if (page) params.set("page", page);
+    else params.delete("page");
     replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
   return (
@@ -60,7 +70,7 @@ const Feed = ({ quizzes, categories,totalPages }: { quizzes: Array<QuizProps>; c
         </div>
       </div>
       <Categories categories={categories} setCategorey={handleSearch} />
-      {(quizzes?.length === 0||!quizzes) && (
+      {(quizzes?.length === 0 || !quizzes) && (
         <Empty image="/bad.png" text={`There are no quizzes associated with ${searchParams.get("categorey")} yet !`} />
       )}
       <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5">
@@ -68,7 +78,7 @@ const Feed = ({ quizzes, categories,totalPages }: { quizzes: Array<QuizProps>; c
           <QuizCard key={i} quiz={quiz} />
         ))}
       </div>
-      <PaginationHome totalPages={totalPages} length={quizzes.length} onClick={handlePagination}/>
+      <PaginationHome hasNext={hasNext} totalPages={totalPages} length={quizzes.length} onClick={handlePagination} />
     </section>
   );
 };

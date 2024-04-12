@@ -55,6 +55,7 @@ export const useLogOut = () => {
     mutationFn: async () => await logoutAPI(),
     onSuccess: (user) => {
       querClient.removeQueries();
+      toast.done('You are logged out ..')
     },
   });
   return { logout, isPending, error };
@@ -127,7 +128,7 @@ export const useSubmitQuiz = () => {
     mutationFn: async (params: {
       values: { answers: [{ answer: number; id: string }]; username?: string; userId?: string };
       quizId: string;
-    }) => {
+    },) => {
       const { values, quizId } = params;
       return await CompleteQuiz(values, quizId);
     },
@@ -136,6 +137,7 @@ export const useSubmitQuiz = () => {
       if (data.status === "success") {
         handleQuizEnd();
         router.push(`/quiz/${data.data.userAttempt._id}/results`);
+        toast.success('Quiz successfully submitted .. we are redirecting you to your results page ! 😺')
       }
       if (data.error) {
         throw new Error(data.message);
@@ -159,7 +161,7 @@ export const useLikeQuiz = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.error) throw new Error(data.message);
-      toast.success(`Like removed Successfully`);
+      toast.success(`Like Added Successfully`);
     },
     onError: (err) => {
       console.log(err);
@@ -180,7 +182,7 @@ export const useUnlikeQuiz = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.error) throw new Error(data.message);
-      toast.success(`Like added Successfully`);
+      toast.success(`Like Removed Successfully`);
     },
     onError: (err) => {
       console.log(err);

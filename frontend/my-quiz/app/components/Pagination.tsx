@@ -4,14 +4,13 @@ import {
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useState } from "react";
-import GlobalButton from "./GlobalButton";
 import { Button } from "@/components/ui/button";
+import { useSearchParams } from "next/navigation";
 
-export default function PaginationHome({ onClick,totalPages,length }: { onClick: any,totalPages:any,length:number }) {
+export default function PaginationHome({ onClick,totalPages,length,hasNext }: { onClick: any,totalPages:any,length:number ,hasNext:boolean}) {
+  const searchParams=useSearchParams()
   const [start, setStart] = useState(1);
   const [end, setEnd] = useState(function(){
     if(totalPages>3) return 3
@@ -38,7 +37,8 @@ export default function PaginationHome({ onClick,totalPages,length }: { onClick:
         )}
         {links.map((item) => (
           <PaginationItem key={item}>
-            <PaginationLink className=" text-white cursor-pointer" onClick={() => onClick(item)}>
+            {/*@ts-ignore*/}
+            <PaginationLink className={`${+searchParams.get('page')===item&&" bg-pink-400 hover:bg-red-400 "} text-white cursor-pointer`} onClick={() => onClick(item)}>
               {item }
             </PaginationLink>
           </PaginationItem>
@@ -46,7 +46,7 @@ export default function PaginationHome({ onClick,totalPages,length }: { onClick:
         <PaginationItem>
           <PaginationEllipsis />
         </PaginationItem>{" "}
-        {(end>totalPages)&&<PaginationItem>
+        {(end>totalPages&&hasNext)&&<PaginationItem>
           <Button onClick={handleNext} >Next</Button>
         </PaginationItem>}
       </PaginationContent>
