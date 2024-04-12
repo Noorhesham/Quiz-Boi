@@ -14,6 +14,7 @@ const NavBar = () => {
   const { color } = useColor();
   const { user, isLoading, error } = useGetUser();
   const [lastScrollY, setLastScrollY] = useState(0);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY >= 80) {

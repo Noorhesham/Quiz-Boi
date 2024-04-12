@@ -19,7 +19,6 @@ const page = () => {
     <section className=" pt-32 quizbg flex items-center justify-center px-20 bg-gray-100 rounded-md min-h-[100vh] ">
       <QuizProvider id={id}  initial={quiz.duration*60||60}>
         {user&&<QuizLarge quiz={quiz} />}
-        
       </QuizProvider>
     </section>
   );
