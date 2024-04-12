@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { useColor } from "../context/ColorContext";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Quiz = ({ quiz, dark = false }: { quiz: QuizProps; dark?: boolean }) => {
   const { color } = useColor();
@@ -19,7 +20,7 @@ const Quiz = ({ quiz, dark = false }: { quiz: QuizProps; dark?: boolean }) => {
       <div className="flex flex-col   justify-between flex-wrap">
         <h2 className={`  capitalize font-semibold text-xl`}>{quiz.title}</h2>
         <div className="flex items-center flex-wrap gap-2">
-          {quiz.tags.map((tag: string, i: number) => (
+          {quiz.tags?.map((tag: string, i: number) => (
             <Topic key={i} small={true} tag={tag} />
           ))}
         </div>
@@ -41,7 +42,14 @@ const Quiz = ({ quiz, dark = false }: { quiz: QuizProps; dark?: boolean }) => {
           )}
         </div>
       </div>
-      <img className="w-[10rem] rounded-md" src={`${quiz.coverImage}` || "/quiz3.png"} />
+          <div className="w-[10rem]">
+          <LazyLoadImage
+        effect="blur"
+        className="rounded-md h-full  aspect-[1/1] object-cover w-full"
+        src={`${quiz.coverImage}` || "/quiz3.png"}
+        alt={quiz.title}
+      />
+          </div>
     </div>
   );
 };

@@ -61,7 +61,7 @@ const Avatar = ({ user }: { user: UserProps }) => {
             <div className="self-start">
               <MiniLink href={`/my-quizzes?upload`} text="Upload New Quiz" />
               <MiniLink href={`/my-quizzes`} text="My Quizzes" />
-              <MiniLink href={`/my-quizzes`} text="Attempted Quizzes" />
+              <MiniLink href={`/my-attempts`} text="Attempted Quizzes" />
               <MiniLink href={`/my-profile`} text="Account Settings" />
               <div className="border-t-2 border-gray-200">
                 <MiniLink

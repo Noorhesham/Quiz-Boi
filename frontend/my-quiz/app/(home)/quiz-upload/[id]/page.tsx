@@ -1,6 +1,7 @@
 import { GetQuiz } from "@/actions/GetQuiz";
 import { getUser } from "@/actions/getUser";
 import AddQuestionIcon from "@/app/components/AddQuestionIcon";
+import DeleteQuizBtn from "@/app/components/DeleteQuizBtn";
 import EditQuizBtn from "@/app/components/EditQuizBtn";
 import { Empty } from "@/app/components/Empty";
 import Heading from "@/app/components/Heading";
@@ -23,7 +24,10 @@ const page = async ({ params }: { params: { id: string } }) => {
     <main className="text-gray-50 md:pt-24   flex flex-col gap-3 p-5 md:p-10 ">
       <div className="flex flex-wrap justify-between items-center">
         <Heading text={`Your ${quiz.title} quiz is here ! Get prepared to publish it !`} />
-        <EditQuizBtn quiz={quiz} />
+      <div className="flex items-center gap-2">
+      <EditQuizBtn quiz={quiz} />
+        <DeleteQuizBtn quiz={quiz} />
+      </div>
       </div>
 
       <Heading icon={<AddQuestionIcon type="icon" />} text="All Questions" image="/ques.png" />

@@ -1,3 +1,4 @@
+"use client"
 import { QuizProps } from "@/types";
 import React, { useState } from "react";
 import Author from "./Author";

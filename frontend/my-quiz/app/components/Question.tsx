@@ -15,7 +15,7 @@ const Question = ({ question, index }: { question: QuestionProps; index: number 
         <Order index={index} />
         <h2 className="  font-semibold text-lg md:text-2xl text-gray-800">{question.question} ?</h2>
       </div>
-      <div className="flex  gap-3 text-sm md:text-xl items-center">
+      <div className="flex  ml-auto gap-3 text-sm md:text-xl items-center">
         <DialogCustom
           content={<Confirm questionId={question._id} />}
           btn={<FaTrash className=" hover:text-red-300 duration-150 text-red-500 cursor-pointer  " />}

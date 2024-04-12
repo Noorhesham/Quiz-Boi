@@ -6,6 +6,7 @@ import Heading from "@/app/components/Heading";
 import Quiz from "@/app/components/Quiz";
 import UploadQuizForm from "@/app/components/UploadQuizForm";
 import { QuizProps } from "@/types";
+import { redirect } from "next/navigation";
 
 const page = async ({
   params,
@@ -15,6 +16,8 @@ const page = async ({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) => {
   const user = await getUser();
+   if(!user)  return redirect("/");
+
   return (
     <section className=" py-10 pt-32 px-20  rounded-md min-h-[80vh] ">
       <Heading text="My Quizzes" />

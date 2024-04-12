@@ -20,6 +20,7 @@ import Loader from "./Loader";
 import TextInput from "./QuestionInput";
 import MyButton from "./MyButton";
 import TaggingComponent from "./TaggingComponent";
+import { useQueryClient } from "@tanstack/react-query";
 
 const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) => {
   const [error, setFormError] = useState<string | any>("");
@@ -36,7 +37,7 @@ const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) 
       duration: quiz?.duration || 2,
     },
   });
-  const { handleSubmit, control, reset,formState } = form;
+  const { handleSubmit, control, reset, formState } = form;
 
   const onSubmit = (values: z.infer<typeof QuizSchema>) => {
     console.log(values, selectedImage);
@@ -72,7 +73,13 @@ const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) 
             if (res.error) {
               setFormError(res.message || res.error.errors);
               reset();
-            } else router.push(`/quiz-upload/${res.data.quiz._id}`);
+            } else {
+              router.refresh();
+              const quertclient=useQueryClient()
+              //@ts-ignore
+              quertclient.invalidateQueries('user')
+              router.push(`/quiz-upload/${res.data.quiz._id}`); 
+            }
           })
           .catch(() => setFormError("something went wrong !"));
     });
@@ -97,12 +104,12 @@ const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) 
         </div>
         {/* <TagsForm control={control} isPending={isPending} /> */}
         {/* @ts-ignore*/}
-        <TaggingComponent defaultVal={formState.defaultValues?.tags} control={control}/>
+        <TaggingComponent defaultVal={formState.defaultValues?.tags} control={control} />
         <Description control={control} isPending={isPending} />
         <FormError message={error} />
         <FormSuccess message={success} />
         <div className="space-y-4">
-          <MyButton disabled={isPending} text={quiz ? "Edit Quiz" : "Add Questions"} />
+          <MyButton disabled={isPending} text={quiz ? "Edit Quiz" : "Add Quiz"} />
         </div>
       </form>
     </Form>

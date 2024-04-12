@@ -1,6 +1,7 @@
 "use server";
 import { API_URL } from "@/constants";
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 export const UploadQuiz = async (values: any) => {
 
@@ -17,6 +18,7 @@ export const UploadQuiz = async (values: any) => {
         },
       }
     );
+    revalidatePath('/my-quizzes')
     return res.data;
   } catch (err: any) {
     if (err.response.data) return err.response.data;

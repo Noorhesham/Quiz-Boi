@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import { API_URL } from "@/constants";
 import { cookies } from "next/headers";
 import { GetQuizPublic } from "./GetQuiz";
@@ -10,8 +10,10 @@ export const getUser = async () => {
     const user = await fetch(`${API_URL}/users/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
-      },cache:'force-cache'
-    },).then((res) => res.json());
+      },
+      cache: "force-cache",
+      next: { revalidate: 3600 },
+    }).then((res) => res.json());
     console.log();
     if (user.data?.user) return user.data.user;
   } catch (err: any) {
@@ -29,7 +31,8 @@ export const getUserDetails = async () => {
     const user = await fetch(`${API_URL}/users/me-details`, {
       headers: {
         Authorization: `Bearer ${token}`,
-      },cache:'force-cache'
+      },
+      cache: "force-cache",
     }).then((res) => res.json());
     const photo = user?.data?.user?.photo;
     const likedQuizzes = await Promise.all(user.data?.user.likedQuizzes.map((q: any) => GetQuizPublic(q.quiz)));
@@ -50,7 +53,7 @@ export const getUserDetails = async () => {
 };
 export const getPublicUser = async (id: String) => {
   try {
-    const user = await fetch(`${API_URL}/users/public/${id}`,{next:{revalidate:1}}).then((res) => res.json());
+    const user = await fetch(`${API_URL}/users/public/${id}`, { next: { revalidate: 1 } }).then((res) => res.json());
     const likedQuizzes = await Promise.all(user.data?.user.likedQuizzes.map((q: any) => GetQuizPublic(q.quiz)));
     if (user.data?.user) {
       return {
@@ -68,7 +71,7 @@ export const getPublicUser = async (id: String) => {
 };
 export const getPublicUserMini = async (id: String) => {
   try {
-    const user = await fetch(`${API_URL}/users/public-mini/${id}`,).then((res) => res.json());
+    const user = await fetch(`${API_URL}/users/public-mini/${id}`).then((res) => res.json());
     const likedQuizzes = await Promise.all(user.data?.user.likedQuizzes.map((q: any) => GetQuizPublic(q.quiz)));
     if (user.data?.user) {
       return {

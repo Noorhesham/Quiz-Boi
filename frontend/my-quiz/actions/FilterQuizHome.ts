@@ -9,7 +9,7 @@ export const FilterQuizzesHome = async (filter:string,page?:number,) => {
         console.log(data)
       return data;
       }
-      const res = await fetch(`${API_URL}/quiz?tags=${filter}&page=${page||1}&limit=10`, {next: { revalidate: 600 }});
+      const res = await fetch(`${API_URL}/quiz?tags=${filter}&page=${page||1}&limit=10`, {next: { revalidate: 600 }}  );
 
       const data=await res.json()
       console.log(data)

@@ -8,6 +8,7 @@ import { GetQuestions } from "@/actions/GetQuestion";
 import { GetStats } from "@/actions/GetStats";
 import { GetTags } from "@/actions/GetTags";
 import { PublishQuiz as PublishQuizApi } from "@/actions/PublishQuiz";
+import { RemoveQuiz } from "@/actions/RemoveQuiz";
 import { SolveQuiz } from "@/actions/SolveQuestion";
 import { getPublicUser, getUser } from "@/actions/getUser";
 import { logout as logoutAPI } from "@/actions/logout";
@@ -55,7 +56,7 @@ export const useLogOut = () => {
     mutationFn: async () => await logoutAPI(),
     onSuccess: (user) => {
       querClient.removeQueries();
-      toast.done('You are logged out ..')
+      toast.done("You are logged out ..");
     },
   });
   return { logout, isPending, error };
@@ -79,7 +80,6 @@ export const useDeleteQuestion = () => {
     onError: (err) => {
       console.log(err);
       toast.error(err.message);
-
     },
   });
   return { DeleteQuestion, isSuccess, isPending, error };
@@ -99,7 +99,6 @@ export const usePublishQuiz = () => {
     onError: (err) => {
       console.log(err);
       toast.error(err.message);
-
     },
   });
   return { PublishQuiz, isSuccess, isPending, error };
@@ -128,7 +127,7 @@ export const useSubmitQuiz = () => {
     mutationFn: async (params: {
       values: { answers: [{ answer: number; id: string }]; username?: string; userId?: string };
       quizId: string;
-    },) => {
+    }) => {
       const { values, quizId } = params;
       return await CompleteQuiz(values, quizId);
     },
@@ -137,7 +136,7 @@ export const useSubmitQuiz = () => {
       if (data.status === "success") {
         handleQuizEnd();
         router.push(`/quiz/${data.data.userAttempt._id}/results`);
-        toast.success('Quiz successfully submitted .. we are redirecting you to your results page ! 😺')
+        toast.success("Quiz successfully submitted .. we are redirecting you to your results page ! 😺");
       }
       if (data.error) {
         throw new Error(data.message);
@@ -151,6 +150,7 @@ export const useSubmitQuiz = () => {
   return { SubmitQuiz, isPending, error, isSuccess };
 };
 export const useLikeQuiz = () => {
+  const querClient = useQueryClient();
   const {
     mutate: LikeQuiz,
     error,
@@ -162,16 +162,18 @@ export const useLikeQuiz = () => {
       console.log(data);
       if (data.error) throw new Error(data.message);
       toast.success(`Like Added Successfully`);
+      //@ts-ignore
+      querClient.invalidateQueries("user");
     },
     onError: (err) => {
       console.log(err);
       toast.error(err.message);
-
     },
   });
   return { LikeQuiz, isSuccess, isPending, error };
 };
 export const useUnlikeQuiz = () => {
+  const querClient = useQueryClient();
   const {
     mutate: unLikeQuiz,
     error,
@@ -183,11 +185,12 @@ export const useUnlikeQuiz = () => {
       console.log(data);
       if (data.error) throw new Error(data.message);
       toast.success(`Like Removed Successfully`);
+      //@ts-ignore
+      querClient.invalidateQueries("user");
     },
     onError: (err) => {
       console.log(err);
       toast.error(err.message);
-
     },
   });
   return { unLikeQuiz, isSuccess, isPending, error };
@@ -213,7 +216,6 @@ export const useAddComment = () => {
     onError: (err) => {
       console.log(err);
       toast.error(err.message);
-
     },
   });
   return { AddCommentToQuiz, isPending, error, isSuccess };
@@ -265,7 +267,35 @@ export const usedeleteComment = () => {
   });
   return { RemoveCommentFromQuiz, isPending, error, isSuccess };
 };
+export const usedeleteQuiz = () => {
+  const queryClient=useQueryClient()
+  const {
+    mutate: RemoveTheQuiz,
+    error,
+    isSuccess,
+    isPending,
+  } = useMutation({
+    mutationFn: async (id: string) => {
+      return await RemoveQuiz(id);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      if (data.error) throw new Error(data.message);
+      toast.success(`Quiz is deleted successfully !`);
+      //@ts-ignore
+      queryClient.invalidateQueries('user')
+      return data;
+    },
+    onError: (err) => {
+      console.log(err);
+      toast.error(err.message);
+    },
+  });
+  return { RemoveTheQuiz, isPending, error, isSuccess };
+};
+
 export const useFollow = () => {
+  const querClient = useQueryClient();
   const {
     mutate: FollowUser,
     error,
@@ -277,6 +307,8 @@ export const useFollow = () => {
       console.log(data);
       if (data.error) throw new Error(data.message);
       toast.success(`User ${data.currentUser.name} is followed Successfully`);
+      //@ts-ignore
+      querClient.invalidateQueries("user");
     },
     onError: (err) => {
       console.log(err);
@@ -286,6 +318,7 @@ export const useFollow = () => {
   return { FollowUser, isSuccess, isPending, error };
 };
 export const useUnFollow = () => {
+  const querClient = useQueryClient();
   const {
     mutate: UnFollowUser,
     error,
@@ -297,6 +330,8 @@ export const useUnFollow = () => {
       console.log(data);
       if (data.error) throw new Error(data.message);
       toast.success("User Unfollowed Successfully");
+      //@ts-ignore
+      querClient.invalidateQueries("user");
     },
     onError: (err) => {
       console.log(err);
