@@ -75,9 +75,6 @@ const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) 
               reset();
             } else {
               router.refresh();
-              const quertclient=useQueryClient()
-              //@ts-ignore
-              quertclient.invalidateQueries('user')
               router.push(`/quiz-upload/${res.data.quiz._id}`); 
             }
           })
