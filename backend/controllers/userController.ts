@@ -98,6 +98,12 @@ exports.unfollowUser = catchAsync(async (req: Request | any, res: Response, next
   await followedUser.save();
   res.status(200).json({ message: 'Successfully unfollowed user.' });
 });
+
+exports.getUserMini= catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
+  const  user =await  User.findById(req.params);
+  if (!user) return next(new AppError(`There is no userfound with that id`, 404));
+  res.status(200).json({ status: "success", data: {user} });
+})
 const userFactory = new Factory(User, "user");
 exports.getAllUsers = userFactory.getAll();
 exports.getUser = userFactory.getOne();
