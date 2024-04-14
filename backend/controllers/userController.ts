@@ -100,7 +100,7 @@ exports.unfollowUser = catchAsync(async (req: Request | any, res: Response, next
 });
 
 exports.getUserMini= catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
-  const  user =await  User.findById(req.params.id);
+  const  user =await  User.findById(req.params.id).select('photo name id _id');
   if (!user) return next(new AppError(`There is no userfound with that id`, 404));
   res.status(200).json({ status: "success", data: {user} });
 })
