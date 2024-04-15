@@ -71,6 +71,7 @@ exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: Next
       return next(new AppError("Attempt made within the last 12 hours. Cannot update.", 403));
   }
   let totalPoints = 0;
+  userAttempt.totalPoints=0
   console.log(req.body);
   for (let i = 0; i < req.body.answers.length; i++) {
     const question = await Question.findById(req.body.answers[i].id);

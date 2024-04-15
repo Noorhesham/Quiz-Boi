@@ -15,7 +15,7 @@ const PublishQuiz = ({ quiz }: { quiz: QuizProps }) => {
         />:<ConfirmPublish
         text="Uncompleted Quiz !? 😿👩‍🚀"
         image="publish2" disabled={true}
-        paragraph="Too few questions to publish the quiz ! make sure to add at least 5 questions so that your quiz be great ! 🌌🚀"
+        paragraph="Too few questions to publish the quiz ! make sure to add at least 6 questions so that your quiz be great ! 🌌🚀"
       />
       }
       btn={
