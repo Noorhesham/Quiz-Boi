@@ -94,7 +94,7 @@ exports.unfollowUser = catchAsync(async (req, res, next) => {
     res.status(200).json({ message: 'Successfully unfollowed user.' });
 });
 exports.getUserMini = catchAsync(async (req, res, next) => {
-    const user = await userModel_1.default.findById(req.params.id).select('photo name id _id -quizzes');
+    const user = await userModel_1.default.findById(req.params.id).select('photo');
     if (!user)
         return next(new AppError_1.default(`There is no userfound with that id`, 404));
     res.status(200).json({ status: "success", data: { user } });

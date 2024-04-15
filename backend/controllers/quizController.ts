@@ -81,13 +81,13 @@ exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: Next
     }
     if (question.correctAnswerIndex === +req.body.answers[i].answer) userAttempt.points += question.points || 10;
     totalPoints += question.points || 10;
-    userAttempt.percentage = (userAttempt.points / totalPoints) * 100;
-    userAttempt.answers = answers;
-    userAttempt.totalPoints=totalPoints
-    userAttempt.attemptedAt = new Date(Date.now());
-    quiz.usersAttempted = quiz.usersAttempted.filter((id) => id !== userAttempt?._id);
-    quiz.usersAttempted.push(userAttempt._id);
   }
+  userAttempt.percentage = (userAttempt.points / totalPoints) * 100;
+  userAttempt.answers = answers;
+  userAttempt.totalPoints=totalPoints
+  userAttempt.attemptedAt = new Date(Date.now());
+  quiz.usersAttempted = quiz.usersAttempted.filter((id) => id !== userAttempt?._id);
+  quiz.usersAttempted.push(userAttempt._id);
   await Promise.all([quiz.save(), userAttempt.save()]);
   res.status(201).json({ status: "success", data: { userAttempt } });
 });
