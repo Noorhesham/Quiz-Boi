@@ -4,6 +4,7 @@ import Feed from "../components/Feed";
 import { GetTags } from "@/actions/GetTags";
 import { FilterQuizzesHome } from "@/actions/FilterQuizHome";
 import NotFound from "../components/NotFound";
+import BecauseYouFollowed from "../components/BecauseYouFollowed";
 
 export const dynamic='force-dynamic'
 export default async function Page({
@@ -24,6 +25,7 @@ export default async function Page({
     <main className="flex w-full min-h-[100vh] flex-col relative  items-stretch justify-center">
       <Landing />
       <Welcome />
+      <BecauseYouFollowed/>
       {<Feed hasNext={isNext} categories={categories} totalPages={totalPages} quizzes={data?.quizzes} />}
     </main>
   );

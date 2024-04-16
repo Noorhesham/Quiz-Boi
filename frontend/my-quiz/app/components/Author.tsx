@@ -16,7 +16,7 @@ const Author = ({ author, quiz,hover=true }: { author: UserProps; quiz: QuizProp
             <Like count={quiz.likes?.length} id={quiz._id} />
             <div className="flex items-center">
               <MdQuiz className=" cursor-pointer text-gray-400 hover:text-blue-500 duration-200" />
-              <div>{quiz.usersAttempted.length}</div>
+              <div>{quiz.usersAttempted?.length}</div>
             </div>
           </div>
         </div>

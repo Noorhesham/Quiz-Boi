@@ -15,7 +15,13 @@ export const getUser = async () => {
       next: { revalidate: 3600 },
     }).then((res) => res.json());
     console.log(user);
-    if (user.data?.user) return user.data.user;
+    const likedQuizzes = await Promise.all(user.data?.user.likedQuizzes.slice(0,10).map((q: any) => GetQuizPublic(q.quiz)));
+    if (user.data?.user) {
+      return {
+        ...user.data.user,
+        likedQuizzes: likedQuizzes,
+      };
+    }
   } catch (err: any) {
     console.log(err);
     if (err.response.data) return err.response.data;

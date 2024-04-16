@@ -19,11 +19,11 @@ const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; 
   const [hover, setHover] = useState(false);
   return (
     <div
-      className="relative cursor-pointer rounded-md bg-white items-start flex flex-col"
+      className="relative h-full cursor-pointer rounded-md bg-white items-start flex flex-col"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className="relative flex text-center justify-center  items-center w-full h-full ">
+      <div className="relative  flex text-center justify-center  items-center w-full h-full ">
        { <DialogueQuiz
           content={<QuizShow quiz={quiz} />}
           btn={<LazyLoadImage effect="blur" className="rounded-md h-full  aspect-[1/1] object-cover w-full" src={`${quiz.coverImage}` || "/quiz3.png"} alt={quiz.title} />}
@@ -36,7 +36,7 @@ const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute bottom-[8px] rounded-md duration-200 left-0 w-full h-16 bg-black bg-opacity-40 flex items-center justify-between px-4"
+              className="absolute  bottom-[8px] rounded-md duration-200 left-0 w-full h-16 bg-black bg-opacity-40 flex items-center justify-between px-4"
             >
               <h6 className="text-white font-semibold">{quiz.title}</h6>
               <div className="flex items-center gap-2 text-white">
