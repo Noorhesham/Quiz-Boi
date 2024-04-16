@@ -10,7 +10,7 @@ import { GetTags } from "@/actions/GetTags";
 import { PublishQuiz as PublishQuizApi } from "@/actions/PublishQuiz";
 import { RemoveQuiz } from "@/actions/RemoveQuiz";
 import { SolveQuiz } from "@/actions/SolveQuestion";
-import { getPublicUser, getUser } from "@/actions/getUser";
+import { getPublicUser, getPublicUserMini, getUser } from "@/actions/getUser";
 import { logout as logoutAPI } from "@/actions/logout";
 import { useQuiz } from "@/app/context/QuizContext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -42,6 +42,17 @@ export const useGetUsersPublic = (arr: Array<string>) => {
   } = useQuery({
     queryKey: [`users ${arr}`],
     queryFn: async () => await Promise.all(arr.map((ar) => getPublicUser(ar))),
+  });
+  return { users, isLoading, error };
+};
+export const useGetUsersMiniPublic = (arr: Array<string>) => {
+  const {
+    data: users,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [`users ${arr}`],
+    queryFn: async () => await Promise.all(arr.map((ar) => getPublicUserMini(ar))),
   });
   return { users, isLoading, error };
 };

@@ -1,11 +1,11 @@
 "use client";
-import { useGetUsersPublic } from "@/utils/queryFunctions";
+import { useGetUsersMiniPublic,  } from "@/utils/queryFunctions";
 import React from "react";
 import User from "./User";
 import Spinner from "./Spinner";
 
 const FollowList = ({ list }: { list: Array<string> }) => {
-  const { users, isLoading } = useGetUsersPublic(list);
+  const { users, isLoading } = useGetUsersMiniPublic(list);
   console.log(users, list);
   return (
     <div className=" flex flex-col min-h-[20vh] items-start gap-3">
