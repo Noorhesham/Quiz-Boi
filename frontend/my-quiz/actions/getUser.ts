@@ -14,7 +14,7 @@ export const getUser = async () => {
       cache: "force-cache",
       next: { revalidate: 3600 },
     }).then((res) => res.json());
-    console.log();
+    console.log(user);
     if (user.data?.user) return user.data.user;
   } catch (err: any) {
     console.log(err);

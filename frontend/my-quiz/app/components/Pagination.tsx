@@ -38,7 +38,7 @@ export default function PaginationHome({ onClick,totalPages,length,hasNext }: { 
         {links.map((item) => (
           <PaginationItem key={item}>
             {/*@ts-ignore*/}
-            <PaginationLink className={`${+searchParams.get('page')===item&&" bg-pink-400 hover:bg-red-400 "} text-white cursor-pointer`} onClick={() => onClick(item)}>
+            <PaginationLink className={`${+searchParams.get('page')===item&&" bg-pink-400 hover:bg-red-400 "} select-none text-white cursor-pointer`} onClick={() => onClick(item)}>
               {item }
             </PaginationLink>
           </PaginationItem>

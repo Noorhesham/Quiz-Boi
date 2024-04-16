@@ -10,6 +10,7 @@ import { GetTags } from "@/actions/GetTags";
 import { PublishQuiz as PublishQuizApi } from "@/actions/PublishQuiz";
 import { RemoveQuiz } from "@/actions/RemoveQuiz";
 import { SolveQuiz } from "@/actions/SolveQuestion";
+import { GetAttempt } from "@/actions/getAttempt";
 import { getPublicUser, getPublicUserMini, getUser } from "@/actions/getUser";
 import { logout as logoutAPI } from "@/actions/logout";
 import { useQuiz } from "@/app/context/QuizContext";
@@ -31,7 +32,6 @@ export const useGetUser = () => {
     //@ts-ignore
     queryClient.invalidateQueries("user");
   };
-
   return { user, isLoading, error, updateUser };
 };
 export const useGetUsersPublic = (arr: Array<string>) => {
@@ -409,4 +409,15 @@ export const useGetQuizzes = (catergorey: string, page: number) => {
     queryFn: async () => await FilterQuizzesHome(catergorey, page),
   });
   return { quizzes, isLoading, error };
+};
+export const useGetAttempts = (arr: Array<string>) => {
+  const {
+    data: attemptedUsers,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [`attempt ${arr}`],
+    queryFn: async () => await Promise.all(arr.map((ar) => GetAttempt(ar))),
+  });
+  return { attemptedUsers, isLoading, error };
 };

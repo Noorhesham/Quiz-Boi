@@ -1,6 +1,7 @@
 import { GetQuestions } from "@/actions/GetQuestion";
 import { GetAttempt } from "@/actions/getAttempt";
 import Celebrate from "@/app/components/Celebrate";
+import LeaderBoard from "@/app/components/LeaderBoard";
 import Results from "@/app/components/Results";
 
 const page = async ({ params }: { params: { id: string } }) => {
@@ -20,11 +21,11 @@ const page = async ({ params }: { params: { id: string } }) => {
       : attempt.percentage <= 90
       ? "great"
       : "complete";
-  console.log(attempt);
   return (
     <main className=" relative spacer  flex flex-col items-center">
       <Celebrate text={`You Scored ${attempt.points}`} img={howGood} />
       <Results answers={answers} list={list} />
+      {/* <LeaderBoard attempts={usersAttempted}/> */}
     </main>
   );
 };

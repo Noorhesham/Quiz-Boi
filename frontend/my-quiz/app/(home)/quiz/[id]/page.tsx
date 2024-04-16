@@ -17,6 +17,7 @@ const page = () => {
   const { quiz: data, isLoading, error } = useStartQuiz(id);
   const [start, setStart] = useState(false);
   const [userName, setUserName] = useState(function () {
+    if(user) return ""
     const storedValue = global?.localStorage?.getItem("username");
     if (storedValue) {
       setStart(true);
