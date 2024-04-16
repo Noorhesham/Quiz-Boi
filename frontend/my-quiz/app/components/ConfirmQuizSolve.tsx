@@ -15,10 +15,11 @@ const ConfirmQuizSolve = ({
 }) => {
   const { id }: { id: string } = useParams();
   const { user, isLoading, error: error2 } = useGetUser();
-  const { SubmitQuiz, isPending, error,isSuccess } = useSubmitQuiz();
-  const { setSubmitting,handleQuizEnd } = useQuiz();
+  const { SubmitQuiz, isPending, error, isSuccess } = useSubmitQuiz();
+  const { setSubmitting, handleQuizEnd } = useQuiz();
   let data: any;
-  if (user) data = { answers:values, userId: user._id };
+  if (user) data = { answers: values, userId: user._id };
+  else if (!user) data = { answers: values, username: global?.localStorage?.getItem("username") };
   return (
     <div className="flex flex-col  items-center gap-10">
       <div className="flex flex-col items-center text-center">
@@ -45,7 +46,7 @@ const ConfirmQuizSolve = ({
         }
         <Button
           onClick={() => {
-            setSubmitting(true)
+            setSubmitting(true);
             SubmitQuiz({ values: data, quizId: id });
           }}
           variant="default"
