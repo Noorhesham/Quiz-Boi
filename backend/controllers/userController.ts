@@ -107,9 +107,10 @@ exports.getUserMini= catchAsync(async (req: Request | any, res: Response, next: 
   res.status(200).json({ status: "success", data: {user} });
 })
 exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const  user = User.findById(req.params.id).populate({ path: "quizzes", })
-  .populate({ path: "likedQuizzes",  })
-  .populate({ path: "attemptedQuizzes" });;
+  const  user = await User.findById(req.params.id).populate({ path: "quizzes", })
+  .populate({ path: "likedQuizzes",})
+  .populate({ path: "attemptedQuizzes" });
+
   if (!user) return next(new AppError(`There is no user found with that id`, 404));
   res.status(200).json({ status: "success", data: { user } });
 });
