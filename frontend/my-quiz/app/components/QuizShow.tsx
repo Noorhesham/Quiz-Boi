@@ -9,6 +9,7 @@ import { FaPlay } from "react-icons/fa";
 import { CommentProvider } from "../context/CommentContext";
 import YouAreNotAuth from "./YouAreNotAuth";
 import { useGetUser } from "@/utils/queryFunctions";
+import Share from "./Share";
 
 const QuizShow = ({ quiz }: { quiz: QuizProps }) => {
   const { user } = useGetUser();
@@ -28,13 +29,14 @@ const QuizShow = ({ quiz }: { quiz: QuizProps }) => {
           alt={quiz.title}
           className="w-[25rem] object-cover aspect-[1/1] mx-auto self-center rounded-lg"
         />
-        <div className="absolute cursor-pointer text-4xl group inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 hover:opacity-70 bg-black bg-opacity-50 rounded-lg">
+        <div className="absolute  flex-col cursor-pointer text-4xl group inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 hover:opacity-70 bg-black bg-opacity-50 rounded-lg">
           <div className="flex items-center gap-2">
             <FaPlay className="text-white group-hover:text-red-400 duration-200 " />
             <Link href={`/quiz/${quiz._id}`} className="text-white font-semibold group-hover:text-red-400 duration-150">
               Attempt Quiz
             </Link>
           </div>
+            <Share link={`https://quiz-boi.vercel.app/quiz/${quiz._id}`}/>
         </div>
       </div>
       <div className="flex flex-col">
