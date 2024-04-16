@@ -42,10 +42,11 @@ const page = () => {
   }, []);
   if (isLoading || isLoading2) return <Spinner />;
   if (!data) return <NotFound text="This Quiz is not available" />;
+  console.log(userName);
   return (
     <section className=" pt-32 quizbg flex items-center justify-center px-20 bg-gray-100 rounded-md min-h-[100vh] ">
       <QuizProvider id={id} initial={data.duration * 60 || 60}>
-        {!user && !start && !userName && (
+        {(!user && !start)  && (
           <div className="flex flex-col gap-3">
             <div className="flex flex-col  items-center gap-10">
               <div className="flex flex-col items-center text-center">
@@ -66,7 +67,7 @@ const page = () => {
             <GlobalButton text="Start Quiz" onClick={handleClick} />
           </div>
         )}
-        {(user || (userName && userName.length > 3 && start)) && <QuizLarge quiz={data} />}
+        {(user || (userName && userName.length >= 3 && start)) && <QuizLarge quiz={data} />}
       </QuizProvider>
     </section>
   );
