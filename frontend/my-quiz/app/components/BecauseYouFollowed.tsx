@@ -10,7 +10,7 @@ import Heading from "./Heading";
 const BecauseYouFollowed = () => {
   const { user, isLoading } = useGetUser();
   if (isLoading) return <Spinner />;
-  if (!user) return;
+  if (!user||!user.likedQuizzes) return;
   console.log(user);
   return (
     <Carousel
