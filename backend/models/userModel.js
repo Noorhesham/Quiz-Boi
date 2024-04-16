@@ -108,9 +108,6 @@ userSchema.pre("save", function (next) {
 // });
 userSchema.pre("findOne", function (next) {
     this.find({ active: { $ne: false } });
-    this.populate({ path: "quizzes", })
-        .populate({ path: "likedQuizzes", })
-        .populate({ path: "attemptedQuizzes" });
     next();
 });
 userSchema.methods.correctPassword = async function (candidatePassword) {

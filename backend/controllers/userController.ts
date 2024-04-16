@@ -51,7 +51,9 @@ exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunct
   res.status(200).json({ status: "success", data: { user } });
 });
 exports.getDetails = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const user = await User.findById(req.params.id).populate({ path: "likedQuizzes" });
+  const user = await User.findById(req.params.id).populate({ path: "quizzes", })
+  .populate({ path: "likedQuizzes",  })
+  .populate({ path: "attemptedQuizzes" });;
 
   if (!user) return next(new AppError("cannot find this user", 404));
   res.status(200).json({ status: "success", data: { user } });
@@ -100,12 +102,18 @@ exports.unfollowUser = catchAsync(async (req: Request | any, res: Response, next
 });
 
 exports.getUserMini= catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
-  const  user =await  User.findById(req.params.id).select('photo');
+  const  user =await  User.findById(req.params.id).lean()
   if (!user) return next(new AppError(`There is no userfound with that id`, 404));
   res.status(200).json({ status: "success", data: {user} });
 })
+exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const  user = User.findById(req.params.id).populate({ path: "quizzes", })
+  .populate({ path: "likedQuizzes",  })
+  .populate({ path: "attemptedQuizzes" });;
+  if (!user) return next(new AppError(`There is no user found with that id`, 404));
+  res.status(200).json({ status: "success", data: { user } });
+});
 const userFactory = new Factory(User, "user");
 exports.getAllUsers = userFactory.getAll();
-exports.getUser = userFactory.getOne();
 exports.updateUser = userFactory.updateOne();
 exports.deleteUser = userFactory.deleteOne();

@@ -85,9 +85,7 @@ userSchema.pre("save", function (next) {
 // });
 userSchema.pre("findOne", function (this: any, next) {
   this.find({ active: { $ne: false } });
-  this.populate({ path: "quizzes", })
-    .populate({ path: "likedQuizzes",  })
-    .populate({ path: "attemptedQuizzes" });
+ 
   next();
 });
 
