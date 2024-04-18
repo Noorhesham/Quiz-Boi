@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import CategoreyCard from "./CategoreyCard";
 
 const Categories = ({ setCategorey,categories }: { setCategorey: any,categories:any }) => {
-
-  console.log(categories);
   return (
     <>
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4 px-8 py-4 justify-center">

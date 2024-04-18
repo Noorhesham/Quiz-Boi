@@ -6,7 +6,6 @@ import { FilterQuizzesHome } from "@/actions/FilterQuizHome";
 import NotFound from "../components/NotFound";
 import BecauseYouFollowed from "../components/BecauseYouFollowed";
 
-export const dynamic='force-dynamic'
 export default async function Page({
   searchParams,
 }: {
