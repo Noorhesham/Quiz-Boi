@@ -1,6 +1,7 @@
 import { GetQuestions } from "@/actions/GetQuestion";
 import { GetAttempt } from "@/actions/getAttempt";
 import Celebrate from "@/app/components/Celebrate";
+import Heading from "@/app/components/Heading";
 import LeaderBoard from "@/app/components/LeaderBoard";
 import Results from "@/app/components/Results";
 
@@ -23,6 +24,7 @@ const page = async ({ params }: { params: { id: string } }) => {
       : "complete";
   return (
     <main className=" relative spacer  flex flex-col items-center">
+      {attempt.username&&<Heading text={`Hey ${attempt.username}`}/>}
       <Celebrate text={`You Scored ${attempt.points}`} img={howGood} />
       <Results answers={answers} list={list} />
       {/* <LeaderBoard attempts={usersAttempted}/> */}
