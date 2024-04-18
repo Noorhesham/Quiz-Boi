@@ -51,8 +51,8 @@ const Landing = () => {
           ease: "easeInOut",
         }}
       >
-        <Image src="/landing.png" width={500} height={500} alt="landing" />
-        <Image className=" absolute top-10  right-96" src="/sunn.png" width={500} height={500} alt="landing" />
+        <Image priority={true} src="/landing.png" width={500} height={500} alt="landing" />
+        <Image className=" absolute top-10 right-96" src="/sunn.png" width={500} height={500} alt="landing" />
       </motion.div>
       <Wave />
     </section>
