@@ -73,7 +73,7 @@ const LoginForm = () => {
                           className=" py-6 px-3  rounded-lg text-black"
                           disabled={isPending}
                           {...field}
-                          placeholder="meow@gmail.com"
+                          placeholder="email@example.com"
                           type="email"
                         />
                       </FormControl>

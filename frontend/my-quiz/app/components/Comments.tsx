@@ -10,8 +10,8 @@ const Comments = ({ quiz ,}: { quiz: QuizProps ,}) => {
         <Empty text="No comment yet 😺..be the first to comment !" />
       ) : (
         <div className="flex flex-col h-[40vh]  py-3 px-6 border-2 bg-gray-200 overflow-y-scroll rounded-lg border-gray-300 gap-2">
-          {quiz.comments.map((comment) => (
-          <Comment comment={comment} />
+          {quiz.comments.map((comment,i) => (
+          <Comment key={i} comment={comment} />
           ))}
         </div>
       )}

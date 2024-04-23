@@ -40,6 +40,7 @@ const QuizShow = ({ quiz }: { quiz: QuizProps }) => {
         </div>
       </div>
       <div className="flex flex-col">
+        <p>{quiz.description}</p>
         <CommentProvider>
           <h2 className="text-gray-800 font-semibold text-3xl p-3">Comments</h2>
           <Comments quiz={quiz} />

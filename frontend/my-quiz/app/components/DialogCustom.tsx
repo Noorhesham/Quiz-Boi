@@ -28,7 +28,7 @@ const DialogCustom = ({
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{btn}</DialogTrigger>
-        <DialogContent className=" max-h-full min-h-fit overflow-y-scroll sm:max-w-[825px]">
+        <DialogContent className="  z-50 max-h-full min-h-fit overflow-y-scroll sm:max-w-[825px]">
           <DialogHeader>
             <DialogTitle>{title ? title : "Add a Question"}</DialogTitle>
             <DialogDescription>

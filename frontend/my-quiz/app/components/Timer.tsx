@@ -12,7 +12,7 @@ const Timer = () => {
       className=" text-pink-400 font-semibold fill-pink-400 absolute left-[50%] translate-x-[-50%] z-10 top-[-80px]  md:top-8 "
       style={{ width: 70, height: 70 }}
     >
-      <CircularProgressbar value={timer} text={`${mins < 10 && 0}${mins}:${(secs < 10 && 0) || ""}${secs}`} />
+      <CircularProgressbar value={timer} text={`${mins < 10 ? 0:""}${mins}:${(secs < 10 && 0) || ""}${secs}`} />
     </div>
   );
 };

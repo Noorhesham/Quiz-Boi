@@ -12,7 +12,6 @@ import { MdModeEdit } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { API_URL } from "@/constants";
 import Share from "./Share";
 
 const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; card?: boolean; edit?: boolean ,href?:string}) => {
@@ -63,7 +62,7 @@ const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; 
         <div className="flex py-2 px-4 text-gray-800 justify-between items-center">
           <h6 className="font-semibold">{quiz.title}</h6>
           <div>
-            <span className="self-end text-sm">Duration:{quiz.duration} min</span>
+            <span className="self-end text-sm text-nowrap">Duration:{quiz.duration} min</span>
           </div>
         </div>
         {!card && <Author quiz={quiz} author={quiz.author} />}

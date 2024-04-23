@@ -61,7 +61,7 @@ const SignupForm = () => {
                 <PasswordInput
                   name="name"
                   text="Name"
-                  placeholder="spider-man"
+                  placeholder="Your Name"
                   type="text"
                   control={control}
                   disabled={isPending}
@@ -69,13 +69,13 @@ const SignupForm = () => {
                 <PasswordInput
                   name="email"
                   text="Email"
-                  placeholder="meow@gmail.com"
+                  placeholder="Email@example.com"
                   type="email"
                   control={control}
                   disabled={isPending}
                 />
                 <PasswordInput name="password" control={control} disabled={isPending} />
-                <PasswordInput name="passwordConfirm" control={control} disabled={isPending} />
+                <PasswordInput text="Confirm Password" name="passwordConfirm" control={control} disabled={isPending} />
               </div>
             </div>
             <FormError message={error} />

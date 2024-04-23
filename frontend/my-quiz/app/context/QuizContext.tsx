@@ -53,7 +53,7 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
   useEffect(() => {
     localStorage.setItem("answers", JSON.stringify(answers));
     localStorage.setItem("questionIndex", questionIndex.toString());
-    localStorage.setItem("progress", progress.toString());
+    localStorage.setItem("progress", progress.toString()||0);
     localStorage.setItem("timer", timer?.toString());
     localStorage.setItem("currentquiz", JSON.stringify(Id));
     if (timer <= 0) localStorage.removeItem("timer");
@@ -86,7 +86,7 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
     if (questionIndex === 0) return;
     setQuestionIndex((currentIndex: number) => {
       const PrevIndex = currentIndex - 1;
-      const prevProgress = Math.trunc(progress - (PrevIndex / len) * 100);
+      const prevProgress = progress -10;
       setProgress(prevProgress);
       return PrevIndex;
     });
