@@ -20,8 +20,8 @@ const Answer = ({
         setAnswer({ answer: i, id });
       }}
       className={`${
-        (answer?.answer===i) ? "bg-blue-100 text-gray-100":active?"bg-pink-400 text-gray-50" : "bg-white text-gray-800"
-      } py-2 px-2 md:px-4 flex items-center gap-2 group w-full hover:text-gray-100 hover:bg-blue-100 duration-200 cursor-pointer font-semibold  rounded-lg`}
+        (answer?.answer===i) ? "bg-blue-400 text-gray-100":active?"bg-pink-200 text-gray-800" : "bg-white text-gray-800"
+      } py-2 px-2 md:px-4 flex items-center gap-2 group w-full hover:text-gray-100 hover:bg-blue-400 duration-200 cursor-pointer font-semibold  rounded-lg`}
     >
       <div
         className={`${
