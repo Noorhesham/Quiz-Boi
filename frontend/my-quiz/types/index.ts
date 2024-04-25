@@ -35,4 +35,5 @@ export interface QuestionProps {
   coverImage?: string;
   explain?: string;
   points:number
+  hint:{text:string,coverImage:string}
 }

@@ -8,30 +8,34 @@ import InputImage from "./InputImage";
 import { useColor } from "../context/ColorContext";
 
 const AddPhotoForm = ({
-  setSelectedImage,name,
+  setSelectedImage,
+  name,
   control,
   quiz,
   selectedImage,
-  question,user
+  question,
+  user,hint
 }: {
-  setSelectedImage: (f: any) => void;name?:string,
+  setSelectedImage: (f: any) => void;
+  name?: string;
   control: any;
   quiz?: QuizProps;
   selectedImage: any;
-  question?: QuestionProps;user?:UserProps
+  question?: QuestionProps;
+  user?: UserProps;hint?:any
 }) => {
   const { color } = useColor();
   const backStyles = ` relative hover:backdrop-blur-sm rounded-lg hover:bg-red-200 cursor-pointer flex items-center flex-col backdrop-blur-lg  group duration-150`;
   return (
     <FormField
       control={control}
-      name={name?name:`coverImage`}
+      name={name ? name : `coverImage`}
       render={({ field }: { field: any }) => (
         <FormItem>
           <FormControl>
             <>
               <label>
-                {!quiz?.coverImage && !question?.coverImage && !selectedImage &&!user?.photo? (
+                {!quiz?.coverImage && !question?.coverImage && !selectedImage && !user?.photo ? (
                   <div
                     className={`flex flex-col hover:opacity-90 cursor-pointer text-gray-50 rounded-lg gap-3 py-6 px-12 items-center  ${color}`}
                   >
@@ -51,12 +55,14 @@ const AddPhotoForm = ({
                       alt={(quiz && quiz.title) || (question && question.question)}
                       src={
                         selectedImage
-                        ? URL.createObjectURL(selectedImage)
-                        : user
-                        ? user.photo
-                        : question
-                        ? question.coverImage
-                        : quiz?.coverImage
+                          ? URL.createObjectURL(selectedImage)
+                          : user
+                          ? user.photo
+                          : question
+                          ? question.coverImage
+                          : hint
+                          ? hint.coverImage
+                          : quiz?.coverImage
                       }
                     />
                   </div>

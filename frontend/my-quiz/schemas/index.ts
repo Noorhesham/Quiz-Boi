@@ -24,6 +24,18 @@ export const QuestionSchema = z.object({
   answers: z.array(z.string().nonempty({ message: "Answer text is required" })),
   correctAnswerIndex: z.number(),
   explain: z.string().optional(),
+  hint:  z.object({
+    coverImage:  z
+    .any()
+    .optional()
+    .refine((files) => {
+      return !files || !files[0] || files[0].size <= MAX_FILE_SIZE;
+    }, `Max image size is ${MAX_FILE_SIZE / (1024 * 1024)}MB.`)
+    .refine((files) => {
+      return !files || !files[0] || ACCEPTED_IMAGE_MIME_TYPES.includes(files[0].type);
+    }, "Only .jpg, .jpeg, .png, and .webp formats are supported."),
+    text: z.string().min(0,"You must provide the hint text"),
+  }).optional(),
   coverImage: z
     .any()
     .optional()

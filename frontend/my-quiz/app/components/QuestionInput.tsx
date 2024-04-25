@@ -8,14 +8,14 @@ const TextInput = ({
   error,
   name,
   text,
-  required,
+  required,placeholder
 }: {
   control: any;
   isPending: boolean;
   error: any;
   name: string;
   text: string;
-  required: boolean;
+  required: boolean;placeholder?:string
 }) => {
   return (
     <div className="flex flex-col items-center">
@@ -34,7 +34,7 @@ const TextInput = ({
                   className="md:py-6 md:px-3 rounded-lg text-black"
                   disabled={isPending}
                   {...field}
-                  placeholder="What are server components ?"
+                  placeholder={placeholder?placeholder:"What are server components ?"}
                   type="text"
                 />
               </div>

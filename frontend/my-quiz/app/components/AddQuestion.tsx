@@ -24,7 +24,9 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
   const { id }: { id: string } = useParams();
   const [isPending, startTransition] = useTransition();
   const [selectedImage, setSelectedImage] = useState();
+  // const [selectedImageHint, setSelectedImageHint] = useState();
   const [explain, setExplain] = useState(false);
+  const [hint, setHint] = useState(false);
   const { color } = useColor();
   const router = useRouter();
 
@@ -36,6 +38,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
       answers: question?.answers || ["", ""],
       correctAnswerIndex: question?.correctAnswerIndex || 0,
       explain: question?.explain || "",
+      hint:{text:question?.hint?.text||"",}||{}
     },
   });
   const { handleSubmit, control, reset, getValues, setValue, register, formState } = form;
@@ -69,12 +72,16 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
       const formData = new FormData();
       formData.append("question", values.question);
       values.explain && formData.append("explain", values.explain);
+      values.hint &&   formData.append("hint[text]", values.hint.text);
       formData.append("correctAnswerIndex", String(values.correctAnswerIndex));
       values.answers.forEach((answer: string, index: number) => {
         formData.append(`answers[${index}]`, answer);
       });
       if (values.coverImage) {
         formData.append("coverImage", values.coverImage[0]);
+      }
+      if (values.hint && values.hint.coverImage) {
+        formData.append("hint[coverImage]", values.hint.coverImage[0]);
       }
       console.log(values);
       if (question) {
@@ -151,6 +158,17 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
             text={`Add Explaination for the answer to make it more benefit for the people 😺😺`}
           />
         )}
+        {(hint || question?.hint) && (
+            <TextInput
+              placeholder="Add Hint"
+              error=""
+              name="hint.text"
+              control={control}
+              isPending={isPending}
+              required={false}
+              text={`Add Hint for the answer to make it more clear and ease it for the people 😺😺`}
+            />
+        )}
         <div className=" mt-2 flex justify-center items-center gap-5">
           <button
             onClick={(e) => {
@@ -172,6 +190,18 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
               className={` text-[#fa989f] border-[#f6aaaf] hover:bg-gray-100 duration-200 py-2 px-2  md:px-4 flex items-center gap-2 font-semibold text-sm md:text-base cursor-pointer border-2  rounded-lg`}
             >
               <IoAddCircleOutline /> <span>{explain ? "Remove Explaination" : "Add Explaination"}</span>
+            </button>
+          )}
+          {!question?.hint && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setHint((e) => !e);
+                if (hint === false) setValue("hint",{text:""});
+              }}
+              className={` text-[#98ebfa] border-[#aabcf6] hover:bg-gray-100 duration-200 py-2 px-2  md:px-4 flex items-center gap-2 font-semibold text-sm md:text-base cursor-pointer border-2  rounded-lg`}
+            >
+              <IoAddCircleOutline /> <span>{hint ? "Remove Hint" : "Add Hint"}</span>
             </button>
           )}
         </div>
