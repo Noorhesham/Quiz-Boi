@@ -8,6 +8,7 @@ interface Question extends Document {
   coverImage?:string
   explain?:string
   points?:number
+  hint?:string
 }
 
 const questionSchema = new Schema<Question>({
@@ -33,6 +34,7 @@ const questionSchema = new Schema<Question>({
   },
   coverImage:{type:String},
   explain:{type:String},
+  hint:{type:String},
   points:{type:Number,default:10},
   correctAnswerIndex: {
     type: Number,

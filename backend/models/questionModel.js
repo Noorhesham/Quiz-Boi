@@ -47,6 +47,7 @@ const questionSchema = new mongoose_1.Schema({
     },
     coverImage: { type: String },
     explain: { type: String },
+    hint: { type: String },
     points: { type: Number, default: 10 },
     correctAnswerIndex: {
         type: Number,
