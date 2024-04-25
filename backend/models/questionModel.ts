@@ -5,10 +5,13 @@ interface Question extends Document {
   question: string;
   answers: string[];
   correctAnswerIndex: number;
-  coverImage?:string
-  explain?:string
-  points?:number
-  hint?:string
+  coverImage?: string;
+  explain?: string;
+  points?: number;
+  hint?: {
+    coverImage?: string;
+    text?: string;
+  };
 }
 
 const questionSchema = new Schema<Question>({
@@ -25,21 +28,23 @@ const questionSchema = new Schema<Question>({
     type: [String],
     required: true,
     validate: {
-      validator: function(val:string[]) {
-        console.log(this)
+      validator: function (val: string[]) {
+        console.log(this);
         return val?.length > 0; // Ensure at least one answer exists
       },
       message: "At least one answer is required",
     },
   },
-  coverImage:{type:String},
-  explain:{type:String},
-  hint:{type:String},
-  points:{type:Number,default:10},
+  coverImage: { type: String },
+  explain: { type: String },
+  hint: {
+    coverImage: { type: String },
+    text: { type: String },
+  },
+  points: { type: Number, default: 10 },
   correctAnswerIndex: {
     type: Number,
     required: true,
-
   },
 });
 
