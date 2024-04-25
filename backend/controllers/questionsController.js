@@ -35,13 +35,20 @@ exports.resizeQuizPhoto = catchAsync(async (req, res, next) => {
     next();
 });
 exports.addQuestionToQuiz = catchAsync(async (req, res, next) => {
-    const { question, answers, correctAnswerIndex, explain, coverImage } = req.body;
+    const { question, answers, correctAnswerIndex, explain, coverImage, } = req.body;
+    let hint = req.body.hint || {};
+    if (hint.coverImage) {
+        const b64 = Buffer.from(req.file.buffer).toString("base64");
+        const dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+        const cldRes = await cloudinary_1.default.uploader.upload(dataURI, { resource_type: "auto" });
+        hint.coverImage = cldRes.secure_url; // Set coverImage in hint object
+    }
     const newQuestion = await questionModel_1.default.create({
         question,
         answers,
         correctAnswerIndex,
         quiz: req.params.quizId,
-        explain, coverImage
+        explain, coverImage, hint
     });
     const quiz = await quizModel_1.default.findById(req.params.quizId);
     if (!quiz)
