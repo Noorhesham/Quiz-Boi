@@ -68,7 +68,7 @@ export default function ProfileTabs({ user }: { user: UserProps }) {
             </CardHeader>
             <CardContent className="grid  grid-cols-2 lg:grid-cols-3 gap-3">
               {user.likedQuizzes
-                .filter((q) => q.quiz.published)
+                .filter((q) => q.quiz?.published)
                 .slice(0, likedPagination)
                 .map((quiz, i) => (
                   <QuizCard key={i} card={true} quiz={quiz.quiz} />
