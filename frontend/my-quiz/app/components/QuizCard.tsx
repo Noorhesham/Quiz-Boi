@@ -25,7 +25,7 @@ const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; 
       <div className="relative  flex text-center justify-center  items-center w-full h-full ">
        { <DialogueQuiz
           content={<QuizShow quiz={quiz} />}
-          btn={<LazyLoadImage effect="blur" className="rounded-md h-full  aspect-[1/1] object-cover w-full" src={`${quiz.coverImage}` || "/quiz3.png"} alt={quiz.title} />}
+          btn={<LazyLoadImage effect="blur" className="rounded-md h-full  aspect-[1/1] object-cover w-full" src={`${quiz?.coverImage}` || "/quiz3.png"} alt={quiz?.title} />}
         />}
 
         <AnimatePresence>

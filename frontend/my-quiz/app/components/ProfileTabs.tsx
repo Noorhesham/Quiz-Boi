@@ -25,7 +25,7 @@ export default function ProfileTabs({ user }: { user: UserProps }) {
   const handleAttemptedLoadMore = () => {
     setAttemptedPagination((prevPagination) => prevPagination + 5);
   };
-
+console.log(user.attemptedQuizzes)
   return (
     <Tabs defaultValue="published" className="py-3 px-6 min-w-[80%]">
       <TabsList className="grid w-full grid-cols-3">
@@ -94,14 +94,16 @@ export default function ProfileTabs({ user }: { user: UserProps }) {
               <CardTitle>Attempted Quizzes</CardTitle>
             </CardHeader>
             <CardContent className="grid  grid-cols-2 lg:grid-cols-3 gap-3">
-              {user.attemptedQuizzes.slice(0, attemptedPagination).map((quiz, i) => (
-                <QuizCard
-                  key={i}
-                  href={`/quiz/${quiz.quizId.usersAttempted?.at(-1)}/results`}
-                  card={true}
-                  quiz={quiz.quizId}
-                />
-              ))}
+              {user.attemptedQuizzes.slice(0, attemptedPagination).map((quiz, i) =>{
+                 if(!quiz.quizId) return null
+                  return (<QuizCard
+                    key={i}
+                    href={`/quiz/${quiz.quizId?.usersAttempted?.at(-1)}/results`}
+                    card={true}
+                    quiz={quiz.quizId}
+                  />)
+                
+              })}
               {user.attemptedQuizzes.length === 0 && (
                 <Empty text="You have not attempted any Quiz yet">
                   <Link className="hover:underline hover:text-pink-400 duration-150" href={"/"}>
