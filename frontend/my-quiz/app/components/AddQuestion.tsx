@@ -24,7 +24,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
   const { id }: { id: string } = useParams();
   const [isPending, startTransition] = useTransition();
   const [selectedImage, setSelectedImage] = useState();
-  // const [selectedImageHint, setSelectedImageHint] = useState();
+  const [selectedImageHint, setSelectedImageHint] = useState();
   const [explain, setExplain] = useState(false);
   const [hint, setHint] = useState(false);
   const { color } = useColor();
@@ -38,7 +38,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
       answers: question?.answers || ["", ""],
       correctAnswerIndex: question?.correctAnswerIndex || 0,
       explain: question?.explain || "",
-      hint:{text:question?.hint?.text||"",}||{}
+      hint: { text: question?.hint?.text || "" } || {},
     },
   });
   const { handleSubmit, control, reset, getValues, setValue, register, formState } = form;
@@ -72,16 +72,16 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
       const formData = new FormData();
       formData.append("question", values.question);
       values.explain && formData.append("explain", values.explain);
-      values.hint &&   formData.append("hint[text]", values.hint.text);
+      values.hint && formData.append("hint[text]", values.hint.text);
+      if (values.hint && values.hint.coverImage && values.hint.coverImage.length > 0) {
+        formData.append("hint[coverImage]", values.hint.coverImage[0]);
+      }
       formData.append("correctAnswerIndex", String(values.correctAnswerIndex));
       values.answers.forEach((answer: string, index: number) => {
         formData.append(`answers[${index}]`, answer);
       });
       if (values.coverImage) {
         formData.append("coverImage", values.coverImage[0]);
-      }
-      if (values.hint && values.hint.coverImage) {
-        formData.append("hint[coverImage]", values.hint.coverImage[0]);
       }
       console.log(values);
       if (question) {
@@ -159,6 +159,14 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
           />
         )}
         {(hint || question?.hint) && (
+          <div className="flex flex-col">
+            {/* <AddPhotoForm
+              selectedImage={selectedImageHint}
+              hint={question?.hint}
+              name="hint.coverImage"
+              control={control}
+              setSelectedImage={setSelectedImageHint}
+            /> */}
             <TextInput
               placeholder="Add Hint"
               error=""
@@ -168,6 +176,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
               required={false}
               text={`Add Hint for the answer to make it more clear and ease it for the people 😺😺`}
             />
+          </div>
         )}
         <div className=" mt-2 flex justify-center items-center gap-5">
           <button
@@ -197,7 +206,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
               onClick={(e) => {
                 e.preventDefault();
                 setHint((e) => !e);
-                if (hint === false) setValue("hint",{text:""});
+                if (hint === false) setValue("hint", { text: "" });
               }}
               className={` text-[#98ebfa] border-[#aabcf6] hover:bg-gray-100 duration-200 py-2 px-2  md:px-4 flex items-center gap-2 font-semibold text-sm md:text-base cursor-pointer border-2  rounded-lg`}
             >

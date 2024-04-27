@@ -35,7 +35,7 @@ const AddPhotoForm = ({
           <FormControl>
             <>
               <label>
-                {!quiz?.coverImage && !question?.coverImage && !selectedImage && !user?.photo ? (
+                {!quiz?.coverImage && !question?.coverImage && !selectedImage && !user?.photo&&!hint?.coverImage ? (
                   <div
                     className={`flex flex-col hover:opacity-90 cursor-pointer text-gray-50 rounded-lg gap-3 py-6 px-12 items-center  ${color}`}
                   >

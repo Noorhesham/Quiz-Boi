@@ -25,13 +25,15 @@ export const QuestionSchema = z.object({
   correctAnswerIndex: z.number(),
   explain: z.string().optional(),
   hint:  z.object({
-    coverImage:  z
+    coverImage: z
     .any()
     .optional()
     .refine((files) => {
+      // Check if files are provided and meet size criteria
       return !files || !files[0] || files[0].size <= MAX_FILE_SIZE;
     }, `Max image size is ${MAX_FILE_SIZE / (1024 * 1024)}MB.`)
     .refine((files) => {
+      // Check if files are provided and meet type criteria
       return !files || !files[0] || ACCEPTED_IMAGE_MIME_TYPES.includes(files[0].type);
     }, "Only .jpg, .jpeg, .png, and .webp formats are supported."),
     text: z.string().min(0,"You must provide the hint text"),
