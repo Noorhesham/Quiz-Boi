@@ -7,11 +7,7 @@ import QuizCard from "./QuizCard";
 import Autoplay from "embla-carousel-autoplay";
 import Heading from "./Heading";
 
-const BecauseYouFollowed = () => {
-  const { user, isLoading } = useGetUser();
-  if (isLoading) return <Spinner />;
-  if (!user || !user.likedQuizzes) return;
-  console.log(user);
+const BecauseYouFollowed = ({user}:{user:any}) => {
   return (
     <Carousel
       plugins={[

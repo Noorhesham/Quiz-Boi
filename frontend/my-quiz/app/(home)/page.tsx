@@ -26,7 +26,7 @@ export default async function Page({
     <main className="flex w-full min-h-[100vh] flex-col relative  items-stretch justify-center">
       <Landing />
       <Welcome />
-      {user&&<BecauseYouFollowed/>}
+      {user&&user.likedQuizzes&&<BecauseYouFollowed user={user}/>}
       {<Feed hasNext={isNext} categories={categories} totalPages={totalPages} quizzes={data?.quizzes} />}
     </main>
   );
