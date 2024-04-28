@@ -5,6 +5,7 @@ import { GetTags } from "@/actions/GetTags";
 import { FilterQuizzesHome } from "@/actions/FilterQuizHome";
 import NotFound from "../components/NotFound";
 import BecauseYouFollowed from "../components/BecauseYouFollowed";
+import { getUser } from "@/actions/getUser";
 
 export default async function Page({
   searchParams,
@@ -14,6 +15,7 @@ export default async function Page({
     page?: number;
   };
 }) {
+  const user=await getUser()
   const categorey = searchParams?.categorey || "";
   const page = searchParams?.page || 1; 
   const { data, totalPages, totalResults, results } = await FilterQuizzesHome(categorey, page);
@@ -24,7 +26,7 @@ export default async function Page({
     <main className="flex w-full min-h-[100vh] flex-col relative  items-stretch justify-center">
       <Landing />
       <Welcome />
-      <BecauseYouFollowed/>
+      {user&&<BecauseYouFollowed/>}
       {<Feed hasNext={isNext} categories={categories} totalPages={totalPages} quizzes={data?.quizzes} />}
     </main>
   );
