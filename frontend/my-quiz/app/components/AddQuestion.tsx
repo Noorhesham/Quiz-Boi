@@ -17,6 +17,7 @@ import AddPhotoForm from "./AddPhotoForm";
 import { useColor } from "../context/ColorContext";
 import TextInput from "./QuestionInput";
 import Spinner from "./Spinner";
+import DescriptionInput from "./DescriptionInput";
 
 const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; question?: QuestionProps }) => {
   const [error, setFormError] = useState<string | any>("");
@@ -51,7 +52,6 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
   const handleDeleteAnswer = (index: number) => {
     if (getValues("answers").length < 2) return; // Ensure at least one answer remains
     const newAnswers = getValues("answers").filter((_, i) => i !== index);
-    reset(); // Reset the form to unregister all inputs
     newAnswers.forEach((_, index) => {
       register(`answers.${index}`); // Register each new answer input
     });
@@ -149,7 +149,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
           ))}
         </div>
         {(explain || question?.explain) && (
-          <TextInput
+          <DescriptionInput
             error=""
             name="explain"
             control={control}
