@@ -144,11 +144,11 @@ export const useSubmitQuiz = () => {
     },
     onSuccess: (data) => {
       console.log(data);
-      if (data.status === "success") {
+
         handleQuizEnd();
         router.push(`/quiz/${data.data.userAttempt._id}/results`);
         toast.success("Quiz successfully submitted .. we are redirecting you to your results page ! 😺");
-      }
+      
       if (data.error) {
         throw new Error(data.message);
       }
