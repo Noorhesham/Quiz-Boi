@@ -52,6 +52,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
   const handleDeleteAnswer = (index: number) => {
     if (getValues("answers").length < 2) return; // Ensure at least one answer remains
     const newAnswers = getValues("answers").filter((_, i) => i !== index);
+    reset(); // Reset the form to unregister all inputs
     newAnswers.forEach((_, index) => {
       register(`answers.${index}`); // Register each new answer input
     });
@@ -151,11 +152,11 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
         {(explain || question?.explain) && (
           <DescriptionInput
             error=""
+            placeholder="Add Explaination"
             name="explain"
             control={control}
             isPending={isPending}
             required={false}
-            placeholder="Add Explaination"
             text={`Add Explaination for the answer to make it more benefit for the people 😺😺`}
           />
         )}
@@ -168,7 +169,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
               control={control}
               setSelectedImage={setSelectedImageHint}
             /> */}
-            <TextInput
+            <DescriptionInput
               placeholder="Add Hint"
               error=""
               name="hint.text"
