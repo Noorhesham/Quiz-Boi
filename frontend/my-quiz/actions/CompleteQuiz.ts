@@ -1,15 +1,18 @@
-"use server";
 import { API_URL } from "@/constants";
-import axios from "axios";
-export const CompleteQuiz = async (values: any, id: string) => {
+
+export const CompleteQuiz = async (values:any, id:string) => {
   try {
-    const res = await axios.post(`${API_URL}/quiz/${id}/completed`, values,{timeout:30000});
-    console.log(res)
-    return res.data;
-  } catch (err: any) {
-    if (err.response.data) return err.response.data;
-    if (err.message === "Failed to fetch")
-      err.message = `Unable to reach the server. Please check your internet connection...`;
+    const res = await fetch(`${API_URL}/quiz/${id}/completed`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    });
+    const data = await res.json();
+    console.log(data);
+    return data;
+  } catch (err) {
     throw err;
   }
 };
