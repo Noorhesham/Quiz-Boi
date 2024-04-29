@@ -25,6 +25,7 @@ const page = async ({ params }: { params: { id: string } }) => {
   return (
     <main className=" relative spacer  flex flex-col items-center">
       <Celebrate text={`You Scored ${attempt.points}`} img={howGood} />
+      <Heading text={`Your percentage is ${attempt.percentage}%`}/>
       {attempt.username&&<Heading text={`Hey ${attempt.username}`}/>}
       <Results answers={answers} list={list} />
       {/* <LeaderBoard attempts={usersAttempted}/> */}
