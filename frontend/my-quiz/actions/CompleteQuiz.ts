@@ -3,7 +3,7 @@ import { API_URL } from "@/constants";
 import axios from "axios";
 export const CompleteQuiz = async (values: any, id: string) => {
   try {
-    const res = await axios.post(`${API_URL}/quiz/${id}/completed`, values);
+    const res = await axios.post(`${API_URL}/quiz/${id}/completed`, values,{timeout:30000});
     console.log(res)
     return res.data;
   } catch (err: any) {
