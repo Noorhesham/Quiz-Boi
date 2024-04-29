@@ -17,7 +17,7 @@ const QuestionItem = ({ question, len }: { question: QuestionProps; len: number 
       {question?.coverImage && <img src={question?.coverImage} className="w-[20rem] mx-auto" />}
       <div className="bg-white shadow-md flex flex-col items-end px-5 py-3 md:py-10 md:px-20 relative border-gray-300 border-2 rounded-md">
         <h2 className="  text-base md:text-2xl text-left self-start text-gray-800 font-semibold">{question.question}</h2>
-        {question.hint&&<DialogCustom
+        {question.hint&&question.hint.text!==""&&<DialogCustom
         content={<Hint text={question.hint.text}/>}
           title="This is Hint By Quiz author"
           description=""
