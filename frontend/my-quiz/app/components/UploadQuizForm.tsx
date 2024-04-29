@@ -34,6 +34,7 @@ const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) 
       title: quiz?.title || "",
       questionNum: quiz?.questionNum || 10,
       tags: quiz?.tags || [],
+      description:quiz?.description||"",
       duration: quiz?.duration || 2,
     },
   });
@@ -102,7 +103,7 @@ const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) 
         {/* <TagsForm control={control} isPending={isPending} /> */}
         {/* @ts-ignore*/}
         <TaggingComponent defaultVal={formState.defaultValues?.tags} control={control} />
-        <Description control={control} isPending={isPending} />
+        <Description  control={control} isPending={isPending} />
         <FormError message={error} />
         <FormSuccess message={success} />
         <div className="space-y-4">
