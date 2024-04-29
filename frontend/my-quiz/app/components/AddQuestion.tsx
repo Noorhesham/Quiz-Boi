@@ -155,6 +155,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
             control={control}
             isPending={isPending}
             required={false}
+            placeholder="Add Explaination"
             text={`Add Explaination for the answer to make it more benefit for the people 😺😺`}
           />
         )}

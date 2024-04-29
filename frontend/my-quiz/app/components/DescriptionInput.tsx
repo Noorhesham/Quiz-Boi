@@ -31,7 +31,7 @@ const DescriptionInput = ({
               <div>
               <textarea
                 draggable={false}
-                className="py-3 px-3 resize-none pb-6 bg-[#fcedea] rounded-lg text-black"
+                className="py-3 px-3 resize-none pb-6 bg-pink-500 w-full rounded-lg text-black"
                 disabled={isPending}
                 {...field} 
                 placeholder={placeholder?placeholder:"What are server components ?"}
