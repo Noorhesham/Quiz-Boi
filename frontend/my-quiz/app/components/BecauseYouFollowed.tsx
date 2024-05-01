@@ -28,7 +28,7 @@ const BecauseYouFollowed = ({user}:{user:any}) => {
           if(!quiz||!quiz.title) return null
           return  (
             <CarouselItem key={i} className="md:basis-1/2 lg:basis-1/4">
-              <QuizCard quiz={quiz.quiz} />
+              <QuizCard quiz={quiz} />
             </CarouselItem>
           )  
         })}
