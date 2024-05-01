@@ -60,7 +60,7 @@ const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; 
       </div>
       <div className="py-3 px-2 w-full">
         <div className="flex py-2 px-4 text-gray-800 justify-between items-center">
-          <h6 className="font-semibold">{quiz.title}</h6>
+          <h6 className="font-semibold">{quiz?.title}</h6>
           <div>
             <span className="self-end text-sm text-nowrap">Duration:{quiz.duration} min</span>
           </div>

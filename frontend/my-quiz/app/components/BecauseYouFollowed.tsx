@@ -8,6 +8,7 @@ import Autoplay from "embla-carousel-autoplay";
 import Heading from "./Heading";
 
 const BecauseYouFollowed = ({user}:{user:any}) => {
+  console.log(user)
   return (
     <Carousel
       plugins={[
@@ -23,11 +24,14 @@ const BecauseYouFollowed = ({user}:{user:any}) => {
     >
       <Heading text="Suggested For You :" />
       <CarouselContent className=" mt-4">
-        {user.likedQuizzes.map((quiz: any, i: number) => (
-          <CarouselItem key={i} className="md:basis-1/2 lg:basis-1/4">
-            <QuizCard quiz={quiz.quiz} />
-          </CarouselItem>
-        ))}
+        {user.likedQuizzes.map((quiz: any, i: number) =>{
+          if(!quiz||!quiz.title) return null
+          return  (
+            <CarouselItem key={i} className="md:basis-1/2 lg:basis-1/4">
+              <QuizCard quiz={quiz.quiz} />
+            </CarouselItem>
+          )  
+        })}
       </CarouselContent>
       <CarouselPrevious className=" absolute left-0 " />
       <CarouselNext className=" absolute right-0 " />
