@@ -25,7 +25,7 @@ export default function ProfileTabs({ user }: { user: UserProps }) {
   const handleAttemptedLoadMore = () => {
     setAttemptedPagination((prevPagination) => prevPagination + 5);
   };
-console.log(user.attemptedQuizzes)
+console.log(user.likedQuizzes)
   return (
     <Tabs defaultValue="published" className="py-3 px-6 min-w-[80%]">
       <TabsList className="grid w-full grid-cols-3">
@@ -68,10 +68,10 @@ console.log(user.attemptedQuizzes)
             </CardHeader>
             <CardContent className="grid  grid-cols-2 lg:grid-cols-3 gap-3">
               {user.likedQuizzes
-                .filter((q) => q.quiz?.published)
+                .filter((q) => q?.published)
                 .slice(0, likedPagination)
                 .map((quiz, i) => (
-                  <QuizCard key={i} card={true} quiz={quiz.quiz} />
+                  <QuizCard key={i} card={true} quiz={quiz} />
                 ))}
               {user.likedQuizzes.length === 0 && (
                 <Empty text="You have not liked any Quizzes">

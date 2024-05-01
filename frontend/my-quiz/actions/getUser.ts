@@ -42,7 +42,8 @@ export const getUserDetails = async () => {
       cache: "force-cache",
     }).then((res) => res.json());
     const photo = user?.data?.user?.photo;
-    const likedQuizzes = await Promise.all(user.data?.user.likedQuizzes.map((q: any) => GetQuizPublic(q.quiz)));
+    const likedQuizzes = await Promise.all(user.data?.user.likedQuizzes.slice(0,10).map((q: any) => GetQuizPublic(q.quiz).then(d=>d.data.quiz)));
+    console.log(user,likedQuizzes)
     if (user.data?.user) {
       return {
         ...user.data.user,
