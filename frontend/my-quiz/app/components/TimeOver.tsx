@@ -29,6 +29,7 @@ const TimeOver = () => {
         <p className=" text-gray-200 font-normal">
           Sadly time of quiz is over ! 😿🌌 But we have submitted your answers ! you can see your results !
         </p>
+
       </div>
       <div className="">
         {isPending || isLoading ? (
