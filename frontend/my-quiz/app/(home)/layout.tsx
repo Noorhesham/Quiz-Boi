@@ -7,7 +7,6 @@ import ColorWrapper from "../components/ColorWrapper";
 import { ToastContainer, } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
   title: "Quiz Boi",
