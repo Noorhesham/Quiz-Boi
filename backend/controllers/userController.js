@@ -74,6 +74,8 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 exports.followUser = catchAsync(async (req, res, next) => {
     const currentUser = req.user;
     const userToFollow = await userModel_1.default.findById(req.params.id);
+    if (currentUser === userToFollow._id)
+        return next(new AppError_1.default("You are already Cannot follow yourself !", 400));
     console.log(userToFollow, currentUser);
     if (!userToFollow)
         return next(new AppError_1.default("You are already following this user.", 400));
@@ -112,28 +114,54 @@ exports.getUser = catchAsync(async (req, res, next) => {
     res.status(200).json({ status: "success", data: { user } });
 });
 exports.getFollowers = catchAsync(async (req, res, next) => {
-    const user = await userModel_1.default.findById(req.params.id);
+    const user = await userModel_1.default.findById(req.params.id).populate({
+        path: "followers",
+        options: {
+            select: "photo name _id",
+            skip: req.query.page ? (parseInt(req.query.page, 10) - 1) * 10 : 0,
+            limit: 10,
+        },
+    });
     if (!user)
         return next(new AppError_1.default(`There is no userfound with that id`, 404));
-    const page = req.query.page ? parseInt(req.query.page, 10) : 1;
-    const limit = 10;
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const followers = await Promise.all(user.followers.slice(startIndex, endIndex).map((follower) => userModel_1.default.findById(follower).select("photo name _id")));
-    console.log(followers, user.followers);
-    res.status(200).json({ status: "success", results: followers.length, data: { followers } });
+    const followers = user.followers;
+    res.status(200).json({ status: "success", results: user.following.length, data: { followers } });
 });
 exports.getFollowing = catchAsync(async (req, res, next) => {
-    const user = await userModel_1.default.findById(req.params.id);
+    const user = await userModel_1.default.findById(req.params.id).populate({
+        path: "following",
+        options: {
+            select: "photo name _id",
+            skip: req.query.page ? (parseInt(req.query.page, 10) - 1) * 10 : 0,
+            limit: 10,
+        },
+    });
     if (!user)
         return next(new AppError_1.default(`There is no userfound with that id`, 404));
-    const page = req.query.page ? parseInt(req.query.page, 10) : 1;
-    const limit = 5;
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const following = await Promise.all(user.following.slice(startIndex, endIndex).map((following) => userModel_1.default.findById(following).select("photo name _id")));
-    console.log(following, user.following);
-    res.status(200).json({ status: "success", results: following.length, data: { following } });
+    const following = user.following;
+    res.status(200).json({ status: "success", results: user.following.length, data: { following } });
+});
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+exports.becauseYouFollowed = catchAsync(async (req, res, next) => {
+    const user = await userModel_1.default.findById(req.user);
+    const quizzesPromises = user.following.map(async (followedUser) => {
+        if (followedUser !== req.user) {
+            const followedUserData = await userModel_1.default.findById(followedUser).populate("quizzes");
+            return followedUserData.quizzes.filter((quiz) => quiz.published === true);
+        }
+    });
+    const quizzesArrays = await Promise.all(quizzesPromises);
+    const quizzes = quizzesArrays.flat();
+    const shuffledQuizzes = shuffleArray(quizzes);
+    const suggestedQuizzes = shuffledQuizzes.slice(0, 10);
+    console.log(quizzes, quizzesArrays);
+    res.status(200).json({ status: "success", data: { results: suggestedQuizzes.length, suggestedQuizzes } });
 });
 const userFactory = new handlerFactory_1.default(userModel_1.default, "user");
 exports.getAllUsers = userFactory.getAll();

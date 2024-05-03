@@ -18,7 +18,8 @@ router.use(authController.protect);
 router.get("/me", userController.getMe, userController.getUser);
 router.get("/me-details", userController.getMe, userController.getDetails);
 router.patch("/updateMe", userController.upload, userController.resizeQuizPhoto, userController.updateMe);
-router.patch('/updateMyPassword', authController.protect, authController.updatePassword); //token + new password
+router.patch("/updateMyPassword", authController.protect, authController.updatePassword); //token + new password
 router.post("/:id/follow", authController.protect, userController.followUser);
 router.post("/:id/unfollow", authController.protect, userController.unfollowUser);
+router.get("/suggessions", authController.protect, userController.becauseYouFollowed);
 module.exports = router;
