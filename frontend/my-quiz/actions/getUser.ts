@@ -14,7 +14,6 @@ export const getUser = async () => {
       cache: "force-cache",
       next: { revalidate: 3600 },
     }).then((res) => res.json());
-    console.log(user);
     const likedQuizzes = await Promise.all(
       user.data?.user.likedQuizzes.slice(0, 10).map((q: any) => GetQuizPublic(q.quiz).then((d) => d.data.quiz))
     );
@@ -47,7 +46,6 @@ export const getUserDetails = async () => {
     const likedQuizzes = await Promise.all(
       user.data?.user.likedQuizzes.slice(0, 10).map((q: any) => GetQuizPublic(q.quiz).then((d) => d.data.quiz))
     );
-    console.log(user, likedQuizzes);
     if (user.data?.user) {
       return {
         ...user.data.user,

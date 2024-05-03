@@ -1,3 +1,4 @@
+"use server"
 import { API_URL } from "@/constants";
 
 export const getFollowing = async (id:string,page:number=1) => {
@@ -8,7 +9,8 @@ export const getFollowing = async (id:string,page:number=1) => {
         throw new Error(errorData.message);
       }
       const data = await res.json();
-      return data;
+      console.log(data)
+      return data.data.following;
     } catch (err:any) {
       console.log(err);
       if (err?.message === "Failed to fetch") {
@@ -19,13 +21,15 @@ export const getFollowing = async (id:string,page:number=1) => {
   };
 export const getFollowers = async (id:string,page:number=1) => {
     try {
-        const res = await fetch(`${API_URL}/users/public/${id}/followers?page=${page}`);
+      const res = await fetch(`${API_URL}/users/public/${id}/followers?page=${page}`);
+      console.log(id,page,res)
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message);
       }
       const data = await res.json();
-      return data;
+      console.log(res,data)
+      return data.data.followers;
     } catch (err:any) {
       console.log(err);
       if (err?.message === "Failed to fetch") {

@@ -15,7 +15,7 @@ import { getFollowers, getFollowing } from "@/actions/getFollowers";
 import { getPublicUser, getPublicUserMini, getUser } from "@/actions/getUser";
 import { logout as logoutAPI } from "@/actions/logout";
 import { useQuiz } from "@/app/context/QuizContext";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -57,27 +57,51 @@ export const useGetUsersMiniPublic = (arr: Array<string>) => {
   });
   return { users, isLoading, error };
 };
-export const useGetFollowers = (id: string, page: number) => {
+
+export const useGetFollowers = (id: string, ) => {
   const {
     data: followers,
     isLoading,
     error,
-  } = useQuery({
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: [`followers ${id}`],
-    queryFn: async () => await getFollowers(id, page),
+    queryFn: async ({ pageParam = 1 }) => {
+      const data = await getFollowers(id, pageParam);
+      return data;
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length === 0) return undefined;
+      return allPages.length + 1;
+    },
+    initialPageParam: 1,
   });
-  return { followers, isLoading, error };
+  return { followers, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage };
 };
-export const useGetFollowing = (id: string, page: number) => {
+
+export const useGetFollowing = (id: string) => {
   const {
     data: following,
     isLoading,
     error,
-  } = useQuery({
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: [`following ${id}`],
-    queryFn: async () => getFollowing(id, page),
+    queryFn: async ({ pageParam = 1 }) => {
+      const data = await getFollowing(id, pageParam);
+      return data;
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length === 0) return undefined;
+      return allPages.length + 1;
+    },
+    initialPageParam: 1,
   });
-  return { following, isLoading, error };
+  return { following, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage };
 };
 
 export const useLogOut = () => {

@@ -7,6 +7,7 @@ import UpdatePasswordForm from "./UpdatePasswordForm";
 import Follow from "./Follow";
 import MiniHeaderLink from "./MiniHeaderLink";
 import FollowList from "./FollowList";
+import FollowingList from "./FollowingList";
 
 const UserCard = ({ user, mine = false }: { user: UserProps; mine: boolean }) => {
   console.log(user);
@@ -21,7 +22,7 @@ const UserCard = ({ user, mine = false }: { user: UserProps; mine: boolean }) =>
         <div className="flex items-center gap-5">
           {user.followers.length !== 0 ? (
             <DialogCustom title="Followers" description="See Followers"
-              content={<FollowList id={user._id} role={"followers"} />}
+              content={<FollowList length={user.followers.length} id={user._id} />}
               btn={<MiniHeaderLink text={`${user.followers.length} followers`} />}
             />
           ) : (
@@ -29,7 +30,7 @@ const UserCard = ({ user, mine = false }: { user: UserProps; mine: boolean }) =>
           )}
           {user.following.length !== 0 ? (
             <DialogCustom title="Following" description="See Followings"
-              content={<FollowList id={user._id} role={"following"} />}
+              content={<FollowingList length={user.following.length} id={user._id}  />}
               btn={<MiniHeaderLink text={`${user.following.length} following`} />}
             />
           ) : (

@@ -1,13 +1,14 @@
 "use client";
-import { useGetFollowers } from "@/utils/queryFunctions";
-import User from "./User";
+import { useGetFollowing } from "@/utils/queryFunctions";
+import React, { useState } from "react";
 import Spinner from "./Spinner";
 import { UserProps } from "@/types";
+import User from "./User";
 import GlobalButton from "./GlobalButton";
 import { FaSpinner } from "react-icons/fa";
 
-const FollowList = ({ id, length }: { id: string; length: number }) => {
-  const { followers, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetFollowers(id);
+const FollowingList = ({ id, length }: { id: string; length: number }) => {
+  const { following, isLoading, fetchNextPage, hasNextPage,isFetchingNextPage } = useGetFollowing(id,);
   const handleLoadMore = () => {
     if (hasNextPage && !isLoading) fetchNextPage();
   };
@@ -17,17 +18,17 @@ const FollowList = ({ id, length }: { id: string; length: number }) => {
         <Spinner />
       ) : (
         <>
-          {followers?.pages.flat(1).map((user: UserProps, i: number) => (
+          {following?.pages.flat(1).map((user: UserProps, i: number) => (
             <User key={i} author={user} />
           ))}
-            {isFetchingNextPage && <FaSpinner className="animate-spin" />}
-          {followers && length > followers.pages.flat(1).length && hasNextPage && (
+          {following && length > following.pages.flat(1).length && hasNextPage && (
             <GlobalButton className=" mt-5" text="Load More" onClick={handleLoadMore} />
           )}
+          {isFetchingNextPage&&<FaSpinner className="animate-spin"/>}
         </>
       )}
     </div>
   );
 };
 
-export default FollowList;
+export default FollowingList;
