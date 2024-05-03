@@ -1,12 +1,10 @@
 "use client";
 import { useGetUser } from "@/utils/queryFunctions";
 import React from "react";
-import Loader from "./Loader";
 import WhatToDo from "./WhatToDo";
 
 const Welcome = () => {
   const { user, isLoading } = useGetUser();
-  if (isLoading) return <Loader />;
   return (
     <div className={`flex   max-w-full  bg-white flex-col px-5 md:px-0 py-10 items-center gap-3`}>
       <h4 className=" text-stroke-3 z-10 text-5xl font-semibold  text-gray-50">

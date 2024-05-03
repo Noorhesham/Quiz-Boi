@@ -19,7 +19,7 @@ const Description = ({ control, isPending, text, name, value }: { control: any; 
             <FormControl  onClick={stopPropagation}>
               <textarea
                 draggable={false}
-                className="py-3 px-3 resize-none pb-6 bg-[#fcedea] rounded-lg text-black"
+                className="py-3 px-3 resize-none pb-6 bg-[#eed3f3] rounded-lg text-black"
                 disabled={isPending}
                 {...field} 
                 placeholder="react quiz"

@@ -13,9 +13,9 @@ const Quiz = ({ quiz, dark = false }: { quiz: QuizProps; dark?: boolean }) => {
   const { color } = useColor();
   return (
     <div
-      className={` ${
+      className={` ${ 
         dark && "text-gray-800"
-      } rounded-lg bg-gray-100 cursor-pointer text-gray-800  hover:bg-pink-400 duration-200  hover:text-gray-100 shadow-md flex sm:flex-row flex-col-reverse md:flex-nowrap flex-wrap items-center  justify-between gap-8 py-5 px-10 `}
+      } rounded-lg bg-gray-100 glass-white cursor-pointer text-gray-800  hover:bg-pink-400 duration-200  hover:text-gray-100 shadow-md flex sm:flex-row flex-col-reverse md:flex-nowrap flex-wrap items-center  justify-between gap-8 py-5 px-10 `}
     >
       <div className="flex flex-col   justify-between flex-wrap">
         <h2 className={`  capitalize font-semibold text-xl`}>{quiz.title}</h2>

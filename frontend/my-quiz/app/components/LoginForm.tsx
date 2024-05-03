@@ -14,7 +14,6 @@ import { LoginSchema } from "@/schemas";
 import { login } from "@/actions/login";
 import Social from "./Social";
 import { useRouter } from "next/navigation";
-import Loader from "./Loader";
 import Spinner from "./Spinner";
 import { toast } from "react-toastify";
 
@@ -130,7 +129,6 @@ const LoginForm = () => {
           </form>
         </Form>
       </CardWrapper>
-      {isPending && <Loader />}
     </section>
   );
 };

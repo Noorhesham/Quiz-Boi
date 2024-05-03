@@ -19,7 +19,7 @@ const page = async ({
    if(!user)  return redirect("/");
 
   return (
-    <section className=" py-10 pt-32 px-20  rounded-md min-h-[80vh] ">
+    <section className=" py-10 pt-32 px-4 md:px-20 spacebg  rounded-md min-h-[80vh] ">
       <Heading text="My Quizzes" />
       {user.quizzes.length < 1 && (
         <Empty text="You created no quizzes yet !">

@@ -15,6 +15,12 @@ body,*{
   background-size: cover;
   background-repeat: no-repeat;
 }
+.spacebg {
+  background-image: url("/space.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 .skyblue {
   background-image: linear-gradient(to bottom left, #3765d8, #12b0fc);
   transition: all;
@@ -39,7 +45,9 @@ body,*{
 .green span {
   @apply bg-gradient-to-r from-green-500 via-green-600 to-green-500 bg-clip-text text-transparent;
 }
-
+.body-2{
+  @apply text-[0.875rem] leading-[1.5rem] md:text-[1rem] md:leading-[1.75rem] lg:text-[1.25rem] lg:leading-8
+}
 .purple {
   background-image: linear-gradient(to bottom left, #66389d, #a452c9);
   transition: all;
@@ -65,6 +73,14 @@ backdrop-filter: blur(5px);
 -webkit-backdrop-filter: blur(5px);
 border: 3px solid rgba(250, 6, 128, 0.3);
 
+}
+.glass-white{
+background: rgba(255, 255, 255, 0.2);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .floating {  
@@ -546,4 +562,12 @@ border: 3px solid rgba(250, 6, 128, 0.3);
 .shelf:after {
   top: 400%;
   left: 7.5%;
+}
+.h4{
+  @apply text-[2rem] leading-normal
+}
+.h2{
+  @apply text-[1.75rem] leading-[2.5rem] md:text-[2rem] md:leading-[2.5rem] lg:text-[2.5rem] lg:leading-[3.5rem] xl:text-[3rem] xl:leading-tight}
+.conic{
+   background: conic-gradient(from 225deg, #FFC876, #79FFF7, #9F53FF, #FF98E2, #FFC876)
 }
