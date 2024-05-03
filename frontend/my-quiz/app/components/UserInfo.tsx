@@ -5,7 +5,6 @@ import Follow from "./Follow";
 import { HoverCardContent } from "@radix-ui/react-hover-card";
 
 const UserInfro = ({ author }: { author: UserProps }) => {
-  console.log(author)
   return (
     <HoverCardContent className="w-80 py-2 px-4 rounded-3xl shadow-lg bg-gray-100 flex flex-col">
       <div className="flex flex-col justify-between space-x-4">

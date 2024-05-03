@@ -12,20 +12,21 @@ const BecauseYouFollowed = ({
   suggesstions,
   text,
   span,
+  DELAY = 2000,
 }: {
   user?: any;
   suggesstions?: [QuizProps];
   text?: string;
   span?: string;
   img?: string;
+  DELAY?: number;
 }) => {
   const list = suggesstions ? suggesstions : user.likedQuizzes;
-  console.log(list);
   return (
     <Carousel
       plugins={[
         Autoplay({
-          delay: 2000,
+          delay: DELAY,
         }),
       ]}
       opts={{

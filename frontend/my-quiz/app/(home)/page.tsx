@@ -26,10 +26,10 @@ export default async function Page({
   const isNext = page < totalPages && results < totalResults;
   if (!data) return <NotFound text="there are no quizzes" />;
   return (
-    <main className="flex scroll-smooth w-full min-h-[100vh] flex-col relative  items-stretch justify-center">
+    <main className="flex max-w-full overflow-hidden scroll-smooth w-full min-h-[100vh] flex-col relative  items-stretch justify-center">
       <Landing />
       <Welcome />
-      {suggesstions && <BecauseYouFollowed img={"/cause.png"} text="Based On Your " span="Followings :" suggesstions={suggesstions} />}
+      {suggesstions && <BecauseYouFollowed DELAY={4000} img={"/cause.png"} text="Based On Your " span="Followings :" suggesstions={suggesstions} />}
       {user && user.likedQuizzes && <BecauseYouFollowed user={user} />}
       {<Feed hasNext={isNext} categories={categories} totalPages={totalPages} quizzes={data?.quizzes} />}
     </main>

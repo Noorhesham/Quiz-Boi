@@ -34,7 +34,7 @@ const Like = ({ id, count, icon }: { id: string; count?: number; icon?: any }) =
         )}{" "}
         <button disabled={isPending||isPending2}
           className={`${
-            isLiked ? "text-pink-500 ":""
+            isLiked ? "text-pink-500 active:text-pink-500 ":""
           } flex items-center gap-1 active:text-pink-500 text-gray-400 cursor-pointer text-lg hover:text-pink-500 duration-500`}
         >
           {icon ? React.cloneElement(icon) : <IoIosHeart onClick={handleLikeClick} />}

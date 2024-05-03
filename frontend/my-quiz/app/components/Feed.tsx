@@ -38,13 +38,12 @@ const Feed = ({
   }
   function handlePagination(page: string) {
     const params = new URLSearchParams(searchParams);
-    console.log(page);
     if (page) params.set("page", page);
     else params.delete("page");
     replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
   return (
-    <section id="play" className=" pt-5">
+    <section id="play" className=" relative pt-5">
       <div className="p-8 flex md:flex-row flex-col items-stretch justify-between">
         <Heading text="Find your desired quiz now !" />
         <div className="flex items-center gap-10">

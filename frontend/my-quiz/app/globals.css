@@ -73,6 +73,8 @@ body{
   width: 100%;
   position: absolute;
   bottom: 0;
+  filter: brightness(1.2) saturate(1.5) hue-rotate(330deg);
+
   left: 0;
   animation: animate ease-in-out 4s infinite;
 }

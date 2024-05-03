@@ -6,9 +6,10 @@ import Wave from "./Wave";
 import DialogCustom from "./DialogCustom";
 import { WhoAmI } from "./WhoAmI";
 import TechStack from "./TechStack";
+import { BackgroundCircles } from "./BackgroundCircles";
 const Landing = () => {
   return (
-    <section className="flex space  flex-wrap items-center relative overflow-hidden pt-32 justify-between gap-20 p-8 md:p-20">
+    <section className="flex space  flex-wrap items-center relative  pt-32 justify-between gap-20 p-8 md:p-20">
       <Image src="/sun1.png" width={250} height={250} alt="effect" className="absolute z-[1] top-14 left-1" />
       <div className="flex flex-col gap-5 md:gap-10 flex-[100%] md:flex-[20%] z-10">
         <h1 className=" text-gray-50 text-[2.5rem] md:text-[4rem] lg:text-[5rem] font-bold ">
@@ -41,7 +42,7 @@ const Landing = () => {
         </div>
       </div>
       <motion.div
-        className=" relative mb-4 flex-1 text-center"
+        className=" relative z-50 mb-4 flex-1 text-center"
         initial={{ y: -10 }}
         animate={{ y: -50 }}
         transition={{
@@ -55,6 +56,7 @@ const Landing = () => {
         <Image className=" absolute top-10 right-96" src="/sunn.png" width={500} height={500} alt="landing" />
       </motion.div>
       <Wave />
+      <BackgroundCircles/>
     </section>
   );
 };
