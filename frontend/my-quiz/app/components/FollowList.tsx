@@ -20,7 +20,7 @@ const FollowList = ({ id, length }: { id: string; length: number }) => {
           {followers?.pages.flat(1).map((user: UserProps, i: number) => (
             <User key={i} author={user} />
           ))}
-            {isFetchingNextPage && <FaSpinner className="animate-spin" />}
+          {isFetchingNextPage && <FaSpinner className="animate-spin" />}
           {followers && length > followers.pages.flat(1).length && hasNextPage && (
             <GlobalButton className=" mt-5" text="Load More" onClick={handleLoadMore} />
           )}
