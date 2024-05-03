@@ -21,7 +21,7 @@ const UserCard = ({ user, mine = false }: { user: UserProps; mine: boolean }) =>
         <div className="flex items-center gap-5">
           {user.followers.length !== 0 ? (
             <DialogCustom title="Followers" description="See Followers"
-              content={<FollowList list={user.followers} />}
+              content={<FollowList id={user._id} role={"followers"} />}
               btn={<MiniHeaderLink text={`${user.followers.length} followers`} />}
             />
           ) : (
@@ -29,7 +29,7 @@ const UserCard = ({ user, mine = false }: { user: UserProps; mine: boolean }) =>
           )}
           {user.following.length !== 0 ? (
             <DialogCustom title="Following" description="See Followings"
-              content={<FollowList list={user.following} />}
+              content={<FollowList id={user._id} role={"following"} />}
               btn={<MiniHeaderLink text={`${user.following.length} following`} />}
             />
           ) : (

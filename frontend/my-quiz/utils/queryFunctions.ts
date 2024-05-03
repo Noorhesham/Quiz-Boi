@@ -11,6 +11,7 @@ import { PublishQuiz as PublishQuizApi } from "@/actions/PublishQuiz";
 import { RemoveQuiz } from "@/actions/RemoveQuiz";
 import { SolveQuiz } from "@/actions/SolveQuestion";
 import { GetAttempt } from "@/actions/getAttempt";
+import { getFollowers, getFollowing } from "@/actions/getFollowers";
 import { getPublicUser, getPublicUserMini, getUser } from "@/actions/getUser";
 import { logout as logoutAPI } from "@/actions/logout";
 import { useQuiz } from "@/app/context/QuizContext";
@@ -55,6 +56,28 @@ export const useGetUsersMiniPublic = (arr: Array<string>) => {
     queryFn: async () => await Promise.all(arr.map((ar) => getPublicUserMini(ar))),
   });
   return { users, isLoading, error };
+};
+export const useGetFollowers = (id: string, page: number) => {
+  const {
+    data: followers,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [`followers ${id}`],
+    queryFn: async () => await getFollowers(id, page),
+  });
+  return { followers, isLoading, error };
+};
+export const useGetFollowing = (id: string, page: number) => {
+  const {
+    data: following,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [`following ${id}`],
+    queryFn: async () => getFollowing(id, page),
+  });
+  return { following, isLoading, error };
 };
 
 export const useLogOut = () => {
@@ -279,7 +302,7 @@ export const usedeleteComment = () => {
   return { RemoveCommentFromQuiz, isPending, error, isSuccess };
 };
 export const usedeleteQuiz = () => {
-  const queryClient=useQueryClient()
+  const queryClient = useQueryClient();
   const {
     mutate: RemoveTheQuiz,
     error,
@@ -294,7 +317,7 @@ export const usedeleteQuiz = () => {
       if (data.error) throw new Error(data.message);
       toast.success(`Quiz is deleted successfully !`);
       //@ts-ignore
-      queryClient.invalidateQueries('user')
+      queryClient.invalidateQueries("user");
       return data;
     },
     onError: (err) => {

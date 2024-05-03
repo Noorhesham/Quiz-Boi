@@ -1,16 +1,20 @@
 "use client";
-import { useGetUsersMiniPublic,  } from "@/utils/queryFunctions";
-import React from "react";
+import { useGetFollowers, useGetFollowing, useGetUsersMiniPublic,  } from "@/utils/queryFunctions";
+import React, { useState } from "react";
 import User from "./User";
 import Spinner from "./Spinner";
+import { UserProps } from "@/types";
 
-const FollowList = ({ list }: { list: Array<string> }) => {
-  const { users, isLoading } = useGetUsersMiniPublic(list);
-  console.log(users, list);
+const FollowList = ({ role,id }: { role:string,id:string}) => {
+  const [page,setPage]=useState(1)
+  const {followers,isLoading}=useGetFollowers(id,page)
+  const {following,isLoading:isLoading2}=useGetFollowing(id,page)
+  const users=role==='followers'?followers:following;
+
   return (
     <div className=" flex flex-col min-h-[20vh] items-start gap-3">
-      {isLoading && <Spinner />}
-      {users?.map((user,i) => (
+      {isLoading ||isLoading2&& <Spinner />}
+      {users.map((user:UserProps,i:number) => (
         <User key={i} author={user} />
       ))}
     </div>
