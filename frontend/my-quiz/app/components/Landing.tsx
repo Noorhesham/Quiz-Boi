@@ -9,13 +9,13 @@ import TechStack from "./TechStack";
 import { BackgroundCircles } from "./BackgroundCircles";
 const Landing = () => {
   return (
-    <section className="flex space  flex-wrap items-center relative  pt-32 justify-between gap-20 p-8 md:p-20">
+    <section className="flex space ove  flex-wrap items-center relative  pt-32 justify-between gap-20 p-8 md:p-20">
       <Image src="/sun1.png" width={250} height={250} alt="effect" className="absolute z-[1] top-14 left-1" />
-      <div className="flex flex-col gap-5 md:gap-10 flex-[100%] md:flex-[20%] z-10">
+      <div className="flex relative z-20 flex-col gap-5 md:gap-10 flex-[100%] md:flex-[20%] ">
         <h1 className=" text-gray-50 text-[2.5rem] md:text-[4rem] lg:text-[5rem] font-bold ">
           The Best Plattform <div className={` text-red-400`}>Quiz Web-App</div>
         </h1>
-        <p className=" text-gray-100 text-lg md:text-2xl font-[400]">
+        <p className=" text-gray-100 relative z-20 text-lg md:text-2xl font-[400]">
           Compete with your friends and solve quizzes. Publish your quizzes. Explore the world of Quiz boi
         </p>
         <div className="flex flex-col md:flex-row gap-5 items-center mt-auto ">
@@ -42,7 +42,7 @@ const Landing = () => {
         </div>
       </div>
       <motion.div
-        className=" relative z-50 mb-4 flex-1 text-center"
+        className=" relative z-10 mb-4 flex-1 text-center"
         initial={{ y: -10 }}
         animate={{ y: -50 }}
         transition={{
@@ -56,7 +56,13 @@ const Landing = () => {
         <Image className=" absolute top-10 right-96" src="/sunn.png" width={500} height={500} alt="landing" />
       </motion.div>
       <Wave />
-      <BackgroundCircles/>
+      <div className=" absolute floating top-[80%] right-1/2 w-full h-full flex justify-center items-center">
+        <div className="w-[31rem] h-[30rem] bg-gradient-to-br from-pink-500 to-purple-500 rounded-full"></div>
+      </div>
+      <div className=" absolute top-full lg:top-[68.4%] left-[40%] w-full h-full flex justify-center items-center">
+        <div className="w-[60rem] h-[60rem] bg-gradient-to-br custom-clip-path from-pink-500 to-purple-500 rounded-3xl"></div>
+      </div>
+      <BackgroundCircles />
     </section>
   );
 };

@@ -28,18 +28,21 @@ const QuizCard = ({
   const [hover, setHover] = useState(false);
   return (
     <div
-      className="relative h-full cursor-pointer rounded-md bg-white items-start flex flex-col"
+      className="relative  h-full cursor-pointer rounded-md bg-white items-start flex flex-col"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className="relative  text-nowrap flex text-center justify-center  items-center w-full h-full ">
+      <div className="relative   text-nowrap flex text-center justify-center  items-center w-full ">
         {
           <DialogueQuiz
             content={<QuizShow quiz={quiz} />}
             btn={
               <LazyLoadImage
                 effect="blur"
-                className="rounded-md h-full  aspect-[1/1] object-cover w-full"
+                threshold={100}
+                height={"auto"}
+                width={"auto"}
+                className="rounded-md  h-full block mt-0 pt-0 object-top  aspect-[1/1] object-cover w-full"
                 src={`${quiz?.coverImage}` || "/quiz3.png"}
                 alt={quiz?.title}
               />
@@ -77,14 +80,16 @@ const QuizCard = ({
           )}
         </AnimatePresence>
       </div>
-      <div className="py-3 px-2 w-full">
-        <div className="flex py-2 px-4 text-gray-800 flex-wrap justify-between items-center">
+      <div className="py-3 flex flex-col relative h-full px-2 w-full">
+        
+        <div className="flex py-2 px-4 border-b-2 border-gray-200 rounded-lg text-gray-800 flex-wrap justify-between items-center">
           <h6 className="font-semibold text-nowrap">{quiz?.title}</h6>
-          <div>
-            <span className="self-end text-sm text-nowrap">Duration:{quiz?.duration} min</span>
+          <div className=" ml-auto self-end">
+            <span className=" text-sm text-nowrap">Duration:{quiz?.duration} min</span>
           </div>
         </div>
-        {!card && <Author quiz={quiz} author={quiz.author} />}
+        
+        {!card &&<Author quiz={quiz} author={quiz.author} />}
         {href && (
           <Button className="rounded-full hover:bg-pink-400 hover:text-gray-100 self-center duration-200  py-3  px-6">
             <Link href={href}>Show Attempt</Link>

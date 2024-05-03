@@ -12,7 +12,7 @@ const ChooseColor = () => {
     <AnimatePresence>
       <DropDownMenu>
         <DropDownMenu.Toggle id="nav">
-          <IoColorFill className=" text-3xl text-gray-100 cursor-pointer hover:text-gray-200 duration-200" />
+          <IoColorFill className=" text-2xl md:text-3xl text-gray-100 cursor-pointer hover:text-gray-200 duration-200" />
         </DropDownMenu.Toggle>
         <DropDownMenu.Menu id="nav">
           <motion.ul
