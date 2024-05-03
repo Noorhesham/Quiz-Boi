@@ -15,8 +15,10 @@ export const getUser = async () => {
       next: { revalidate: 3600 },
     }).then((res) => res.json());
     console.log(user);
-    const likedQuizzes = await Promise.all(user.data?.user.likedQuizzes.slice(0,10).map((q: any) => GetQuizPublic(q.quiz).then(d=>d.data.quiz)));
-    console.log(likedQuizzes)
+    const likedQuizzes = await Promise.all(
+      user.data?.user.likedQuizzes.slice(0, 10).map((q: any) => GetQuizPublic(q.quiz).then((d) => d.data.quiz))
+    );
+    console.log(likedQuizzes);
     if (user.data?.user) {
       return {
         ...user.data.user,
@@ -42,8 +44,10 @@ export const getUserDetails = async () => {
       cache: "force-cache",
     }).then((res) => res.json());
     const photo = user?.data?.user?.photo;
-    const likedQuizzes = await Promise.all(user.data?.user.likedQuizzes.slice(0,10).map((q: any) => GetQuizPublic(q.quiz).then(d=>d.data.quiz)));
-    console.log(user,likedQuizzes)
+    const likedQuizzes = await Promise.all(
+      user.data?.user.likedQuizzes.slice(0, 10).map((q: any) => GetQuizPublic(q.quiz).then((d) => d.data.quiz))
+    );
+    console.log(user, likedQuizzes);
     if (user.data?.user) {
       return {
         ...user.data.user,
@@ -62,8 +66,10 @@ export const getUserDetails = async () => {
 export const getPublicUser = async (id: String) => {
   try {
     const user = await fetch(`${API_URL}/users/public/${id}`, { next: { revalidate: 1 } }).then((res) => res.json());
-    const likedQuizzes = await Promise.all(user.data?.user.likedQuizzes.slice(0,10).map((q: any) => GetQuizPublic(q.quiz).then(d=>d.data.quiz)));
-     
+    const likedQuizzes = await Promise.all(
+      user.data?.user.likedQuizzes.slice(0, 10).map((q: any) => GetQuizPublic(q.quiz).then((d) => d.data.quiz))
+    );
+
     if (user.data?.user) {
       return {
         ...user.data.user,

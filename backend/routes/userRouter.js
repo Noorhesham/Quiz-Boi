@@ -11,6 +11,8 @@ router.post("/signup", authController.signup);
 router.post("/login", authController.login);
 router.post("/logout", authController.logout);
 router.route("/public/:id").get(userController.getDetails);
+router.route("/public/:id/followers").get(userController.getFollowers);
+router.route("/public/:id/following").get(userController.getFollowing);
 router.route("/public-mini/:id").get(userController.getUserMini);
 router.use(authController.protect);
 router.get("/me", userController.getMe, userController.getUser);

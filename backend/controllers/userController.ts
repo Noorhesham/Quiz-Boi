@@ -51,9 +51,10 @@ exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunct
   res.status(200).json({ status: "success", data: { user } });
 });
 exports.getDetails = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const user = await User.findById(req.params.id).populate({ path: "quizzes", })
-  .populate({ path: "likedQuizzes",  })
-  .populate({ path: "attemptedQuizzes" });;
+  const user = await User.findById(req.params.id)
+    .populate({ path: "quizzes" })
+    .populate({ path: "likedQuizzes" })
+    .populate({ path: "attemptedQuizzes" });
 
   if (!user) return next(new AppError("cannot find this user", 404));
   res.status(200).json({ status: "success", data: { user } });
@@ -91,29 +92,65 @@ exports.followUser = catchAsync(async (req: Request | any, res: Response, next: 
 
 exports.unfollowUser = catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const currentUser = req.user; 
-  if (!currentUser.following.includes(id))  return next(new AppError("You are not following this user.", 400));
-  currentUser.following = currentUser.following.filter((id:String) => id.toString() !== req.params.id);
+  const currentUser = req.user;
+  if (!currentUser.following.includes(id)) return next(new AppError("You are not following this user.", 400));
+  currentUser.following = currentUser.following.filter((id: String) => id.toString() !== req.params.id);
   await currentUser.save();
   const followedUser = await User.findById(id);
-  followedUser.followers = followedUser.followers.filter((id:String) => id.toString() !== currentUser._id.toString());
+  followedUser.followers = followedUser.followers.filter((id: String) => id.toString() !== currentUser._id.toString());
   await followedUser.save();
-  res.status(200).json({ message: 'Successfully unfollowed user.' });
+  res.status(200).json({ message: "Successfully unfollowed user." });
 });
 
-exports.getUserMini= catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
-  const  user =await  User.findById(req.params.id).lean()
+exports.getUserMini = catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
+  const user = await User.findById(req.params.id).lean();
   if (!user) return next(new AppError(`There is no userfound with that id`, 404));
-  res.status(200).json({ status: "success", data: {user} });
-})
+  res.status(200).json({ status: "success", data: { user } });
+});
 exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const  user = await User.findById(req.params.id).populate({ path: "quizzes", })
-  .populate({ path: "likedQuizzes",})
-  .populate({ path: "attemptedQuizzes" });
+  const user = await User.findById(req.params.id)
+    .populate({ path: "quizzes" })
+    .populate({ path: "likedQuizzes" })
+    .populate({ path: "attemptedQuizzes" });
 
   if (!user) return next(new AppError(`There is no user found with that id`, 404));
   res.status(200).json({ status: "success", data: { user } });
 });
+
+exports.getFollowers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const user = await User.findById(req.params.id);
+  if (!user) return next(new AppError(`There is no userfound with that id`, 404));
+  const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+  const limit = 10;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const followers = await Promise.all(
+    user.followers
+      .slice(startIndex, endIndex)
+      .map((follower: string) => User.findById(follower).select("photo name _id"))
+  );
+  console.log(followers, user.followers);
+  res.status(200).json({ status: "success", results: followers.length, data: { followers } });
+});
+
+exports.getFollowing = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const user = await User.findById(req.params.id);
+  if (!user) return next(new AppError(`There is no userfound with that id`, 404));
+
+  const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+  const limit = 10;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const following = await Promise.all(
+    user.following
+      .slice(startIndex, endIndex)
+      .map((following: string) => User.findById(following).select("photo name _id"))
+  );
+  console.log(following, user.following);
+  res.status(200).json({ status: "success", results: following.length, data: { following } });
+});
+
 const userFactory = new Factory(User, "user");
 exports.getAllUsers = userFactory.getAll();
 exports.updateUser = userFactory.updateOne();
