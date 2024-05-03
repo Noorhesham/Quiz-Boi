@@ -364,7 +364,7 @@ export const useFollow = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.error) throw new Error(data.message);
-      toast.success(`User ${data.currentUser.name} is followed Successfully`);
+      toast.success(`${data.currentUser.name} is followed Successfully`);
       //@ts-ignore
       querClient.invalidateQueries("user");
     },

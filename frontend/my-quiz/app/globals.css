@@ -1,7 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+body{
+  scroll-behavior: smooth;
+}
 .orange {
   background-image: linear-gradient(to bottom left, #ff6458, #f9b15e);
   transition: all;

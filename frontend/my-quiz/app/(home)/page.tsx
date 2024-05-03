@@ -6,6 +6,7 @@ import { FilterQuizzesHome } from "@/actions/FilterQuizHome";
 import NotFound from "../components/NotFound";
 import BecauseYouFollowed from "../components/BecauseYouFollowed";
 import { getUser } from "@/actions/getUser";
+import { GetSuggesstions } from "@/actions/getSuggesstions";
 
 export default async function Page({
   searchParams,
@@ -15,18 +16,21 @@ export default async function Page({
     page?: number;
   };
 }) {
-  const user=await getUser()
+  const user = await getUser();
   const categorey = searchParams?.categorey || "";
-  const page = searchParams?.page || 1; 
+  const page = searchParams?.page || 1;
   const { data, totalPages, totalResults, results } = await FilterQuizzesHome(categorey, page);
+  let suggesstions;
+  if (user) suggesstions = await GetSuggesstions();
   const categories = await GetTags();
   const isNext = page < totalPages && results < totalResults;
   if (!data) return <NotFound text="there are no quizzes" />;
   return (
-    <main className="flex w-full min-h-[100vh] flex-col relative  items-stretch justify-center">
+    <main className="flex scroll-smooth w-full min-h-[100vh] flex-col relative  items-stretch justify-center">
       <Landing />
       <Welcome />
-      {user&&user.likedQuizzes&&<BecauseYouFollowed user={user}/>}
+      {suggesstions && <BecauseYouFollowed text="Based On Your Followings :" suggesstions={suggesstions} />}
+      {user && user.likedQuizzes && <BecauseYouFollowed user={user} />}
       {<Feed hasNext={isNext} categories={categories} totalPages={totalPages} quizzes={data?.quizzes} />}
     </main>
   );

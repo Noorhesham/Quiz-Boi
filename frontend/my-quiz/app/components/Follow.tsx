@@ -11,7 +11,7 @@ const Follow = ({ id }: { id: string }) => {
   const [auth, setisAuth] = useState(true);
   const { UnFollowUser,isPending:isPending2, error: error2, isSuccess: isSucces2 } = useUnFollow();
   const { user } = useGetUser();
-  const [isFollowed, setIsFollowed] = useState(user?.following.some((follower: any) => follower === id));
+  const [isFollowed, setIsFollowed] = useState(!!user?.following.some((follower: any) => follower === id));
   const router = useRouter();
   const handleFollowClick = async () => {
     if (!user) {

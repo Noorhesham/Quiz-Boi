@@ -14,7 +14,7 @@ const WhatToDo = ({ text, logged ,img}: { text: string; logged: boolean,img:stri
         <h2 className=" font-bold text-3xl text-white">{img}</h2>
         <h5 className=" text-gray-100 text-xl font-normal">Quiz</h5>
       </div>
-      <DialogCustom
+      {img==="Create"?<DialogCustom
         title="Publish Your Quiz Now !"
         content={logged ? <UploadQuizForm /> : <YouAreNotAuth />}
         btn={
@@ -22,7 +22,9 @@ const WhatToDo = ({ text, logged ,img}: { text: string; logged: boolean,img:stri
             Start
           </Button>
         }
-      />
+      />:<Button className=" text-gray-800 text-sm md:text-xl hover:bg-gray-200 bg-white rounded-xl self-end">
+      <a href="#play">Play</a>
+    </Button>}
     </div>
   );
 };
