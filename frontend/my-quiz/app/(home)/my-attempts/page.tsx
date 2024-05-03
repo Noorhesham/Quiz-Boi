@@ -13,7 +13,7 @@ const page = async () => {
   const user = await getUserDetails();
   if (!user) return redirect("/");
   return (
-    <section className=" py-10 md:pt-24  px-20  rounded-md min-h-[80vh] ">
+    <section className=" py-10 md:pt-24  md:px-20  rounded-md min-h-[80vh] ">
       <Heading text="Quizzes I attempted" />
       {user.attemptedQuizzes.length < 1 && (
         <Empty text="You Attempted no quizzes yet !">
