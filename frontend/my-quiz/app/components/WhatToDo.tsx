@@ -23,7 +23,7 @@ const WhatToDo = ({ text, logged ,img}: { text: string; logged: boolean,img:stri
           </Button>
         }
       />:<Button className=" text-gray-800 text-sm md:text-xl hover:bg-gray-200 bg-white rounded-xl self-end">
-      <a href="#play">Play</a>
+      <a className=" block" href="#play">Play</a>
     </Button>}
     </div>
   );

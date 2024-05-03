@@ -29,7 +29,7 @@ export default async function Page({
     <main className="flex scroll-smooth w-full min-h-[100vh] flex-col relative  items-stretch justify-center">
       <Landing />
       <Welcome />
-      {suggesstions && <BecauseYouFollowed text="Based On Your Followings :" suggesstions={suggesstions} />}
+      {suggesstions && <BecauseYouFollowed img={"/cause.png"} text="Based On Your " span="Followings :" suggesstions={suggesstions} />}
       {user && user.likedQuizzes && <BecauseYouFollowed user={user} />}
       {<Feed hasNext={isNext} categories={categories} totalPages={totalPages} quizzes={data?.quizzes} />}
     </main>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { QuizProps } from "@/types";
 import React, { useState } from "react";
 import Author from "./Author";
@@ -14,7 +14,17 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import Share from "./Share";
 
-const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; card?: boolean; edit?: boolean ,href?:string}) => {
+const QuizCard = ({
+  quiz,
+  card = false,
+  edit = false,
+  href,
+}: {
+  quiz: QuizProps;
+  card?: boolean;
+  edit?: boolean;
+  href?: string;
+}) => {
   const [hover, setHover] = useState(false);
   return (
     <div
@@ -22,11 +32,20 @@ const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; 
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className="relative  flex text-center justify-center  items-center w-full h-full ">
-       { <DialogueQuiz
-          content={<QuizShow quiz={quiz} />}
-          btn={<LazyLoadImage effect="blur" className="rounded-md h-full  aspect-[1/1] object-cover w-full" src={`${quiz?.coverImage}` || "/quiz3.png"} alt={quiz?.title} />}
-        />}
+      <div className="relative  text-nowrap flex text-center justify-center  items-center w-full h-full ">
+        {
+          <DialogueQuiz
+            content={<QuizShow quiz={quiz} />}
+            btn={
+              <LazyLoadImage
+                effect="blur"
+                className="rounded-md h-full  aspect-[1/1] object-cover w-full"
+                src={`${quiz?.coverImage}` || "/quiz3.png"}
+                alt={quiz?.title}
+              />
+            }
+          />
+        }
 
         <AnimatePresence>
           {hover && (
@@ -35,9 +54,9 @@ const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute  bottom-[8px] rounded-md duration-200 left-0 w-full h-16 bg-black bg-opacity-40 flex items-center justify-between px-4"
+              className="absolute  bottom-[8px] rounded-md duration-200 left-0 w-full h-16 bg-black bg-opacity-40 flex flex-wrap items-center justify-between px-4"
             >
-              <h6 className="text-white font-semibold">{quiz.title}</h6>
+              <h6 className="text-white text-nowrap font-semibold">{quiz.title}</h6>
               <div className="flex items-center gap-2 text-white">
                 <div className="rounded-full  p-1 bg-white hover:text-opacity-90 duration-150 text-gray-900 font-semibold text-center">
                   <FiEye className="" />
@@ -45,7 +64,7 @@ const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; 
                 <div className="rounded-full  p-1 bg-white hover:text-opacity-90 duration-150 text-gray-900 font-semibold text-center">
                   <Like id={quiz._id} icon={<FiHeart />} />
                 </div>
-                  <Share link={`https://quiz-boi.vercel.app/quiz/${quiz._id}`}/>
+                <Share link={`https://quiz-boi.vercel.app/quiz/${quiz._id}`} />
                 {edit && (
                   <div className="rounded-full  p-1 bg-white hover:text-opacity-90 duration-150 text-gray-900 font-semibold text-center">
                     <Link href={`/quiz-upload/${quiz._id}`}>
@@ -59,14 +78,18 @@ const QuizCard = ({ quiz, card = false, edit = false,href }: { quiz: QuizProps; 
         </AnimatePresence>
       </div>
       <div className="py-3 px-2 w-full">
-        <div className="flex py-2 px-4 text-gray-800 justify-between items-center">
-          <h6 className="font-semibold">{quiz?.title}</h6>
+        <div className="flex py-2 px-4 text-gray-800 flex-wrap justify-between items-center">
+          <h6 className="font-semibold text-nowrap">{quiz?.title}</h6>
           <div>
             <span className="self-end text-sm text-nowrap">Duration:{quiz?.duration} min</span>
           </div>
         </div>
         {!card && <Author quiz={quiz} author={quiz.author} />}
-        {href&&<Button className="rounded-full hover:bg-pink-400 hover:text-gray-100 self-center duration-200  py-3  px-6"><Link href={href}>Show Attempt</Link></Button>}
+        {href && (
+          <Button className="rounded-full hover:bg-pink-400 hover:text-gray-100 self-center duration-200  py-3  px-6">
+            <Link href={href}>Show Attempt</Link>
+          </Button>
+        )}
       </div>
     </div>
   );

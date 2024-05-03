@@ -9,7 +9,7 @@ const Like = ({ id, count, icon }: { id: string; count?: number; icon?: any }) =
   const { LikeQuiz, isPending,error, isSuccess } = useLikeQuiz();
   const { unLikeQuiz, isPending:isPending2,error: error2, isSuccess: isSucces2 } = useUnlikeQuiz();
   const { user } = useGetUser();
-  const [isLiked, setIsLiked] = useState(user?.likedQuizzes.some((like: any) => like.quiz === id));
+  const [isLiked, setIsLiked] = useState(!!user?.likedQuizzes.some((like: any) => like.id === id));
   const [likes, setLikes] = useState(count);
   const router = useRouter();
   const handleLikeClick = async (e: any) => {
@@ -34,7 +34,7 @@ const Like = ({ id, count, icon }: { id: string; count?: number; icon?: any }) =
         )}{" "}
         <button disabled={isPending||isPending2}
           className={`${
-            isLiked && "text-pink-500 "
+            isLiked ? "text-pink-500 ":""
           } flex items-center gap-1 active:text-pink-500 text-gray-400 cursor-pointer text-lg hover:text-pink-500 duration-500`}
         >
           {icon ? React.cloneElement(icon) : <IoIosHeart onClick={handleLikeClick} />}

@@ -362,9 +362,8 @@ export const useFollow = () => {
   } = useMutation({
     mutationFn: async (id: string) => await Follow(id),
     onSuccess: (data) => {
-      console.log(data);
       if (data.error) throw new Error(data.message);
-      toast.success(`${data.currentUser.name} is followed Successfully`);
+      toast.success(`User is followed Successfully`);
       //@ts-ignore
       querClient.invalidateQueries("user");
     },
