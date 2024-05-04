@@ -28,11 +28,11 @@ const QuizCard = ({
   const [hover, setHover] = useState(false);
   return (
     <div
-      className="relative  h-full cursor-pointer rounded-md bg-white items-start flex flex-col"
+      className="relative h-full cursor-pointer rounded-md bg-white items-start flex flex-col"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className="relative   text-nowrap flex text-center justify-center  items-center w-full ">
+      <div className="relative min-h-[22rem] text-nowrap flex text-center justify-center  items-center w-full ">
         {
           <DialogueQuiz
             content={<QuizShow quiz={quiz} />}
