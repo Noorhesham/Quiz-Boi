@@ -9,7 +9,7 @@ const Like = ({ id, count, icon }: { id: string; count?: number; icon?: any }) =
   const { LikeQuiz, isPending,error, isSuccess } = useLikeQuiz();
   const { unLikeQuiz, isPending:isPending2,error: error2, isSuccess: isSucces2 } = useUnlikeQuiz();
   const { user } = useGetUser();
-  const [isLiked, setIsLiked] = useState(!!user?.likedQuizzes.some((like: any) => like.id === id));
+  const [isLiked, setIsLiked] = useState(!!user?.likedQuizzes.some((like: any) => like === id));
   const [likes, setLikes] = useState(count);
   const router = useRouter();
   const handleLikeClick = async (e: any) => {
