@@ -17,6 +17,7 @@ export default async function Page({
   };
 }) {
   const user = await getUser();
+
   const categorey = searchParams?.categorey || "";
   const page = searchParams?.page || 1;
   const { data, totalPages, totalResults, results } = await FilterQuizzesHome(categorey, page);
@@ -30,7 +31,7 @@ export default async function Page({
       <Landing />
       <Welcome />
       {suggesstions && <BecauseYouFollowed DELAY={4000} img={"/cause.png"} text="Based On Your " span="Followings :" suggesstions={suggesstions} />}
-      {user && user.likedQuizzes && <BecauseYouFollowed user={user} />}
+      {/* {user && user.likedQuizzes && <BecauseYouFollowed DELAY={3000} user={user} />} */}
       {<Feed hasNext={isNext} categories={categories} totalPages={totalPages} quizzes={data?.quizzes} />}
     </main>
   );

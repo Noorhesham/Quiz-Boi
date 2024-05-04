@@ -22,6 +22,7 @@ const BecauseYouFollowed = ({
   DELAY?: number;
 }) => {
   const list = suggesstions ? suggesstions : user.likedQuizzes;
+  console.log(list)
   return (
     <Carousel
       plugins={[

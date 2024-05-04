@@ -6,17 +6,27 @@ export const GetSuggesstions = async () => {
   try {
     const token = cookies().get("jwt")?.value;
     if (!token) return null;
-    const res = await axios.get(`${API_URL}/users/suggessions`, {
+
+    const response = await fetch(`${API_URL}/users/suggessions`, {
+      method: 'GET',
       headers: {
-        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
     });
-    return res.data.data.suggestedQuizzes;
-  } catch (err: any) {
-    console.log(err);
-    if (err.response.data) return err.response.data;
-    if (err.message === "Failed to fetch")
+
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(errorMessage || 'Failed to fetch');
+    }
+    const responseData = await response.json();
+    console.log(responseData)
+    return responseData.data.suggestedQuizzes;
+  } catch (err:any) {
+    console.error(err);
+    if (err.message === "Failed to fetch") {
       err.message = `Unable to reach the server. Please check your internet connection...`;
+    }
     throw err;
   }
 };

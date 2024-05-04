@@ -13,7 +13,7 @@ export const getUser = async () => {
       },
       next: { revalidate: 3600 },
     }).then((res) => res.json());
-
+    // const likedQuizzes=user.data.user.likedQuizzes.slice(10).map(async(quiz:any)=>await GetQuizPublic(quiz._id))
     if (user.data?.user) {
       return {
         ...user.data.user,
