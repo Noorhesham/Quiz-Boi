@@ -107,7 +107,7 @@ exports.getUserMini = catchAsync(async (req, res, next) => {
 exports.getUser = catchAsync(async (req, res, next) => {
     const user = await userModel_1.default.findById(req.params.id)
         .populate({ path: "quizzes" })
-        .populate({ path: "likedQuizzes" })
+        .populate({ path: "likedQuizzes", select: "quiz" })
         .populate({ path: "attemptedQuizzes" });
     if (!user)
         return next(new AppError_1.default(`There is no user found with that id`, 404));
