@@ -39,13 +39,14 @@ export const getUserDetails = async () => {
     }).then((res) => res.json());
     const photo = user?.data?.user?.photo;
     const likedQuizzes = await Promise.all(
-      user.data?.user.likedQuizzes.map((q: any) => GetQuizPublic(q.quiz).then((d) => d.data.quiz))
+      user.data?.user.likedQuizzes.map((q: any) => GetQuizPublic(q.quiz))
     );
+    console.log(likedQuizzes)
     if (user.data?.user) {
       return {
         ...user.data.user,
         photo: photo,
-        likedQuizzes: likedQuizzes,
+        likedQuizzes: likedQuizzes.map(quiz=>quiz?.data?.quiz),
       };
     }
   } catch (err: any) {

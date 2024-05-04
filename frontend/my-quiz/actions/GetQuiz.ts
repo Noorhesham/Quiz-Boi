@@ -24,11 +24,9 @@ export const GetQuiz = async (id: string) => {
 export const GetQuizPublic = async (id:string) => {
   try {
     const res = await fetch(`${API_URL}/quiz/${id}/public`);
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message);
-    }
+
     const data = await res.json();
+    if (!data)return null
     return data;
   } catch (err:any) {
     console.log(err);
