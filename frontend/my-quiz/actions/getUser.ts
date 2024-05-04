@@ -11,17 +11,12 @@ export const getUser = async () => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      cache: "force-cache",
       next: { revalidate: 3600 },
     }).then((res) => res.json());
-    const likedQuizzes = await Promise.all(
-      user.data?.user.likedQuizzes.slice(0, 10).map((q: any) => GetQuizPublic(q.quiz).then((d) => d.data.quiz))
-    );
-    console.log(likedQuizzes);
+
     if (user.data?.user) {
       return {
         ...user.data.user,
-        likedQuizzes: likedQuizzes,
       };
     }
   } catch (err: any) {
@@ -44,7 +39,7 @@ export const getUserDetails = async () => {
     }).then((res) => res.json());
     const photo = user?.data?.user?.photo;
     const likedQuizzes = await Promise.all(
-      user.data?.user.likedQuizzes.slice(0, 10).map((q: any) => GetQuizPublic(q.quiz).then((d) => d.data.quiz))
+      user.data?.user.likedQuizzes.map((q: any) => GetQuizPublic(q.quiz).then((d) => d.data.quiz))
     );
     if (user.data?.user) {
       return {
@@ -65,7 +60,7 @@ export const getPublicUser = async (id: String) => {
   try {
     const user = await fetch(`${API_URL}/users/public/${id}`, { next: { revalidate: 1 } }).then((res) => res.json());
     const likedQuizzes = await Promise.all(
-      user.data?.user.likedQuizzes.slice(0, 10).map((q: any) => GetQuizPublic(q.quiz).then((d) => d.data.quiz))
+      user.data?.user.likedQuizzes.map((q: any) => GetQuizPublic(q.quiz).then((d) => d.data.quiz))
     );
 
     if (user.data?.user) {
