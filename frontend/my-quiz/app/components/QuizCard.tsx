@@ -32,7 +32,7 @@ const QuizCard = ({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className="relative min-h-full  md:min-h-[22rem] text-nowrap flex text-center justify-center  items-center w-full ">
+      <div className="relative  md:min-h-[22rem] text-nowrap flex text-center justify-center  items-center w-full ">
         {
           <DialogueQuiz
             content={<QuizShow quiz={quiz} />}
