@@ -334,6 +334,7 @@ export const usedeleteQuiz = () => {
     isPending,
   } = useMutation({
     mutationFn: async (id: string) => {
+      queryClient.invalidateQueries('user')
       return await RemoveQuiz(id);
     },
     onSuccess: (data) => {
