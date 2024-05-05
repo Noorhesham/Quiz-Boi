@@ -10,6 +10,7 @@ const inter = Jost({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Quiz Boi",
   description: "Your biggest plattform to solve quizzes",
+  icons:{icon:'/favicon.ico'}
 };
 
 export default async function RootLayout({
