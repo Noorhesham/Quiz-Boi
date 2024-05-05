@@ -38,7 +38,7 @@ const UserCard = ({ user, mine = false }: { user: UserProps; mine: boolean }) =>
           )}
         </div>
         {!mine ? (
-          <Follow id={user._id} />
+          <Follow className=" text-center mx-auto mr-auto" id={user._id} />
         ) : (
           <DialogCustom
             title="Update your data"

@@ -8,7 +8,7 @@ import YouAreNotAuth from "./YouAreNotAuth";
 import { SlUserFollowing } from "react-icons/sl";
 import { SlUserFollow } from "react-icons/sl";
 
-const Follow = ({ id }: { id: string }) => {
+const Follow = ({ id,className }: { id: string,className?:string }) => {
   const { FollowUser, isPending, error, isSuccess } = useFollow();
   const [auth, setisAuth] = useState(true);
   const { UnFollowUser, isPending: isPending2, error: error2, isSuccess: isSucces2 } = useUnFollow();
@@ -40,7 +40,7 @@ const Follow = ({ id }: { id: string }) => {
         onClick={handleFollowClick}
         className={` ${
           isFollowed ? "bg-pink-400 text-gray-100" : "bg-gray-100 text-gray-800"
-        } rounded-full hover:bg-pink-400 hover:text-gray-100 self-center ml-auto duration-200 flex items-center gap-2  py-3  px-6  `}
+        } rounded-full hover:bg-pink-400 hover:text-gray-100 ${className||""} self-center ml-auto duration-200 flex items-center gap-2  py-3  px-6  `}
       >
         {isFollowed ? "Following" : "Follow"}
         {isFollowed ? <SlUserFollowing className=" duration-200 text-gray-50 text-xl" /> : <SlUserFollow className=" duration-200 text-xl" />}

@@ -59,7 +59,7 @@ const QuizCard = ({
               exit={{ opacity: 0 }}
               className="absolute  bottom-[8px] rounded-md duration-200 left-0 w-full h-16 bg-black bg-opacity-40 flex flex-wrap items-center justify-between px-4"
             >
-              <h6 className="text-white text-nowrap font-semibold">{quiz.title}</h6>
+              <h6 className="text-white  font-semibold">{quiz.title}</h6>
               <div className="flex items-center gap-2 text-white">
                 <div className="rounded-full  p-1 bg-white hover:text-opacity-90 duration-150 text-gray-900 font-semibold text-center">
                   <FiEye className="" />
@@ -83,9 +83,9 @@ const QuizCard = ({
       <div className="py-3 flex flex-col relative h-full px-2 w-full">
         
         <div className="flex py-2 px-4 border-b-2 border-gray-200 rounded-lg text-gray-800 flex-wrap justify-between items-center">
-          <h6 className="font-semibold text-nowrap">{quiz?.title}</h6>
+          <h6 className="font-semibold ">{quiz?.title}</h6>
           <div className=" ml-auto self-end">
-            <span className=" text-sm text-nowrap">Duration:{quiz?.duration} min</span>
+            <span className=" text-sm ">Duration:{quiz?.duration} min</span>
           </div>
         </div>
         
