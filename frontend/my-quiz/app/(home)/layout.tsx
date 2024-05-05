@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export const metadata: Metadata = {
   title: "Quiz Boi",
   description: "Best Plattform to Solve,Upload Your desired quizzes",
-  
+  icons:'/favicon.ico'
 };
 
 export default async function RootLayout({
