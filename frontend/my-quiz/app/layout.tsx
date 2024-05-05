@@ -4,6 +4,7 @@ import "./globals.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Google_Client } from "@/constants";
 import { ColorProvider } from "./context/ColorContext";
+import Head from "next/head";
 const inter = Jost({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,6 +19,10 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <link rel="icon" href="/icon.jpg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <GoogleOAuthProvider clientId={process.env.GOOGLE||Google_Client}>
         <ColorProvider>
           <body className={inter.className}>{children}</body>
