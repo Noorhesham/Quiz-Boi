@@ -4,8 +4,8 @@ import { cookies } from "next/headers";
 import { GetQuizPublic } from "./GetQuiz";
 
 export const getUser = async () => {
-  const token = cookies().get("jwt")?.value;
   try {
+    const token = cookies().get("jwt")?.value;
     if (!token) return null;
     const user = await fetch(`${API_URL}/users/me`, {
       headers: {
