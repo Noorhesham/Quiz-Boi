@@ -2,12 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { useDeleteQuestion, usedeleteComment, usedeleteQuiz } from "@/utils/queryFunctions";
 import Image from "next/image";
-import { redirect, useParams } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import React from "react";
 import { FaSpinner } from "react-icons/fa";
 
 const Confirm = ({ setOpen, questionId,comment=false,quiz }: { setOpen?: (b: boolean) => void; questionId?: string,comment?:boolean,quiz?:string }) => {
   const { id }: { id: string } = useParams();
+  const router=useRouter()
   const { isPending, error, DeleteQuestion, isSuccess } = useDeleteQuestion();
   const {RemoveCommentFromQuiz,isPending:isPending2,isSuccess:isSuccess2}=usedeleteComment()
   const {RemoveTheQuiz,isPending:isPending3,isSuccess:isSuccess3}=usedeleteQuiz()
@@ -15,7 +16,7 @@ const Confirm = ({ setOpen, questionId,comment=false,quiz }: { setOpen?: (b: boo
     if(comment&&questionId) RemoveCommentFromQuiz(questionId)
       if(quiz) {
         RemoveTheQuiz(quiz)
-        redirect('/my-quizzes')
+        router.push('/my-quizzes')
       }
     else questionId&&DeleteQuestion({ id, questionId })
   }
