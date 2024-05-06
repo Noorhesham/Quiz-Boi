@@ -6,6 +6,7 @@ import EditQuizBtn from "@/app/components/EditQuizBtn";
 import { Empty } from "@/app/components/Empty";
 import Heading from "@/app/components/Heading";
 import NotFound from "@/app/components/NotFound";
+import OrderQuestions from "@/app/components/OrderQuestions";
 import PublishQuiz from "@/app/components/PublishQuiz";
 import Question from "@/app/components/Question";
 import Topic from "@/app/components/Topic";
@@ -40,9 +41,7 @@ const page = async ({ params }: { params: { id: string } }) => {
 
       <section className=" flex flex-col gap-5 px-10 py-5">
         {quiz.questions.length < 1 && <Empty text="You have not added any question yet !" />}
-        {quiz.questions.map((question: QuestionProps, i: number) => (
-          <Question key={i} index={i + 1} question={question} />
-        ))}
+        <OrderQuestions quiz={quiz} />
       </section>
       <div className="flex gap-40 items-center fixed right-10 bottom-5">
         <AddQuestionIcon type="btn" />

@@ -3,9 +3,8 @@ import { API_URL } from "@/constants";
 import axios from "axios";
 import { cookies } from "next/headers";
 
-export const EditQuiz = async (values: any, id: string) => {
-  console.log(values);
-
+export const EditQuiz = async (values: any, id: string,) => {
+  console.log(values,"mekweme");
   try {
     const token = cookies().get("jwt")?.value;
     const res = await axios.patch(`${API_URL}/quiz/${id}`, values, {
