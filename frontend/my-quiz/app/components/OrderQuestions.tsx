@@ -14,14 +14,13 @@ const OrderQuestions = ({ quiz }: { quiz: QuizProps }) => {
     setItems(newItems);
     console.log({ questions: items.map((i) => i._id) });
     const formData = new FormData();
-    items.forEach((question: QuestionProps, index: number) => {
+    newItems.forEach((question: QuestionProps, index: number) => {
       formData.append(`questions[${index}]`, question._id);
     });
     await EditQuiz(formData, quiz._id).then((res) => {
       console.log(res);
       setInterval(() => router.refresh(), 1500);
     });
-
   };
   return (
     <>
