@@ -21,7 +21,7 @@ const OrderQuestions = ({ quiz }: { quiz: QuizProps }) => {
     await EditQuiz(formData, quiz._id).then((res) => {
       console.log(res);
       toast.success('We reordered your questions 🐯❤️')
-      setInterval(() => router.refresh(), 1500);
+       router.refresh()
     });
   };
   return (
