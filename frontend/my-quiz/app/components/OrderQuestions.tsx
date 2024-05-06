@@ -5,6 +5,7 @@ import { QuestionProps, QuizProps } from "@/types";
 import { EditQuiz } from "@/actions/EditQuiz";
 import { Reorder } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const OrderQuestions = ({ quiz }: { quiz: QuizProps }) => {
   const [items, setItems] = useState(quiz.questions);
@@ -19,6 +20,7 @@ const OrderQuestions = ({ quiz }: { quiz: QuizProps }) => {
     });
     await EditQuiz(formData, quiz._id).then((res) => {
       console.log(res);
+      toast.success('We reordered your questions 🐯❤️')
       setInterval(() => router.refresh(), 1500);
     });
   };
