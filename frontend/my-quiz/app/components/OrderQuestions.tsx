@@ -18,14 +18,14 @@ const OrderQuestions = ({ quiz }: { quiz: QuizProps }) => {
     newItems.forEach((question: QuestionProps, index: number) => {
       formData.append(`questions[${index}]`, question._id);
     });
-    await EditQuiz(formData, quiz._id).then((res) => {
-      console.log(res);
-      toast.success("We reordered your questions 🐯❤️");
-      router.refresh();
-    });
+    // await EditQuiz(formData, quiz._id).then((res) => {
+    //   console.log(res);
+    //   toast.success("We reordered your questions 🐯❤️");
+    //   router.refresh();
+    // });
   };
   return (
-    <Ordering items={items} handleReorder={handleReorder}>
+    <Ordering items={quiz.questions} handleReorder={handleReorder}>
       {quiz.questions.map((question: QuestionProps, i: number) => (
         <Question index={i} key={question._id} question={question} />
       ))}

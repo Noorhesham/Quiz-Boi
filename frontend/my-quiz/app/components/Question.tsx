@@ -41,7 +41,7 @@ const Question = ({ question, index }: { question: QuestionProps; index: number 
           />
         </div>
         <div className=" cursor-grab">
-        <ReorderIcon dragControls={dragControls} />
+          {/* <ReorderIcon dragControls={dragControls} /> */}
         </div>
       </div>
     </Reorder.Item>
