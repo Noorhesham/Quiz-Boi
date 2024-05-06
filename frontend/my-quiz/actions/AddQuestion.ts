@@ -1,6 +1,7 @@
 "use server";
 import { API_URL } from "@/constants";
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 export const UploadQuestion = async (values: any, id: string) => {
   try {
@@ -12,6 +13,7 @@ export const UploadQuestion = async (values: any, id: string) => {
         Accept: "application/json",
       },
     });
+    revalidatePath('/quiz-upload')
     return res.data;
   } catch (err: any) {
     if (err.response.data) return err.response.data;
