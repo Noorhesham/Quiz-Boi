@@ -10,7 +10,6 @@ const globalErrorHandler = require("./controllers/errorController");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-
 const app = express();
 
 app.use(express.json({ limit: "10kb" }));

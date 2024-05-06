@@ -1,6 +1,8 @@
 const dotenv = require("dotenv");
 const Mongoose = require('mongoose');
 const app=require('./app')
+const job=require('./cron')
+job.start()
 dotenv.config({ path: './config.env' });
 Mongoose.connect(process.env.MONGO_URI).then(() => console.log('DB connected succesfully !'));
 

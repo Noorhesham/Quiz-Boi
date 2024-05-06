@@ -14,7 +14,7 @@
         "react-dom": ["node_modules/react-dom/index.d.ts"]
       }
     },
-    "include": ["src/**/*.ts", "src/**/*.tsx","**/*.ts"], /* Specify files to include in compilation */
+    "include": ["src/**/*.ts", "src/**/*.tsx","**/*.ts", "cron.ts"], /* Specify files to include in compilation */
     "exclude": ["node_modules", "build"]        /* Specify files to exclude from compilation */
   }
   
