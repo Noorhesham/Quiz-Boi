@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import Question from "./Question";
 import { QuestionProps, QuizProps } from "@/types";
 import { EditQuiz } from "@/actions/EditQuiz";
-import { Reorder } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import Ordering from "./Ordering";
 
 const OrderQuestions = ({ quiz }: { quiz: QuizProps }) => {
   const [items, setItems] = useState(quiz.questions);
@@ -20,18 +20,16 @@ const OrderQuestions = ({ quiz }: { quiz: QuizProps }) => {
     });
     await EditQuiz(formData, quiz._id).then((res) => {
       console.log(res);
-      toast.success('We reordered your questions 🐯❤️')
-       router.refresh()
+      toast.success("We reordered your questions 🐯❤️");
+      router.refresh();
     });
   };
   return (
-    <>
-      <Reorder.Group axis="y" className="flex flex-col gap-4" values={items} onReorder={handleReorder}>
-        {items.map((question: QuestionProps, i: number) => (
-          <Question index={i} key={question._id} question={question} />
-        ))}
-      </Reorder.Group>
-    </>
+    <Ordering items={items} handleReorder={handleReorder}>
+      {quiz.questions.map((question: QuestionProps, i: number) => (
+        <Question index={i} key={question._id} question={question} />
+      ))}
+    </Ordering>
   );
 };
 
