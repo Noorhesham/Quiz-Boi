@@ -15,19 +15,19 @@ import React from "react";
 export const dynamic = "force-dynamic";
 
 const page = async ({ params }: { params: { id: string } }) => {
-  const user=await getUser()
-  if(!user)  return redirect("/");
+  const user = await getUser();
+  if (!user) return redirect("/");
   const { quiz }: { quiz: QuizProps } = await GetQuiz(params.id);
   console.log(quiz);
   if (!quiz) return <NotFound text="This Quiz is not available" />;
   return (
-    <main className="text-gray-50 pt-20 sm:pt-24 flex flex-col gap-3 p-5 px-10">
+    <main className="text-gray-50 pt-20 sm:pt-24 flex flex-col gap-3 p-5 px-10 pb-10">
       <div className="flex flex-wrap justify-between items-center">
         <Heading text={`Your ${quiz.title} quiz is here ! Get prepared to publish it !`} />
-      <div className="flex items-center gap-2">
-      <EditQuizBtn quiz={quiz} />
-        <DeleteQuizBtn quiz={quiz} />
-      </div>
+        <div className="flex items-center gap-2">
+          <EditQuizBtn quiz={quiz} />
+          <DeleteQuizBtn quiz={quiz} />
+        </div>
       </div>
 
       <Heading icon={<AddQuestionIcon type="icon" />} text="All Questions" image="/ques.png" />
