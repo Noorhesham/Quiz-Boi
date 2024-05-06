@@ -106,7 +106,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
               setFormError(res.message || res.error.errors);
               reset();
             } else {
-              location.reload();
+              router.refresh();
               setOpen && setOpen(false);
             }
           })
