@@ -21,9 +21,9 @@ const Author = ({ author, quiz,hover=true }: { author: UserProps; quiz: QuizProp
           </div>
         </div>
       </HoverCardTrigger>
-      {hover&&<HoverCardContent className="w-80 z-40">
+      {hover&&
         <UserInfro author={author} />
-      </HoverCardContent>}
+     }
     </HoverCard>
   );
 };

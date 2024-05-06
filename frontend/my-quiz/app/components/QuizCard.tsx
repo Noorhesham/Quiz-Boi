@@ -27,12 +27,12 @@ const QuizCard = ({
 }) => {
   const [hover, setHover] = useState(false);
   return (
-    <div
-      className="relative h-full cursor-pointer rounded-md bg-white items-start flex flex-col"
+    <motion.div viewport={{once:true}} initial={{opacity:0,y:-50}} whileInView={{opacity:1,y:0}} transition={{stiffness:.3,duration:1,}}
+      className="relative h-full cursor-pointer rounded-xl bg-white/60 shadow-md items-start flex flex-col"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className="relative  md:min-h-[22rem] text-nowrap flex text-center justify-center  items-center w-full ">
+      <div className="relative  md:h-[22rem] text-nowrap flex text-center justify-center  items-center w-full ">
         {
           <DialogueQuiz
             content={<QuizShow quiz={quiz} />}
@@ -42,7 +42,7 @@ const QuizCard = ({
                 threshold={100}
                 height={"auto"}
                 width={"auto"}
-                className="rounded-md  h-full block mt-0 pt-0 object-top  aspect-[1/1] object-cover w-full"
+                className="rounded-t-md  h-full block mt-0 pt-0   aspect-[1/1] object-cover w-full"
                 src={`${quiz?.coverImage}` || "/quiz3.png"}
                 alt={quiz?.title}
               />
@@ -57,10 +57,10 @@ const QuizCard = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute  bottom-[8px] rounded-md duration-200 left-0 w-full h-16 bg-black bg-opacity-40 flex flex-wrap items-center justify-between px-4"
+              className="absolute   bottom-0  rounded-t-md   duration-200 left-0 w-full h-16 bg-black bg-opacity-40 flex flex-wrap items-center justify-between px-4"
             >
               <h6 className="text-white  font-semibold">{quiz.title}</h6>
-              <div className="flex items-center gap-2 text-white">
+              <div className="flex  ml-auto items-center gap-2 text-white">
                 <div className="rounded-full  p-1 bg-white hover:text-opacity-90 duration-150 text-gray-900 font-semibold text-center">
                   <FiEye className="" />
                 </div>
@@ -80,23 +80,22 @@ const QuizCard = ({
           )}
         </AnimatePresence>
       </div>
-      <div className="py-3 flex flex-col relative h-full px-2 w-full">
-        
-        <div className="flex py-2 px-4 border-b-2 border-gray-200 rounded-lg text-gray-800 flex-wrap justify-between items-center">
-          <h6 className="font-semibold ">{quiz?.title}</h6>
+      <div className="py-2  glass-white-1 rounded-b-xl flex self-stretch flex-col relative h-full px-2 w-full">
+        <div className="flex mb-2 flex-1 py-1 px-4 border-b-2 border-gray-200 rounded-lg text-gray-800 flex-wrap justify-between items-center">
+          <h6 className="font-semibold text-gray-700 ">{quiz?.title}</h6>
           <div className=" ml-auto self-end">
-            <span className=" text-sm ">Duration:{quiz?.duration} min</span>
+            <div className="text-sm text-gray-600 font-semibold ">Duration:{quiz?.duration} min</div>
           </div>
         </div>
-        
-        {!card &&<Author quiz={quiz} author={quiz.author} />}
+
+        {!card && <Author quiz={quiz} author={quiz.author} />}
         {href && (
           <Button className="rounded-full hover:bg-pink-400 hover:text-gray-100 self-center duration-200  py-3  px-6">
             <Link href={href}>Show Attempt</Link>
           </Button>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

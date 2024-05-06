@@ -22,12 +22,12 @@ const QuizShow = ({ quiz }: { quiz: QuizProps }) => {
           <Topic key={tag} tag={tag} />
         ))}
       </div>
-      <div className="relative h-full w-full p-2">
+      <div className="relative  h-[24rem] w-full p-2">
         <img
           loading="lazy"
           src={`${quiz.coverImage}` || "/quiz3.png"}
           alt={quiz.title}
-          className="w-[25rem] object-cover aspect-[1/1] mx-auto self-center rounded-lg"
+          className="w-full top-0 left-0 h-full absolute  object-contain  aspect-auto mx-auto self-center rounded-lg"
         />
         <div className="absolute  flex-col cursor-pointer text-4xl group inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 hover:opacity-70 bg-black bg-opacity-50 rounded-lg">
           <div className="flex items-center gap-2">
