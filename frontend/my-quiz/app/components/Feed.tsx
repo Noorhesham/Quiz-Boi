@@ -4,13 +4,24 @@ import Heading from "./Heading";
 import { QuizProps } from "@/types";
 import QuizCard from "./QuizCard";
 import Categories from "./Categories";
-
+import { motion } from "framer-motion";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Empty } from "./Empty";
 import DialogCustom from "./DialogCustom";
 import AllCategories from "./AllCategories";
 import { IoIosArrowForward } from "react-icons/io";
 import PaginationHome from "./Pagination";
+const container = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delayChildren: 0.1,
+      staggerChildren: 0.3,
+    },
+  },
+};
 
 const Feed = ({
   quizzes,
@@ -43,7 +54,7 @@ const Feed = ({
     replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
   return (
-    <section  className=" relative pt-5">
+    <section className=" relative pt-5">
       <div className="p-8 flex md:flex-row flex-col items-stretch justify-between">
         <Heading text="Find your desired quiz now !" />
         <div className="flex items-center gap-10">
@@ -72,11 +83,18 @@ const Feed = ({
       {(quizzes?.length === 0 || !quizzes) && (
         <Empty image="/bad.png" text={`There are no quizzes associated with ${searchParams.get("categorey")} yet !`} />
       )}
-      <div id="play" className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5">
+      <motion.div
+        variants={container}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        id="play"
+        className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5"
+      >
         {quizzes?.map((quiz, i) => (
           <QuizCard key={i} quiz={quiz} />
         ))}
-      </div>
+      </motion.div>
       <PaginationHome hasNext={hasNext} totalPages={totalPages} length={quizzes.length} onClick={handlePagination} />
     </section>
   );

@@ -49,10 +49,14 @@ body,*{
   @apply text-[0.875rem] leading-[1.5rem] md:text-[1rem] md:leading-[1.75rem] lg:text-[1.25rem] lg:leading-8
 }
 .purple {
-  background-image: linear-gradient(to bottom left, #66389d, #a452c9);
+  background: #DD3ED0;
+  background: linear-gradient(225deg, #DD3ED0, #8323D7);
   transition: all;
   transition-duration: 0.5s;
 }
+
+
+
 .purple span {
   @apply bg-gradient-to-r from-purple-500 via-violet-600 to-pink-500 bg-clip-text text-transparent;
 }

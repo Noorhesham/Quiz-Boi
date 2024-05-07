@@ -39,7 +39,7 @@ console.log(user.likedQuizzes)
             <CardHeader>
               <CardTitle>Published Quizzes</CardTitle>
             </CardHeader>
-            <CardContent className="grid  grid-cols-2 lg:grid-cols-3 gap-3">
+            <CardContent className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5">
               {user.quizzes
                 .filter((q) => q?.published)
                 .slice(0, publishedPagination)
@@ -66,7 +66,7 @@ console.log(user.likedQuizzes)
             <CardHeader>
               <CardTitle>Liked Quizzes</CardTitle>
             </CardHeader>
-            <CardContent className="grid  grid-cols-2 lg:grid-cols-3 gap-3">
+            <CardContent className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5">
               {user.likedQuizzes
                 .filter((q) => q?.published)
                 .slice(0, likedPagination)
@@ -93,7 +93,7 @@ console.log(user.likedQuizzes)
             <CardHeader>
               <CardTitle>Attempted Quizzes</CardTitle>
             </CardHeader>
-            <CardContent className="grid  grid-cols-2 lg:grid-cols-3 gap-3">
+            <CardContent className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5">
               {user.attemptedQuizzes.slice(0, attemptedPagination).map((quiz, i) =>{
                  if(!quiz.quizId) return null
                   return (<QuizCard

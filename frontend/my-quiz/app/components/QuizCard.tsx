@@ -13,26 +13,35 @@ import { Button } from "@/components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import Share from "./Share";
-
+const item = {
+  hidden: { y: 10, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
 const QuizCard = ({
   quiz,
   card = false,
   edit = false,
   href,
+  animation,
 }: {
   quiz: QuizProps;
   card?: boolean;
   edit?: boolean;
   href?: string;
+  animation?: any;
 }) => {
   const [hover, setHover] = useState(false);
   return (
-    <motion.div viewport={{once:true}} initial={{opacity:0,y:-50}} whileInView={{opacity:1,y:0}} transition={{stiffness:.3,duration:1,}}
-      className="relative h-full cursor-pointer rounded-xl bg-white/60 shadow-md items-start flex flex-col"
+    <motion.div
+      variants={item}
+      className="relative h-full cursor-pointer rounded-2xl bg-white/60 shadow-md items-start flex flex-col"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className="relative  md:h-[22rem] text-nowrap flex text-center justify-center  items-center w-full ">
+      <div className="relative md:min-h-[21rem]  md:h-[22rem] text-nowrap flex text-center justify-center  items-center w-full ">
         {
           <DialogueQuiz
             content={<QuizShow quiz={quiz} />}
@@ -42,7 +51,7 @@ const QuizCard = ({
                 threshold={100}
                 height={"auto"}
                 width={"auto"}
-                className="rounded-t-md  h-full block mt-0 pt-0   aspect-[1/1] object-cover w-full"
+                className="rounded-t-2xl  h-full block mt-0 pt-0   aspect-[1/1] object-cover w-full"
                 src={`${quiz?.coverImage}` || "/quiz3.png"}
                 alt={quiz?.title}
               />
@@ -57,7 +66,7 @@ const QuizCard = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute   bottom-0  rounded-t-md   duration-200 left-0 w-full h-16 bg-black bg-opacity-40 flex flex-wrap items-center justify-between px-4"
+              className="absolute   bottom-0  rounded-t-2xl   duration-200 left-0 w-full h-16 bg-black bg-opacity-40 flex flex-wrap items-center justify-between px-4"
             >
               <h6 className="text-white  font-semibold">{quiz.title}</h6>
               <div className="flex  ml-auto items-center gap-2 text-white">
