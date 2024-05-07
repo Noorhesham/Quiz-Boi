@@ -8,6 +8,8 @@ export interface UserProps {
   attemptedQuizzes: Array<any>;
   followers:Array<any>
   following:Array<any>
+  followingCount:number
+  followersCount:number
   _id:string
 }
 export interface QuizProps {
@@ -25,6 +27,8 @@ export interface QuizProps {
   likes: [number];
   usersAttempted: [string];
   comments:[any]
+  attemptsNum:number
+  createdAt:any
 }
 
 export interface QuestionProps {

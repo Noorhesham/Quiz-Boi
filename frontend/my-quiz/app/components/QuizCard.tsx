@@ -14,7 +14,9 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import Share from "./Share";
 import { item } from "../motion";
-
+import { FaPlay } from "react-icons/fa";
+import { FcAlarmClock, FcOvertime } from "react-icons/fc";
+import { formatCreatedAt } from "@/utils/date";
 const QuizCard = ({
   quiz,
   card = false,
@@ -37,6 +39,9 @@ const QuizCard = ({
       onMouseLeave={() => setHover(false)}
     >
       <div className="relative md:min-h-[21rem]  md:h-[22rem] text-nowrap flex text-center justify-center  items-center w-full ">
+        <div className=" absolute right-2 font-normal py-1 px-2 text-sm text-gray-100 rounded-xl bg-violet-600 bottom-2 z-10">
+          {quiz.questionNum} Qs
+        </div>
         {
           <DialogueQuiz
             content={<QuizShow quiz={quiz} />}
@@ -61,9 +66,9 @@ const QuizCard = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute   bottom-0  rounded-t-2xl   duration-200 left-0 w-full h-16 bg-black bg-opacity-40 flex flex-wrap items-center justify-between px-4"
+              className="absolute z-10   bottom-0  rounded-t-2xl   duration-200 left-0 w-full h-16 bg-black bg-opacity-40 flex flex-wrap items-center justify-between px-4"
             >
-              <h6 className="text-white  font-semibold">{quiz.title}</h6>
+              <h6 className="text-white capitalize  font-semibold">{quiz.title}</h6>
               <div className="flex  ml-auto items-center gap-2 text-white">
                 <div className="rounded-full  p-1 bg-white hover:text-opacity-90 duration-150 text-gray-900 font-semibold text-center">
                   <FiEye className="" />
@@ -85,10 +90,26 @@ const QuizCard = ({
         </AnimatePresence>
       </div>
       <div className="py-2  glass-white-1 rounded-b-xl flex self-stretch flex-col relative h-full px-2 w-full">
-        <div className="flex mb-2 flex-1 py-1 px-4 border-b-2 border-gray-200  text-gray-800 flex-wrap justify-between items-center">
-          <h6 className="font-semibold text-gray-700 ">{quiz?.title}</h6>
-          <div className=" ml-auto self-end">
-            <div className="text-sm text-gray-600 font-semibold ">Duration:{quiz?.duration} min</div>
+        <div className="flex items-center mt-2 mb-auto justify-between flex-wrap">
+          <h5 className="font-bold capitalize  text-gray-900 ">{quiz?.title}</h5>
+          <h6 className=" text-gray-500 gap-1 text-sm flex items-center text-[200]">
+            <FcOvertime />
+            {formatCreatedAt(quiz.createdAt)}
+          </h6>
+        </div>
+        <div className="flex mb-2 flex-1 py-1  border-b-2 border-gray-200  text-gray-800 flex-wrap justify-between items-center">
+          <div className=" ml-auto flex items-center justify-between self-end flex-1">
+            <Link
+              className=" py-1 px-6 border-2 flex items-center gap-1 rounded-3xl group hover:text-gray-100 font-semibold hover:bg-pink-500 duration-200  border-pink-500"
+              href={`https://quiz-boi.vercel.app/quiz/${quiz._id}`}
+            >
+              Start!
+              <FaPlay className=" text-pink-500 ml-2 group-hover:text-gray-100 duration-200" />
+            </Link>
+            <div className="text-sm flex items-center gap-1 text-gray-600 font-semibold ">
+              Duration:{quiz?.duration} min
+              <FcAlarmClock />
+            </div>
           </div>
         </div>
 

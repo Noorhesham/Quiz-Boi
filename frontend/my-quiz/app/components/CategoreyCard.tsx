@@ -5,19 +5,16 @@ import CategoreyCadHover from "./CategoreyCadHover";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
+import {motion} from 'framer-motion'
 import { item } from "../motion";
 const CategoreyCard = ({ tag, setCategorey, large = false }: { tag: any; setCategorey: any; large?: boolean }) => {
   const [hover, setHover] = useState(false);
   const searchParams = useSearchParams();
   const search = searchParams.get("categorey");
-  useEffect(
-    function () {
-      if (search === tag.tag) setHover(true);
-      else setHover(false);
-    },
-    [search]
-  );
+  useEffect(function () {
+    if (search === tag.tag) setHover(true);
+    else setHover(false)
+  }, [search]);
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
