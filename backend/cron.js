@@ -1,7 +1,7 @@
 "use strict";
 const cron = require("cron");
 const https = require("https");
-const url = "https://quiz-boi.onrender.com/api/v1";
+const url = "https://quiz-boi.onrender.com/api/v1/quiz?page=1&limit=1";
 module.exports = new cron.CronJob("*/14 * * * *", function () {
     https
         .get(url, (res) => {

@@ -20,5 +20,7 @@ export interface UserProps extends Document {
     likedTopics?:string
     socials?:{instagram:string,facebook:string,linkedin:string}
     isthirdParty?:boolean
+    followersCount:number
+    followingCount:number
   }
   

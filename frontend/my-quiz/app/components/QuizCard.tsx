@@ -13,13 +13,8 @@ import { Button } from "@/components/ui/button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import Share from "./Share";
-const item = {
-  hidden: { y: 10, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-  },
-};
+import { item } from "../motion";
+
 const QuizCard = ({
   quiz,
   card = false,
@@ -90,7 +85,7 @@ const QuizCard = ({
         </AnimatePresence>
       </div>
       <div className="py-2  glass-white-1 rounded-b-xl flex self-stretch flex-col relative h-full px-2 w-full">
-        <div className="flex mb-2 flex-1 py-1 px-4 border-b-2 border-gray-200 rounded-lg text-gray-800 flex-wrap justify-between items-center">
+        <div className="flex mb-2 flex-1 py-1 px-4 border-b-2 border-gray-200  text-gray-800 flex-wrap justify-between items-center">
           <h6 className="font-semibold text-gray-700 ">{quiz?.title}</h6>
           <div className=" ml-auto self-end">
             <div className="text-sm text-gray-600 font-semibold ">Duration:{quiz?.duration} min</div>

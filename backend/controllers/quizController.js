@@ -44,21 +44,31 @@ exports.addAuthor = (req, res, next) => {
 exports.completeQuiz = catchAsync(async (req, res, next) => {
     const quizId = req.params.quizId;
     const { username, userId, answers } = req.body;
+    console.log(req.body);
     if (!quizId)
         return next(new AppError_1.default("This attempt must relate to a quiz! Provide the ID of the quiz in the URL", 404));
     const quiz = await quizModel_1.default.findById(quizId);
     if (!quiz)
         return next(new AppError_1.default("Could not find a quiz with that ID!", 404));
-    let userAttempt = await userAttemptsModel_1.default.findOne({ quizId, username, userId });
+    const find = userId ? userId : username;
+    let userAttempt = userId
+        ? await userAttemptsModel_1.default.findOne({ quizId, userId })
+        : await userAttemptsModel_1.default.findOne({ quizId, username });
     console.log(userAttempt);
     if (!userAttempt) {
-        userAttempt = await userAttemptsModel_1.default.create({
-            userId,
-            username,
-            quizId,
-            answers,
-            points: 0
-        });
+        userAttempt = userId
+            ? await userAttemptsModel_1.default.create({
+                userId,
+                quizId,
+                answers,
+                points: 0,
+            })
+            : await userAttemptsModel_1.default.create({
+                username,
+                quizId,
+                answers,
+                points: 0,
+            });
         quiz.usersAttempted.push(userAttempt._id);
     }
     else {
@@ -143,7 +153,10 @@ exports.getAllQuizes = catchAsync(async (req, res, next) => {
     //@ts-ignore
     filters.published = true;
     let query = quizModel_1.default.find(filters)
-        .populate({ path: "author", select: "name photo " })
+        .select("-questions -usersAttempted")
+        .populate({
+        path: "author",
+    })
         .populate({ path: "likes" })
         .populate({ path: "comments" });
     // Create a separate query to get the total count of documents
@@ -153,7 +166,7 @@ exports.getAllQuizes = catchAsync(async (req, res, next) => {
         .paginate()
         .sort()
         .limitFields();
-    const quizzes = await paginatedQuery;
+    let quizzes = await paginatedQuery;
     // Execute the query to get the total count of documents
     const totalResults = await totalDocsQuery;
     // Calculate the total number of pages

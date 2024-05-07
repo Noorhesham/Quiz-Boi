@@ -16,6 +16,7 @@ interface QuizProps extends Document {
   duration: number;
   published: boolean;
   numberOfQuestions?: number;
+  attemptsNum?: number;
   color: "orange" | "pink" | "blue" | "purple" | "green";
 }
 
@@ -39,6 +40,9 @@ const quizSchema = new Schema<QuizProps>(
     questionNum: {
       type: Number,
     },
+    attemptsNum: {
+      type: Number,
+    },
     questions: {
       type: [Schema.Types.ObjectId],
       ref: "Question",
@@ -54,6 +58,8 @@ const quizSchema = new Schema<QuizProps>(
 
 quizSchema.pre("save", function (next) {
   this.slug = slugify(this.title, { lower: true });
+  this.questionNum = this.questions.length;
+  this.attemptsNum = this.usersAttempted.length;
   this.numberOfQuestions = this.questions.length;
   next();
 });
@@ -75,7 +81,7 @@ quizSchema.pre(/^find/, function (this: any, next) {
   })
     .populate({
       path: "author",
-      select: "name id _id photo",
+      select: " name photo id _id followingCount quizzes followersCount",
     })
     .populate({
       path: "comments",
@@ -91,6 +97,8 @@ quizSchema.pre<any>("findOne", function (next: any) {
 
   next();
 });
-
+quizSchema.virtual("questionCount").get(function () {
+  return this.questions?.length;
+});
 const Quiz = mongoose.model<QuizProps>("Quiz", quizSchema);
 export default Quiz;

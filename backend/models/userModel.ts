@@ -14,7 +14,10 @@ const userSchema = new Schema<UserProps>(
       lowerCase: true,
       validate: [validator.isEmail, "please provide a valid email.."],
     },
-    photo: { type: String, default: `https://res.cloudinary.com/dtmvl9re1/image/upload/v1712582898/i6f0b5jxsbeu1lod336a.jpg` },
+    photo: {
+      type: String,
+      default: `https://res.cloudinary.com/dtmvl9re1/image/upload/v1712582898/i6f0b5jxsbeu1lod336a.jpg`,
+    },
     password: {
       type: String,
       minlength: 6,
@@ -53,11 +56,19 @@ const userSchema = new Schema<UserProps>(
       type: [{ type: Schema.Types.ObjectId, ref: "User" }],
       default: [],
     },
-    isthirdParty:{type:Boolean,default:false},
+    isthirdParty: { type: Boolean, default: false },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    followersCount:{type:Number,default:0},
+    followingCount:{type:Number,default:0},
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+userSchema.pre('save', function (next) {
+  // Update followersCount and followingCount before saving
+  this.followersCount = this.followers.length;
+  this.followingCount = this.following.length;
+  next();
+});
 
 userSchema.pre("save", async function (next) {
   //makin sure the password is created new or updated cause
@@ -66,7 +77,7 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 12);
   this.passwordConfirm = undefined; //required input =>not required to be persisted in the DB;
-  next()
+  next();
 });
 
 //updating the password middleware
@@ -85,7 +96,7 @@ userSchema.pre("save", function (next) {
 // });
 userSchema.pre("findOne", function (this: any, next) {
   this.find({ active: { $ne: false } });
- 
+
   next();
 });
 

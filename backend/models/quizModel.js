@@ -44,6 +44,9 @@ const quizSchema = new mongoose_1.Schema({
     questionNum: {
         type: Number,
     },
+    attemptsNum: {
+        type: Number,
+    },
     questions: {
         type: [mongoose_1.Schema.Types.ObjectId],
         ref: "Question",
@@ -56,6 +59,8 @@ const quizSchema = new mongoose_1.Schema({
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 quizSchema.pre("save", function (next) {
     this.slug = slugify(this.title, { lower: true });
+    this.questionNum = this.questions.length;
+    this.attemptsNum = this.usersAttempted.length;
     this.numberOfQuestions = this.questions.length;
     next();
 });
@@ -75,7 +80,7 @@ quizSchema.pre(/^find/, function (next) {
     })
         .populate({
         path: "author",
-        select: "name id _id photo",
+        select: " name photo id _id followingCount quizzes followersCount",
     })
         .populate({
         path: "comments",
@@ -89,6 +94,10 @@ quizSchema.pre("findOne", function (next) {
         select: "-__v ",
     });
     next();
+});
+quizSchema.virtual("questionCount").get(function () {
+    var _a;
+    return (_a = this.questions) === null || _a === void 0 ? void 0 : _a.length;
 });
 const Quiz = mongoose_1.default.model("Quiz", quizSchema);
 exports.default = Quiz;

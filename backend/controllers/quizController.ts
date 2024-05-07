@@ -9,6 +9,7 @@ import cloudinary from "../utils/cloudinary";
 import { UserProps } from "../types";
 import Question from "../models/questionModel";
 import ApiFeatures from "../utils/ApiFeatures";
+import User from "models/userModel";
 const catchAsync = require("../utils/catchError");
 declare module "express-serve-static-core" {
   interface Request {
@@ -48,30 +49,38 @@ exports.addAuthor = (req: Request, res: Response, next: NextFunction) => {
 exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const quizId = req.params.quizId;
   const { username, userId, answers } = req.body;
-
+  console.log(req.body);
   if (!quizId)
     return next(new AppError("This attempt must relate to a quiz! Provide the ID of the quiz in the URL", 404));
 
   const quiz = await Quiz.findById(quizId);
   if (!quiz) return next(new AppError("Could not find a quiz with that ID!", 404));
-
-  let userAttempt = await UserAttempt.findOne({ quizId,username, userId });
+  const find = userId ? userId : username;
+  let userAttempt = userId
+    ? await UserAttempt.findOne({ quizId, userId })
+    : await UserAttempt.findOne({ quizId, username });
   console.log(userAttempt);
   if (!userAttempt) {
-    userAttempt = await UserAttempt.create({
-      userId,
-      username,
-      quizId,
-      answers,
-      points:0
-    });
+    userAttempt = userId
+      ? await UserAttempt.create({
+          userId,
+          quizId,
+          answers,
+          points: 0,
+        })
+      : await UserAttempt.create({
+          username,
+          quizId,
+          answers,
+          points: 0,
+        });
     quiz.usersAttempted.push(userAttempt._id);
   } else {
     if (userAttempt.attemptedAt && userAttempt.attemptedAt >= new Date(Date.now() - 12 * 60 * 60 * 1000))
       return next(new AppError("Attempt made within the last 12 hours. Cannot update.", 403));
   }
   let totalPoints = 0;
-  userAttempt.points=0
+  userAttempt.points = 0;
   console.log(req.body);
   for (let i = 0; i < req.body.answers.length; i++) {
     const question = await Question.findById(req.body.answers[i].id);
@@ -85,7 +94,7 @@ exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: Next
   }
   userAttempt.percentage = (userAttempt.points / totalPoints) * 100;
   userAttempt.answers = answers;
-  userAttempt.totalPoints=totalPoints
+  userAttempt.totalPoints = totalPoints;
   userAttempt.attemptedAt = new Date(Date.now());
   quiz.usersAttempted = quiz.usersAttempted.filter((id) => id !== userAttempt?._id);
   quiz.usersAttempted.push(userAttempt._id);
@@ -146,7 +155,10 @@ exports.getAllQuizes = catchAsync(async (req: Request, res: Response, next: Next
   //@ts-ignore
   filters.published = true;
   let query = Quiz.find(filters)
-    .populate({ path: "author", select: "name photo " })
+    .select("-questions -usersAttempted")
+    .populate({
+      path: "author",
+    })
     .populate({ path: "likes" })
     .populate({ path: "comments" });
 
@@ -158,11 +170,10 @@ exports.getAllQuizes = catchAsync(async (req: Request, res: Response, next: Next
     .paginate()
     .sort()
     .limitFields();
-  const quizzes = await paginatedQuery;
+  let quizzes = await paginatedQuery;
 
   // Execute the query to get the total count of documents
   const totalResults = await totalDocsQuery;
-
   // Calculate the total number of pages
   const totalPages = Math.ceil(totalResults / (queryString.limit || 10));
 
@@ -178,7 +189,6 @@ exports.getAllQuizes = catchAsync(async (req: Request, res: Response, next: Next
     data: { quizzes },
   });
 });
-
 
 exports.getQuiz = quizFactory.getOne("id", { path: "questions" });
 exports.updateQuiz = quizFactory.updateOne();

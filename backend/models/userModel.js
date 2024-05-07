@@ -36,7 +36,10 @@ const userSchema = new mongoose_1.Schema({
         lowerCase: true,
         validate: [validator.isEmail, "please provide a valid email.."],
     },
-    photo: { type: String, default: `https://res.cloudinary.com/dtmvl9re1/image/upload/v1712582898/i6f0b5jxsbeu1lod336a.jpg` },
+    photo: {
+        type: String,
+        default: `https://res.cloudinary.com/dtmvl9re1/image/upload/v1712582898/i6f0b5jxsbeu1lod336a.jpg`,
+    },
     password: {
         type: String,
         minlength: 6,
@@ -79,7 +82,15 @@ const userSchema = new mongoose_1.Schema({
     },
     isthirdParty: { type: Boolean, default: false },
     followers: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "User" }],
+    followersCount: { type: Number, default: 0 },
+    followingCount: { type: Number, default: 0 },
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
+userSchema.pre('save', function (next) {
+    // Update followersCount and followingCount before saving
+    this.followersCount = this.followers.length;
+    this.followingCount = this.following.length;
+    next();
+});
 userSchema.pre("save", async function (next) {
     //makin sure the password is created new or updated cause
     //i wont encrybt it if i updated somethingelse

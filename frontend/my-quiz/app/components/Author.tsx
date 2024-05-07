@@ -5,8 +5,10 @@ import { MdQuiz } from "react-icons/md";
 import User from "./User";
 import UserInfro from "./UserInfo";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@radix-ui/react-hover-card";
+import { createPortal } from "react-dom";
 
 const Author = ({ author, quiz,hover=true }: { author: UserProps; quiz: QuizProps,hover?:boolean }) => {
+  console.log(author)
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
@@ -22,7 +24,7 @@ const Author = ({ author, quiz,hover=true }: { author: UserProps; quiz: QuizProp
         </div>
       </HoverCardTrigger>
       {hover&&
-        <UserInfro author={author} />
+      createPortal( <UserInfro author={author} />,document.body)
      }
     </HoverCard>
   );

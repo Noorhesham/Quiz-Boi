@@ -5,7 +5,6 @@ import Factory from "./handlerFactory";
 import multer from "multer";
 import cloudinary from "../utils/cloudinary";
 import { UserProps } from "../types";
-import Quiz from "models/quizModel";
 const catchAsync = require("../utils/catchError");
 declare module "express-serve-static-core" {
   interface Request {
@@ -169,6 +168,7 @@ exports.becauseYouFollowed = catchAsync(async (req: Request, res: Response, next
   console.log(quizzes, quizzesArrays);
   res.status(200).json({ status: "success", data: { results: suggestedQuizzes.length, suggestedQuizzes } });
 });
+
 const userFactory = new Factory(User, "user");
 exports.getAllUsers = userFactory.getAll();
 exports.updateUser = userFactory.updateOne();

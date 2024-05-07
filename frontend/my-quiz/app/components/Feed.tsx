@@ -11,17 +11,8 @@ import DialogCustom from "./DialogCustom";
 import AllCategories from "./AllCategories";
 import { IoIosArrowForward } from "react-icons/io";
 import PaginationHome from "./Pagination";
-const container = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      delayChildren: 0.1,
-      staggerChildren: 0.3,
-    },
-  },
-};
+import { container } from "../motion";
+
 
 const Feed = ({
   quizzes,
