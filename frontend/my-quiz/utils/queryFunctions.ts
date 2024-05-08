@@ -12,7 +12,7 @@ import { RemoveQuiz } from "@/actions/RemoveQuiz";
 import { SolveQuiz } from "@/actions/SolveQuestion";
 import { GetAttempt } from "@/actions/getAttempt";
 import { getFollowers, getFollowing } from "@/actions/getFollowers";
-import { getPublicUser, getPublicUserMini, getUser } from "@/actions/getUser";
+import { getPublicUser, getPublicUserMini, getUser, getUserDetails } from "@/actions/getUser";
 import { logout as logoutAPI } from "@/actions/logout";
 import { useQuiz } from "@/app/context/QuizContext";
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -35,6 +35,8 @@ export const useGetUser = () => {
   };
   return { user, isLoading, error, updateUser };
 };
+
+
 export const useGetUsersPublic = (arr: Array<string>) => {
   const {
     data: users,
@@ -58,7 +60,7 @@ export const useGetUsersMiniPublic = (arr: Array<string>) => {
   return { users, isLoading, error };
 };
 
-export const useGetFollowers = (id: string, ) => {
+export const useGetFollowers = (id: string) => {
   const {
     data: followers,
     isLoading,
@@ -335,7 +337,7 @@ export const usedeleteQuiz = () => {
   } = useMutation({
     mutationFn: async (id: string) => {
       //@ts-ignore
-      queryClient.invalidateQueries('user')
+      queryClient.invalidateQueries("user");
       return await RemoveQuiz(id);
     },
     onSuccess: (data) => {

@@ -27,26 +27,25 @@ export const getUser = async () => {
     throw err;
   }
 };
-export const getUserDetails = async () => {
+export const getUserDetails = async (page:number=1) => {
   const token = cookies().get("jwt")?.value;
   try {
     if (!token) return null;
-    const user = await fetch(`${API_URL}/users/me-details`, {
+    const user = await fetch(`${API_URL}/users/me-details?page=${page}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       cache: "force-cache",
     }).then((res) => res.json());
     const photo = user?.data?.user?.photo;
-    const likedQuizzes = await Promise.all(
-      user.data?.user.likedQuizzes.map((q: any) => GetQuizPublic(q.quiz))
-    );
-    console.log(likedQuizzes)
+    console.log(user?.data?.user.likedQuizzes);
+    const likedQuizzes = await Promise.all(user.data?.user.likedQuizzes.map((q: any) =>GetQuizPublic(q.quiz)));
+    console.log(likedQuizzes);
     if (user.data?.user) {
       return {
         ...user.data.user,
         photo: photo,
-        likedQuizzes: likedQuizzes.map(quiz=>quiz?.data?.quiz),
+        likedQuizzes: likedQuizzes.map((quiz) => quiz?.data?.quiz),
       };
     }
   } catch (err: any) {
@@ -63,7 +62,7 @@ export const getPublicUser = async (id: String) => {
     const likedQuizzes = await Promise.all(
       user.data?.user.likedQuizzes.map((q: any) => GetQuizPublic(q.quiz).then((d) => d?.data?.quiz))
     );
-    console.log(likedQuizzes,user)
+    console.log(likedQuizzes, user);
     if (user.data?.user) {
       return {
         ...user.data.user,

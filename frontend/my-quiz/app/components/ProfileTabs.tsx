@@ -13,7 +13,7 @@ export default function ProfileTabs({ user }: { user: UserProps }) {
   const [publishedPagination, setPublishedPagination] = useState(5);
   const [likedPagination, setLikedPagination] = useState(5);
   const [attemptedPagination, setAttemptedPagination] = useState(5);
-
+  console.log(user)
   const handlePublishedLoadMore = () => {
     setPublishedPagination((prevPagination) => prevPagination + 5);
   };

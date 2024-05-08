@@ -12,6 +12,7 @@ export const GetQuiz = async (id: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    if(!res.data.data) return null
     return res.data.data;
   } catch (err: any) {
     console.log(err);
