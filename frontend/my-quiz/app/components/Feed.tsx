@@ -46,9 +46,9 @@ const Feed = ({
   }
   return (
     <section className=" relative pt-5">
-      <div className="p-8 flex md:flex-row flex-col items-stretch justify-between">
-        <Heading text="Find your desired quiz now !" />
-        <div className="flex items-center gap-10">
+      <div className="md:p-8 p-4 flex md:flex-row flex-col items-stretch justify-between">
+        <Heading  text="Find your desired quiz now !" paragraph="You can Filter the Quizzes by Topics here... just click on the desired topic and quizzes will be filtered ! 🚀👩‍🚀 " />
+        <div className="flex items-center justify-between gap-10 ">
           <button
             onClick={() => handleSearch("")}
             className=" text-lg md:text-3xl font-semibold text-red-400 hover:underline hover:text-red-500 cursor-pointer duration-150"

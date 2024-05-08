@@ -12,9 +12,9 @@ const Author = ({ author, quiz, hover = true }: { author: UserProps; quiz: QuizP
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
-        <div className="flex self-end mt-auto relative items-center justify-between w-full gap-2">
+        <div className="flex self-end flex-wrap mt-auto relative items-center justify-between w-full md:gap-2">
           <User author={author} />
-          <div className="flex items-center p-2 gap-2">
+          <div className="flex items-center p-2 ml-auto gap-2">
             <Like count={quiz.likes?.length} id={quiz._id} />
             <ToolTip
               trigger={

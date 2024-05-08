@@ -39,7 +39,7 @@ console.log(user.likedQuizzes)
             <CardHeader>
               <CardTitle>Published Quizzes</CardTitle>
             </CardHeader>
-            <CardContent className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5">
+            <CardContent className="  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 items-stretch p-10 gap-5">
               {user.quizzes
                 .filter((q) => q?.published)
                 .slice(0, publishedPagination)

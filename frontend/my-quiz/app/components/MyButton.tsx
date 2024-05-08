@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { useColor } from "../context/ColorContext";
 import Link from "next/link";
@@ -9,13 +9,13 @@ const MyButton = ({
   disabled,
   onClick,
   variant,
-  href,
+  href,children
 }: {
   text: string;
   disabled?: boolean;
   onClick?: any;
   href?: string;
-  variant?: string;
+  variant?: string;children?:ReactNode
 }) => {
   return (
     <Button
@@ -29,6 +29,7 @@ const MyButton = ({
     >
       {href ? <Link href={href}>{text}</Link> : text}
       {disabled && <FaSpinner className=" animate-spin text-gray-100 " />}
+      {children}
     </Button>
   );
 };

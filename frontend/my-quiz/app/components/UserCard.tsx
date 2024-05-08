@@ -10,32 +10,29 @@ import FollowList from "./FollowList";
 import FollowingList from "./FollowingList";
 
 const UserCard = ({ user, mine = false }: { user: UserProps; mine: boolean }) => {
-  console.log(user);
   return (
-    <div className="flex w-full self-start flex-col items-center  py-4 px-8 ">
-      <div className=" p-1">
+    <div className="flex relative overflow-hidden w-full self-start flex-col items-center  py-4 px-8 ">
+      <div className=" z-10 p-1">
         <img src={user?.photo} className="w-[8rem] h-[8rem] rounded-full" />
       </div>
-      <div className="flex text-gray-100 items-center text-lg p-3 flex-col gap-2">
-        <h1>{user.name}</h1>
+      <div className="flex z-5 py-5 px-10 w-full user rounded-3xl -mt-20 text-gray-800 items-center text-lg  flex-col gap-2">
+        <div className=" mt-24 flex flex-col items-center">
+        <h1 className=" font-bold">{user.name}</h1>
         <h4 className="">{user.email}</h4>
         <div className="flex items-center gap-5">
-          {user.followers.length !== 0 ? (
+          {user.followersCount&& (
             <DialogCustom title="Followers" description="See Followers"
-              content={<FollowList length={user.followers.length} id={user._id} />}
-              btn={<MiniHeaderLink text={`${user.followers.length} followers`} />}
+              content={<FollowList length={user.followersCount} id={user._id} />}
+              btn={<MiniHeaderLink span={`${user.followersCount}`} text={`followers`} />}
             />
-          ) : (
-            <MiniHeaderLink text="0 followers" />
           )}
-          {user.following.length !== 0 ? (
+          {user.followingCount&& (
             <DialogCustom title="Following" description="See Followings"
-              content={<FollowingList length={user.following.length} id={user._id}  />}
-              btn={<MiniHeaderLink text={`${user.following.length} following`} />}
+              content={<FollowingList length={user.followingCount} id={user._id}  />}
+              btn={<MiniHeaderLink span={`${user.followingCount}`} text={`following`} />}
             />
-          ) : (
-            <MiniHeaderLink text="0 following " />
           )}
+        </div>
         </div>
         {!mine ? (
           <Follow className=" text-center mx-auto mr-auto" id={user._id} />

@@ -14,21 +14,19 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import Share from "./Share";
 import { item } from "../motion";
-import { FaPlay } from "react-icons/fa";
-import { FcAlarmClock, FcOvertime } from "react-icons/fc";
-import { formatCreatedAt } from "@/utils/date";
+import Time from "./Time";
+import StartButton from "./StartButton";
+import Date from "./Date";
 const QuizCard = ({
   quiz,
   card = false,
   edit = false,
   href,
-  animation,
 }: {
   quiz: QuizProps;
   card?: boolean;
   edit?: boolean;
   href?: string;
-  animation?: any;
 }) => {
   const [hover, setHover] = useState(false);
   return (
@@ -38,7 +36,7 @@ const QuizCard = ({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className="relative md:min-h-[21rem]  md:h-[22rem] text-nowrap flex text-center justify-center  items-center w-full ">
+      <div className={`relative  ${ card?"":"md:h-[22rem]"}  text-nowrap flex text-center justify-center  items-center w-full `}>
         <div className=" absolute right-2 font-normal py-1 px-2 text-sm text-gray-100 rounded-xl bg-violet-600 bottom-2 z-10">
           {quiz.questionNum} Qs
         </div>
@@ -92,24 +90,12 @@ const QuizCard = ({
       <div className="py-2  glass-white-1 rounded-b-xl flex self-stretch flex-col relative h-full px-2 w-full">
         <div className="flex items-center mt-2 mb-auto justify-between flex-wrap">
           <h5 className="font-bold capitalize  text-gray-900 ">{quiz?.title}</h5>
-          <h6 className=" text-gray-500 gap-1 text-sm flex items-center text-[200]">
-            <FcOvertime />
-            {formatCreatedAt(quiz.createdAt)}
-          </h6>
+          <Date date={quiz.createdAt} />
         </div>
         <div className="flex mb-2 flex-1 py-1  border-b-2 border-gray-200  text-gray-800 flex-wrap justify-between items-center">
-          <div className=" ml-auto flex items-center justify-between self-end flex-1">
-            <Link
-              className=" py-1 px-6 border-2 flex items-center gap-1 rounded-3xl group hover:text-gray-100 font-semibold hover:bg-pink-500 duration-200  border-pink-500"
-              href={`https://quiz-boi.vercel.app/quiz/${quiz._id}`}
-            >
-              Start!
-              <FaPlay className=" text-pink-500 ml-2 group-hover:text-gray-100 duration-200" />
-            </Link>
-            <div className="text-sm flex items-center gap-1 text-gray-600 font-semibold ">
-              Duration:{quiz?.duration} min
-              <FcAlarmClock />
-            </div>
+          <div className={`${card&&"gap-2"} ml-auto flex flex-wrap items-center justify-between self-end flex-1`}>
+            <StartButton id={quiz._id} />
+            <Time duration={quiz.duration} />
           </div>
         </div>
 

@@ -2,38 +2,40 @@
 import { QuizProps } from "@/types";
 import React from "react";
 import Topic from "./Topic";
-import { IMAGE_URL } from "@/constants";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { useColor } from "../context/ColorContext";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+import Time from "./Time";
+import Date from "./Date";
+import Generating from "./Generating";
+import { BsArrowRightShort } from "react-icons/bs";
+
 
 const Quiz = ({ quiz, dark = false }: { quiz: QuizProps; dark?: boolean }) => {
-  const { color } = useColor();
   return (
-    <div
+    <Link href={`/quiz-upload/${quiz._id}`}
       className={` ${
         dark && "text-gray-800"
-      } rounded-lg bg-gray-100 glass-white cursor-pointer text-gray-800  hover:bg-pink-400 duration-200  hover:text-gray-100 shadow-md flex sm:flex-row flex-col-reverse md:flex-nowrap  items-center  justify-between gap-8 py-5 px-10 `}
+      } rounded-lg bg-gray-100 max-h-[15rem] glass-white-1 cursor-pointer text-gray-800  hover:bg-pink-400 duration-200  hover:text-gray-100
+       shadow-md flex flex-row  items-center  justify-between gap-2 md:gap-8`}
     >
-      <div className="flex flex-col   justify-between flex-wrap">
-        <h2 className={`  capitalize font-semibold text-xl`}>{quiz.title}</h2>
-        <div className="flex items-center flex-wrap gap-2">
+      <div className="flex flex-col h-full flex-1 md:py-3 md:px-6 py-2 px-4   justify-between ">
+        <h2 className={`capitalize text-gray-100 font-semibold text-xl`}>{quiz.title}</h2>
+        <div className="flex flex-wrap items-center md:gap-1">
           {quiz.tags?.map((tag: string, i: number) => (
             <Topic key={i} small={true} tag={tag} />
           ))}
         </div>
-        <div className=" my-3 text-sm font-semibold">Duration : {quiz.duration}</div>
-        <p>{quiz.description}</p>
+        <div className="flex flex-col">
+          <Time className="text-gray-200 font-normal" duration={quiz.duration} />
+          <Date className=" mr-0 mt-0 text-gray-200" date={quiz.createdAt} />
+        </div>
         <div className="flex flex-col items-start gap-2  ">
-          <div className={`${dark && "text-red-400 font-semibold "}text-red-100`}>
-            {quiz.published ? `Published` : `in Progress...`}
-          </div>
           {quiz.published ? (
-            <Button>
-              <Link href={`/quiz-upload/${quiz._id}`}>Show and Edit Quiz</Link>
-            </Button>
+              <Link className="underline text-nowrap flex items-center text-gray-50 hover:text-gray-300 duration-200 " href={`/quiz-upload/${quiz._id}`}>
+                Show,Edit Quiz
+                <BsArrowRightShort />
+                </Link>
           ) : (
             <Button className="flex items-center gap-2 hover:text-red-400 duration-150 " variant="secondary">
               <Link href={`/quiz-upload/${quiz._id}`}>Publish Quiz</Link>
@@ -42,15 +44,23 @@ const Quiz = ({ quiz, dark = false }: { quiz: QuizProps; dark?: boolean }) => {
           )}
         </div>
       </div>
-      <div className="w-[14rem]">
-        <LazyLoadImage
-          effect="blur"
-          className="rounded-md h-full  aspect-[2/2] object-cover w-full"
+      <div className="h-full  relative w-full">
+        <div className=" absolute shadow-md right-2 font-normal py-1 px-2 text-sm text-gray-100 rounded-xl bg-violet-600 bottom-2 z-10">
+          {quiz.questionNum} Qs
+        </div>
+        {quiz.published ? (
+          <img className=" absolute z-10 w-[6rem] h-[6rem] -left-3 -bottom-5" src="/published.png" alt="" />
+        ) : (
+          <Generating className=" left-[40%] md:left-1/2 -translate-x-1/2 bottom-[34%]" />
+        )}
+        <img
+          loading="lazy"
+          className="rounded-lg h-full block  object-center aspect-[2/2] object-cover w-full"
           src={`${quiz.coverImage}` || "/quiz3.png"}
           alt={quiz.title}
         />
       </div>
-    </div>
+    </Link>
   );
 };
 

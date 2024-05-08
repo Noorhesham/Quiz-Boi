@@ -51,7 +51,7 @@ const CategoreyCard = ({ tag, setCategorey, large = false }: { tag: any; setCate
               else setHover(false);
             }}
             onClick={() => setCategorey(tag.tag)}
-            className="h-48 cursor-pointer  relative w-48 bg-gray-200 rounded-lg "
+            className="md:h-48 h-36 cursor-pointer  relative w-36  md:w-48 bg-gray-200 rounded-lg "
           >
             <LazyLoadImage
               effect="blur"
