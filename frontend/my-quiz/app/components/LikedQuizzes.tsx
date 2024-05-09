@@ -36,7 +36,7 @@ const LikedQuizzes = ({ id, play }: { id?: string; play?: boolean }) => {
           else return <QuizCard key={i} card={true} quiz={play ? quiz.quizId : quiz.quiz} />;
         })}
         {( isLoading || (hasNextPage&&isFetchingNextPage)) &&
-          Array.from({ length: 3 }).map((_, index) => <div ref={ref} ><SkeletonCard /></div>)}
+          Array.from({ length: 6 }).map((_, index) => <div ref={ref} ><SkeletonCard /></div>)}
       </section>
     </Motion>
   );
