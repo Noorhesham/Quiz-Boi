@@ -8,23 +8,14 @@ import Spinner from "./Spinner";
 import { Empty } from "./Empty";
 import Link from "next/link";
 import GlobalButton from "./GlobalButton";
+import LikedQuizzes from "./LikedQuizzes";
 
 export default function ProfileTabs({ user }: { user: UserProps }) {
   const [publishedPagination, setPublishedPagination] = useState(5);
-  const [likedPagination, setLikedPagination] = useState(5);
-  const [attemptedPagination, setAttemptedPagination] = useState(5);
-  console.log(user)
   const handlePublishedLoadMore = () => {
     setPublishedPagination((prevPagination) => prevPagination + 5);
   };
 
-  const handleLikedLoadMore = () => {
-    setLikedPagination((prevPagination) => prevPagination + 5);
-  };
-
-  const handleAttemptedLoadMore = () => {
-    setAttemptedPagination((prevPagination) => prevPagination + 5);
-  };
 console.log(user.likedQuizzes)
   return (
     <Tabs defaultValue="published" className="py-3 px-6 min-w-[80%]">
@@ -67,24 +58,12 @@ console.log(user.likedQuizzes)
               <CardTitle>Liked Quizzes</CardTitle>
             </CardHeader>
             <CardContent className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5">
-              {user.likedQuizzes
-                .filter((q) => q?.published)
-                .slice(0, likedPagination)
-                .map((quiz, i) => (
-                  <QuizCard key={i} card={true} quiz={quiz} />
-                ))}
-              {user.likedQuizzes.length === 0 && (
-                <Empty text="You have not liked any Quizzes">
-                  <Link className="hover:underline hover:text-pink-400 duration-150" href={"/"}>
-                    Explore ?
-                  </Link>
-                </Empty>
-              )}
+              <LikedQuizzes/>
             </CardContent>
             <CardFooter className="flex items-center justify-center">
-              {user.likedQuizzes.length > likedPagination && (
+              {/* {user.likedQuizzes.length > likedPagination && (
                 <GlobalButton text="Load More" onClick={handleLikedLoadMore} />
-              )}
+              )} */}
             </CardFooter>
           </Card>
         </TabsContent>
@@ -94,7 +73,7 @@ console.log(user.likedQuizzes)
               <CardTitle>Attempted Quizzes</CardTitle>
             </CardHeader>
             <CardContent className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5">
-              {user.attemptedQuizzes.slice(0, attemptedPagination).map((quiz, i) =>{
+              {/* {user.attemptedQuizzes.slice(0, attemptedPagination).map((quiz, i) =>{
                  if(!quiz.quizId) return null
                   return (<QuizCard
                     key={i}
@@ -103,19 +82,19 @@ console.log(user.likedQuizzes)
                     quiz={quiz.quizId}
                   />)
                 
-              })}
-              {user.attemptedQuizzes.length === 0 && (
+              })} */}
+              {/* {user.attemptedQuizzes.length === 0 && (
                 <Empty text="You have not attempted any Quiz yet">
                   <Link className="hover:underline hover:text-pink-400 duration-150" href={"/"}>
                     Go Now?
                   </Link>
                 </Empty>
-              )}
+              )} */}
             </CardContent>
             <CardFooter className="flex items-center justify-center">
-              {user.attemptedQuizzes.length > attemptedPagination && (
+              {/* {user.attemptedQuizzes.length > attemptedPagination && (
                 <GlobalButton text="Load More" onClick={handleAttemptedLoadMore} />
-              )}
+              )} */}
             </CardFooter>
           </Card>
         </TabsContent>

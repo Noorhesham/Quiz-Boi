@@ -31,7 +31,7 @@ const likesSchema = new mongoose_1.Schema({
 });
 likesSchema.index({ user: 1, quiz: 1 }, { unique: true });
 likesSchema.pre(/^find/, function (next) {
-    this.populate({ path: "user", select: "name photo" });
+    // this.populate({ path: "user", select: "name photo" });
     next();
 });
 const Likes = mongoose_1.default.model("Likes", likesSchema);

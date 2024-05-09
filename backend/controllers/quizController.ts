@@ -125,8 +125,8 @@ exports.unLikeQuiz = catchAsync(async (req: Request | any, res: Response, next: 
 });
 
 exports.checkIfAuthor = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const quiz = await Quiz.findById(req.params.id || req.params.quizId).populate("author");
   console.log(req.params);
-  const quiz = await Quiz.findById(req.params.id || req.params.quizId);
   console.log(quiz?.author?._id !== req.user.id, quiz?.author._id, req.user.id);
   if (quiz?.author?.id !== req.user.id && req.user.role !== "admin")
     return next(new AppError(`You cannot edit someone's else quiz.`, 403));
@@ -136,7 +136,7 @@ exports.checkIfAuthor = catchAsync(async (req: Request, res: Response, next: Nex
 exports.solveQuiz = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const quiz = await Quiz.findById(req.params.quizId || req.params.id).populate({
     path: "questions",
-    select: "-correctAnswerIndex -explaination",
+    select: "-correctAnswerIndex -explain",
   });
   if (!quiz) return next(new AppError("could not find a quiz with that id!", 404));
   const attempt = quiz?.usersAttempted.filter((a: any) => a.userId === req.body.userId);
@@ -189,6 +189,7 @@ exports.getAllQuizes = catchAsync(async (req: Request, res: Response, next: Next
     data: { quizzes },
   });
 });
+
 
 exports.getQuiz = quizFactory.getOne("id", { path: "questions" });
 exports.updateQuiz = quizFactory.updateOne();

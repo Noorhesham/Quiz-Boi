@@ -123,8 +123,8 @@ exports.unLikeQuiz = catchAsync(async (req, res, next) => {
 });
 exports.checkIfAuthor = catchAsync(async (req, res, next) => {
     var _a, _b;
+    const quiz = await quizModel_1.default.findById(req.params.id || req.params.quizId).populate("author");
     console.log(req.params);
-    const quiz = await quizModel_1.default.findById(req.params.id || req.params.quizId);
     console.log(((_a = quiz === null || quiz === void 0 ? void 0 : quiz.author) === null || _a === void 0 ? void 0 : _a._id) !== req.user.id, quiz === null || quiz === void 0 ? void 0 : quiz.author._id, req.user.id);
     if (((_b = quiz === null || quiz === void 0 ? void 0 : quiz.author) === null || _b === void 0 ? void 0 : _b.id) !== req.user.id && req.user.role !== "admin")
         return next(new AppError_1.default(`You cannot edit someone's else quiz.`, 403));
@@ -133,7 +133,7 @@ exports.checkIfAuthor = catchAsync(async (req, res, next) => {
 exports.solveQuiz = catchAsync(async (req, res, next) => {
     const quiz = await quizModel_1.default.findById(req.params.quizId || req.params.id).populate({
         path: "questions",
-        select: "-correctAnswerIndex -explaination",
+        select: "-correctAnswerIndex -explain",
     });
     if (!quiz)
         return next(new AppError_1.default("could not find a quiz with that id!", 404));

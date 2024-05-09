@@ -13,7 +13,7 @@ export const UploadQuestion = async (values: any, id: string) => {
         Accept: "application/json",
       },
     });
-    revalidatePath('/quiz-upload')
+    revalidatePath('/my-quizzes')
     return res.data;
   } catch (err: any) {
     if (err.response.data) return err.response.data;

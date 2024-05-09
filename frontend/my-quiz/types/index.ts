@@ -14,6 +14,7 @@ export interface UserProps {
 }
 export interface QuizProps {
   title: string;
+  likesCount:number
   questionNum: number | undefined;
   tags: string[];
   questions: QuestionProps[];

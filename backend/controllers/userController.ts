@@ -5,6 +5,11 @@ import Factory from "./handlerFactory";
 import multer from "multer";
 import cloudinary from "../utils/cloudinary";
 import { UserProps } from "../types";
+import { PopulateOptions } from "mongoose";
+
+const toggleUserIdPopulation = require("../models/userAttemptsModel");
+const togglePopulateLikesCommentsAuthor = require("../models/quizModel");
+
 const catchAsync = require("../utils/catchError");
 declare module "express-serve-static-core" {
   interface Request {
@@ -45,26 +50,95 @@ const filteredObj: any = (obj: any, ...allowedFields: any) => {
 };
 
 exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.params.id).select("photo name email");
 
   if (!user) return next(new AppError("cannot find this user", 404));
   res.status(200).json({ status: "success", data: { user } });
 });
+
 exports.getDetails = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const user = await User.findById(req.params.id)
-    .populate({ path: "quizzes" })
-    .populate({ path: "likedQuizzes" })
-    .populate({ path: "attemptedQuizzes" });
+ 
+  const user = await User.findById(req.params.id).populate({
+    path: "quizzes",
+    select: "-questions -usersAttempted",
+  });
 
   if (!user) return next(new AppError("cannot find this user", 404));
   res.status(200).json({ status: "success", data: { user } });
+});
+
+exports.getLikedQuizzes = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const page = req.query.page || 1;
+  const limit = req.query.limit || 10;
+  const skip = (+page - 1) * +limit;
+  const [user, totalLikedQuizzes] = await Promise.all([
+    User.findById(req.params.id).populate({
+      path: "likedQuizzes",
+      populate: {
+        path: "quiz",
+        select: "-usersAttempted -user -questions",
+      },
+      options: { skip, limit },
+    } as PopulateOptions),
+    User.findById(req.params.id)
+      .populate("likedQuizzes")
+      .lean()
+      .then((user: any) => user?.likedQuizzes.length || 0),
+  ]);
+
+  if (!user) return next(new AppError("cannot find this user", 404));
+  const { likedQuizzes } = user;
+
+  res.status(200).json({
+    status: "success",
+    data: { likedQuizzes, totalLikedQuizzes, totalPages: Math.ceil(totalLikedQuizzes / +limit) },
+  });
+});
+exports.getPlayedQuizzes = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const page = req.query.page || 1;
+  const limit = req.query.limit || 10;
+  const skip = (+page - 1) * +limit;
+  const [user, totalAttemptedQuizzes] = await Promise.all([
+    User.findById(req.params.id).populate({
+      path: "attemptedQuizzes",
+      select: "-answers",
+      populate: {
+        path: "quizId",
+        select: "-questions",
+      },
+      options: { skip, limit },
+    } as PopulateOptions),
+    User.findById(req.params.id)
+      .populate("attemptedQuizzes")
+      .lean()
+      .then((user: any) => user?.attemptedQuizzes.length || 0),
+  ]);
+
+  if (!user) return next(new AppError("cannot find this user", 404));
+  const { attemptedQuizzes } = user;
+
+  res.status(200).json({
+    status: "success",
+    data: { attemptedQuizzes, totalAttemptedQuizzes, totalPages: Math.ceil(totalAttemptedQuizzes / +limit) },
+  });
 });
 
 exports.getMe = async (req: Request, res: Response, next: NextFunction) => {
   req.params.id = req.user.id;
   next();
 };
+exports.getUserMini = catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
+  const user = await User.findById(req.params.id);
+  if (!user) return next(new AppError(`There is no userfound with that id`, 404));
+  res.status(200).json({ status: "success", data: { user } });
+});
+exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const user = await User.findById(req.params.id).populate({ path: "likedQuizzes", select: "quiz -user -_id" });
+  // .populate({ path: "attemptedQuizzes" ,select:"-answers quizId _id"});
 
+  if (!user) return next(new AppError(`There is no user found with that id`, 404));
+  res.status(200).json({ status: "success", data: { user } });
+});
 exports.updateMe = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   console.log(req.body, req.file);
   if (req.body.password || req.body.passwordConfirm)
@@ -101,21 +175,6 @@ exports.unfollowUser = catchAsync(async (req: Request | any, res: Response, next
   followedUser.followers = followedUser.followers.filter((id: String) => id.toString() !== currentUser._id.toString());
   await followedUser.save();
   res.status(200).json({ message: "Successfully unfollowed user." });
-});
-
-exports.getUserMini = catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
-  const user = await User.findById(req.params.id).lean();
-  if (!user) return next(new AppError(`There is no userfound with that id`, 404));
-  res.status(200).json({ status: "success", data: { user } });
-});
-exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const user = await User.findById(req.params.id)
-    .populate({ path: "quizzes" })
-    .populate({ path: "likedQuizzes",select:"quiz" })
-    .populate({ path: "attemptedQuizzes" });
-
-  if (!user) return next(new AppError(`There is no user found with that id`, 404));
-  res.status(200).json({ status: "success", data: { user } });
 });
 
 exports.getFollowers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -157,7 +216,13 @@ exports.becauseYouFollowed = catchAsync(async (req: Request, res: Response, next
   const user = await User.findById(req.user);
   const quizzesPromises = user.following.map(async (followedUser: any) => {
     if (followedUser !== req.user) {
-      const followedUserData = await User.findById(followedUser).populate("quizzes");
+      const followedUserData = await User.findById(followedUser).populate({
+        path: "quizzes",
+        populate: {
+            path: "author",
+            select: "name photo id _id followingCount quizzes followersCount"
+        }
+    });
       return followedUserData.quizzes.filter((quiz: any) => quiz.published === true);
     }
   });

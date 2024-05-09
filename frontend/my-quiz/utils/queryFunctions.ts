@@ -4,6 +4,7 @@ import { AddLike, RemoveLike } from "@/actions/AddLike";
 import { CompleteQuiz } from "@/actions/CompleteQuiz";
 import { DeleteQuestion as DeleteQuestionApi } from "@/actions/DeleteQuestion";
 import { FilterQuizzesHome } from "@/actions/FilterQuizHome";
+import { getLikedQuizzes, getMyLikedQuizzes } from "@/actions/GetLikedQuizzes";
 import { GetQuestions } from "@/actions/GetQuestion";
 import { GetStats } from "@/actions/GetStats";
 import { GetTags } from "@/actions/GetTags";
@@ -59,7 +60,50 @@ export const useGetUsersMiniPublic = (arr: Array<string>) => {
   });
   return { users, isLoading, error };
 };
-
+export const useGetMyLikes = () => {
+  const {
+    data: likedQuizzes,
+    isLoading,
+    error,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: [`likedQuizzes`],
+    queryFn: async ({ pageParam = 1 }) => {
+      const data = await getMyLikedQuizzes(pageParam);
+      return data;
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length === 0) return undefined;
+      return allPages.length + 1;
+    },
+    initialPageParam: 1,
+  });
+  return { likedQuizzes, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage };
+};
+export const useGetLikedQuizzes = (id: string) => {
+  const {
+    data: likedQuizzes,
+    isLoading,
+    error,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: [`likedQuizzes ${id}`],
+    queryFn: async ({ pageParam = 1 }) => {
+      const data = await getLikedQuizzes(id,pageParam);
+      return data;
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length === 0) return undefined;
+      return allPages.length + 1;
+    },
+    initialPageParam: 1,
+  });
+  return { likedQuizzes, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage };
+};
 export const useGetFollowers = (id: string) => {
   const {
     data: followers,
@@ -224,6 +268,8 @@ export const useLikeQuiz = () => {
       toast.success(`Like Added Successfully`);
       //@ts-ignore
       querClient.invalidateQueries("user");
+      //@ts-ignore
+      querClient.invalidateQueries("likedQuizzes");
     },
     onError: (err) => {
       console.log(err);
@@ -245,8 +291,10 @@ export const useUnlikeQuiz = () => {
       console.log(data);
       if (data.error) throw new Error(data.message);
       toast.success(`Like Removed Successfully`);
-      //@ts-ignore
-      querClient.invalidateQueries("user");
+   //@ts-ignore
+   querClient.invalidateQueries("user");
+   //@ts-ignore
+   querClient.invalidateQueries("likedQuizzes");
     },
     onError: (err) => {
       console.log(err);

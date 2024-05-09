@@ -1,9 +1,10 @@
+"use client"
 import { QuizProps, UserProps } from "@/types";
 import React from "react";
 import Like from "./Like";
 import User from "./User";
 import UserInfro from "./UserInfo";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@radix-ui/react-hover-card";
+import { HoverCard, HoverCardTrigger } from "@radix-ui/react-hover-card";
 import { createPortal } from "react-dom";
 import { FcConferenceCall, FcQuestions } from "react-icons/fc";
 import ToolTip from "./ToolTip";
@@ -15,7 +16,7 @@ const Author = ({ author, quiz, hover = true }: { author: UserProps; quiz: QuizP
         <div className="flex self-end flex-wrap mt-auto relative items-center justify-between w-full md:gap-2">
           <User author={author} />
           <div className="flex items-center p-2 ml-auto gap-2">
-            <Like count={quiz.likes?.length} id={quiz._id} />
+            <Like count={quiz.likesCount} id={quiz._id} />
             <ToolTip
               trigger={
                 <div className="flex items-center">
@@ -38,7 +39,7 @@ const Author = ({ author, quiz, hover = true }: { author: UserProps; quiz: QuizP
           </div>
         </div>
       </HoverCardTrigger>
-      {hover && createPortal(<UserInfro author={author} />, document.body)}
+      {hover && createPortal(<UserInfro author={author} />, document?.body)}
     </HoverCard>
   );
 };

@@ -8,6 +8,7 @@ import Results from "@/app/components/Results";
 const page = async ({ params }: { params: { id: string } }) => {
   const attempt = await GetAttempt(params.id);
   const { questions, usersAttempted } = attempt.quizId;
+  console.log(questions)
   const list=await Promise.all(questions.map((question:any) => GetQuestions(question)))
   const answers = attempt.answers;
   const howGood =

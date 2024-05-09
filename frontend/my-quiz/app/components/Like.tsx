@@ -5,7 +5,7 @@ import DialogCustom from "./DialogCustom";
 import YouAreNotAuth from "./YouAreNotAuth";
 import { useRouter } from "next/navigation";
 
-const Like = ({ id, count, icon }: { id: string; count?: number; icon?: any }) => {
+const Like = ({ id, count, icon, }: { id: string; count?: number; icon?: any }) => {
   const { LikeQuiz, isPending, error, isSuccess } = useLikeQuiz();
   const { unLikeQuiz, isPending: isPending2, error: error2, isSuccess: isSucces2 } = useUnlikeQuiz();
   const { user } = useGetUser();

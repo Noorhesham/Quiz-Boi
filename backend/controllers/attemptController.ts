@@ -29,4 +29,4 @@ exports.getUserAttemptStats =  catchAsync(async (req: Request|any, res: Response
 
 const attemptfactory=new Factory(UserAttempt,"attempt")
 exports.getAllAttempts = attemptfactory.getAll();
-exports.getAttempt = attemptfactory.getOne();
+exports.getAttempt = attemptfactory.getOne("id",{path: "quizId" ,select:"questions answers usersAttempted"});

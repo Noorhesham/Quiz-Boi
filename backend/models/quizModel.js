@@ -56,12 +56,14 @@ const quizSchema = new mongoose_1.Schema({
     usersAttempted: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "UserAttempt" }],
     published: { type: Boolean, default: false },
     color: { type: String, default: "purple" },
+    likesCount: { type: Number, default: 0 }
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 quizSchema.pre("save", function (next) {
     this.slug = slugify(this.title, { lower: true });
     this.questionNum = this.questions.length;
     this.attemptsNum = this.usersAttempted.length;
     this.numberOfQuestions = this.questions.length;
+    this.likesCount = this.likes.length;
     next();
 });
 quizSchema.virtual("comments", {
@@ -77,24 +79,24 @@ quizSchema.virtual("likes", {
 quizSchema.pre(/^find/, function (next) {
     this.populate({
         path: "likes",
-    })
-        .populate({
-        path: "author",
-        select: " name photo id _id followingCount quizzes followersCount",
-    })
-        .populate({
-        path: "comments",
-        select: "content user ",
     });
+    //       .populate({
+    //         path: "author",
+    //         select: " name photo id _id followingCount quizzes followersCount",
+    //       })
+    //       .populate({
+    //         path: "comments",
+    //         select: "content user ",
+    //       });
     next();
 });
-quizSchema.pre("findOne", function (next) {
-    this.populate({
-        path: "usersAttempted",
-        select: "-__v ",
-    });
-    next();
-});
+// quizSchema.pre<any>("findOne", function (next: any) {
+//   this.populate({
+//     path: "usersAttempted",
+//     select: "-__v ",
+//   });
+//   next();
+// });
 quizSchema.virtual("questionCount").get(function () {
     var _a;
     return (_a = this.questions) === null || _a === void 0 ? void 0 : _a.length;

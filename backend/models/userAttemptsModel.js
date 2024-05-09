@@ -53,11 +53,13 @@ const userAttemptSchema = new mongoose_1.Schema({
     percentage: { type: Number },
     attemptedAt: { type: Date, default: new Date(Date.now()) },
 });
-userAttemptSchema.pre(/^find/, function (next) {
-    this.populate({
-        path: "quizId",
-    }).populate({ path: "userId" });
-    next();
-});
+let populate = false;
+// userAttemptSchema.pre<any>(/^find/, function (next: any) {
+//     // this.populate({ path: "userId" }).
+//   //   this.populate({
+//   //   path: "quizId",select:"-questions -answers -usersAttempted"
+//   // });
+//   next();
+// });
 const UserAttempt = mongoose_1.default.model("UserAttempt", userAttemptSchema);
 exports.default = UserAttempt;

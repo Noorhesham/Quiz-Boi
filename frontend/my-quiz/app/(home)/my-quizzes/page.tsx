@@ -1,4 +1,4 @@
-import { getUser } from "@/actions/getUser";
+import {  getUserDetails } from "@/actions/getUser";
 import DialogCustom from "@/app/components/DialogCustom";
 import { Empty } from "@/app/components/Empty";
 import GlobalButton from "@/app/components/GlobalButton";
@@ -15,7 +15,7 @@ const page = async ({
   params: { slug: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) => {
-  const user = await getUser();
+  const user = await getUserDetails();
    if(!user)  return redirect("/");
 
   return (
