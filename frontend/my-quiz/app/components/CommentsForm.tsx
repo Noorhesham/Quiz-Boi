@@ -37,7 +37,7 @@ const CommentsForm = ({ id, text }: { id: string; text?: string }) => {
                 <FormControl>
                   <textarea
                     draggable={false}
-                    className="py-3 px-3 resize-none pb-6 bg-[#fcedea] rounded-lg text-black"
+                    className="py-3 px-3 resize-none pb-6 bg-[#fceafc] rounded-lg text-black"
                     disabled={isPending}
                     {...field}
                     value={comment && comment}

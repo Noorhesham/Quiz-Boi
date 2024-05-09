@@ -23,7 +23,7 @@ const MyButton = ({
       onClick={onClick}
       //@ts-ignore
       variant={variant && variant}
-      className={` my-4 w-full flex items-center bg-red-400 hover:opacity-80 duration-200 py-5  text-white`}
+      className={` my-4 w-full flex items-center purple hover:opacity-65 hover:text-gray-200  duration-200 py-5  text-white`}
       type="submit"
       disabled={disabled}
     >

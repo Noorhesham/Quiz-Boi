@@ -1,5 +1,4 @@
 import { getMyPlayedQuizzes } from "@/actions/GetPlayedQuizzes";
-import { getUserDetails } from "@/actions/getUser";
 import DialogCustom from "@/app/components/DialogCustom";
 import { Empty } from "@/app/components/Empty";
 import GlobalButton from "@/app/components/GlobalButton";
@@ -8,7 +7,6 @@ import Motion from "@/app/components/Motion";
 import QuizCard from "@/app/components/QuizCard";
 import UploadQuizForm from "@/app/components/UploadQuizForm";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import React from "react";
 export const dynamic = "force-dynamic";
 const page = async () => {

@@ -22,7 +22,6 @@ const BecauseYouFollowed = ({
   DELAY?: number;
 }) => {
   const list = suggesstions ? suggesstions : user.likedQuizzes;
-  console.log(list)
   return (
     <Carousel
       plugins={[
@@ -46,7 +45,7 @@ const BecauseYouFollowed = ({
           if (!quiz || !quiz.title) return null;
           return (
             <CarouselItem key={i} className="md:basis-1/2 lg:basis-1/4">
-              <QuizCard quiz={quiz} />
+              <QuizCard click={false} quiz={quiz} />
             </CarouselItem>
           );
         })}
