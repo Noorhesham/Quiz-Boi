@@ -9,9 +9,9 @@ import MiniHeaderLink from "./MiniHeaderLink";
 import FollowList from "./FollowList";
 import FollowingList from "./FollowingList";
 
-const UserCard = ({ user, mine = false }: { user: UserProps; mine: boolean }) => {
+const UserCard = ({ user, mine = false ,points}: { user: UserProps; mine: boolean,points?:number }) => {
   return (
-    <div className="flex relative overflow-hidden w-full self-start flex-col items-center  py-4 px-8 ">
+    <div className="flex relative overflow-hidden w-full mb-auto h-full self-stretch flex-col items-center py-2 px-4  md:py-4 md:px-8 ">
       <div className=" z-10 p-1">
         <img src={user?.photo} className="w-[8rem] h-[8rem] rounded-full" />
       </div>
@@ -19,11 +19,11 @@ const UserCard = ({ user, mine = false }: { user: UserProps; mine: boolean }) =>
         <div className=" mt-24 flex flex-col items-center">
         <h1 className=" font-bold">{user.name}</h1>
         <h4 className="">{user.email}</h4>
-        <div className="flex items-center gap-5">
+        <div className="grid grid-cols-3 gap-2 my-2 md:my-4 items-center ">
           {user.followersCount&& (
             <DialogCustom title="Followers" description="See Followers"
               content={<FollowList length={user.followersCount} id={user._id} />}
-              btn={<MiniHeaderLink span={`${user.followersCount}`} text={`followers`} />}
+              btn={<MiniHeaderLink  span={`${user.followersCount}`} text={`followers`} />}
             />
           )}
           {user.followingCount&& (
@@ -32,6 +32,11 @@ const UserCard = ({ user, mine = false }: { user: UserProps; mine: boolean }) =>
               btn={<MiniHeaderLink span={`${user.followingCount}`} text={`following`} />}
             />
           )}
+          {points&&<div className="flex gap-2 flex-col md:flex-row items-center relative">
+            <p className=" font-bold">{points}</p>
+            <img src="/xp.png" className="w-[2rem] left-1/2 " alt="" />
+            </div>}
+          <MiniHeaderLink  span={`${user.quizzes.length}`} text={`Published Quizzes`} />
         </div>
         </div>
         {!mine ? (

@@ -7,7 +7,7 @@ const Heading = ({
   icon,
   span,
   dark = false,
-  children,
+  children,className,
   paragraph,
 }: {
   text: string;
@@ -15,11 +15,11 @@ const Heading = ({
   icon?: React.ReactNode;
   paragraph?: string;
   dark?: boolean;
-  span?: string;
+  span?: string;className?:string
   children?: ReactNode;
 }) => {
   return (
-    <div className="flex flex-col gap-1 mb-2">
+    <div className={`flex flex-col gap-1 mb-2 ${className||""}`}>
       <div className="flex max-w-[50rem]  z-10 items-center justify-between">
         <div className="flex items-center gap-3 mb-2 md:mb-3">
           <h2

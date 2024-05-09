@@ -1,31 +1,63 @@
 "use client";
-import { useGetStats } from "@/utils/queryFunctions";
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
-import Spinner from "./Spinner";
-
-const UserData = () => {
-  const { stats, isLoading } = useGetStats();
-  if (isLoading) return <Spinner />;
-  const { totalPoints, averagePercentage, totalAttempts } = stats;
+import {
+  
+  ResponsiveContainer,
+  YAxis,
+  XAxis,
+  CartesianGrid,
+  Legend,
+  Tooltip,
+  BarChart,
+  Bar,
+} from "recharts";
+import Heading from "./Heading";
+const UserData = ({ stats }: { stats: any }) => {
+  console.log(stats);
+  const { totalPoints, averagePercentage, totalAttempts, additionalStats, userAttempts } = stats;
+  const { maxPoints, minPoints } = additionalStats;
+  console.log(userAttempts);
   const data = [
     { name: "Total Points", value: totalPoints },
-    { name: "Average Percentage", value: averagePercentage },
+    { name: "Average Percentage", value: Math.floor(averagePercentage / 100) },
     { name: "Total Attempts", value: totalAttempts },
   ];
-  console.log(stats);
+  const chartData = userAttempts.map((attempt: any) => ({
+    attemptedAt: new Date(attempt.attemptedAt).toLocaleDateString(), // Format date as needed
+    percentage: attempt.percentage,
+    points: attempt.points,
+    totalPoints: attempt.totalPoints,
+  }));
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <BarChart className="text-gray-800" width={730} height={250} data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis tick={{ fill: "gray" }} dataKey="name" />
-        <YAxis tick={{ fill: "gray" }} domain={[0, 100]} tickCount={6} />
-        <Tooltip />
+    //@ts-ignore
+    <ResponsiveContainer className='relative flex flex-col' width={"100%"} height={380}>
+      <Heading text="User stats" paragraph="These are some stats about the user ..."/>
+      <BarChart
+        className=" bg-gray-50 rounded-xl py-4 px-8 border-2 border-gray-400"
+        width={500}
+        height={400}
+        data={data}
+      >
+        <YAxis />
+        <XAxis dataKey="name" />
+        <CartesianGrid strokeDasharray="5 5" />
+        <Tooltip content={<CustomeToolTip />} />
         <Legend />
-        <Bar dataKey="value" fill="white" />
+        <Bar stackId={1} type="monotone" fill="#3b82f6" dataKey="value" />
       </BarChart>
-    </ResponsiveContainer>
+  </ResponsiveContainer>
   );
 };
-
+const CustomeToolTip = ({ active, payload, label }: { active?: any; payload?: any; label?: any }) => {
+  if (active && payload.length && label) {
+    return (
+      <div className=" p-4 bg-slate-100/40 flex flex-col gap-4 rounded-md">
+        <p className=" text-gray-800 text-lg">{label}</p>
+        <p className="flex items-center gap-1">
+          {payload[0].name}: <div>{payload[0].value}</div>
+        </p>
+      </div>
+    );
+  }
+};
 export default UserData;

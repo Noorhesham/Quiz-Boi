@@ -5,6 +5,7 @@ import { CompleteQuiz } from "@/actions/CompleteQuiz";
 import { DeleteQuestion as DeleteQuestionApi } from "@/actions/DeleteQuestion";
 import { FilterQuizzesHome } from "@/actions/FilterQuizHome";
 import { getLikedQuizzes, getMyLikedQuizzes } from "@/actions/GetLikedQuizzes";
+import { getMyPlayedQuizzes, getPlayedQuizzes } from "@/actions/GetPlayedQuizzes";
 import { GetQuestions } from "@/actions/GetQuestion";
 import { GetStats } from "@/actions/GetStats";
 import { GetTags } from "@/actions/GetTags";
@@ -37,7 +38,6 @@ export const useGetUser = () => {
   return { user, isLoading, error, updateUser };
 };
 
-
 export const useGetUsersPublic = (arr: Array<string>) => {
   const {
     data: users,
@@ -60,31 +60,9 @@ export const useGetUsersMiniPublic = (arr: Array<string>) => {
   });
   return { users, isLoading, error };
 };
-export const useGetMyLikes = () => {
+export const useGetMyLikes = (id?: string) => {
   const {
-    data: likedQuizzes,
-    isLoading,
-    error,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: [`likedQuizzes`],
-    queryFn: async ({ pageParam = 1 }) => {
-      const data = await getMyLikedQuizzes(pageParam);
-      return data;
-    },
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length === 0) return undefined;
-      return allPages.length + 1;
-    },
-    initialPageParam: 1,
-  });
-  return { likedQuizzes, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage };
-};
-export const useGetLikedQuizzes = (id: string) => {
-  const {
-    data: likedQuizzes,
+    data: data,
     isLoading,
     error,
     hasNextPage,
@@ -93,17 +71,40 @@ export const useGetLikedQuizzes = (id: string) => {
   } = useInfiniteQuery({
     queryKey: [`likedQuizzes ${id}`],
     queryFn: async ({ pageParam = 1 }) => {
-      const data = await getLikedQuizzes(id,pageParam);
+      const data = id ? await getLikedQuizzes(id, pageParam) : await getMyLikedQuizzes(pageParam);
       return data;
     },
     getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length === 0) return undefined;
+      if (lastPage?.length === 0) return undefined;
       return allPages.length + 1;
     },
     initialPageParam: 1,
   });
-  return { likedQuizzes, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage };
+  return { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage };
 };
+export const useGetMyPlayed = (id?: string) => {
+  const {
+    data,
+    isLoading,
+    error,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: [`playedQuizzes ${id}`],
+    queryFn: async ({ pageParam = 1 }) => {
+      const data = id ? await getPlayedQuizzes(id, pageParam) : await getMyPlayedQuizzes(pageParam);
+      return data;
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage?.length === 0) return undefined;
+      return allPages.length + 1;
+    },
+    initialPageParam: 1,
+  });
+  return { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage };
+};
+
 export const useGetFollowers = (id: string) => {
   const {
     data: followers,
@@ -291,10 +292,10 @@ export const useUnlikeQuiz = () => {
       console.log(data);
       if (data.error) throw new Error(data.message);
       toast.success(`Like Removed Successfully`);
-   //@ts-ignore
-   querClient.invalidateQueries("user");
-   //@ts-ignore
-   querClient.invalidateQueries("likedQuizzes");
+      //@ts-ignore
+      querClient.invalidateQueries("user");
+      //@ts-ignore
+      querClient.invalidateQueries("likedQuizzes");
     },
     onError: (err) => {
       console.log(err);
@@ -473,14 +474,14 @@ export const FilterQuizzes = (category: string, page?: number) => {
   return { quizzes, isLoading, error };
 };
 
-export const useGetStats = () => {
+export const useGetStats = (id:string) => {
   const {
     data: stats,
     isLoading,
     error,
   } = useQuery({
     queryKey: [`stats`],
-    queryFn: async () => await GetStats(),
+    queryFn: async () => await GetStats(id),
   });
   return { stats, isLoading, error };
 };

@@ -1,23 +1,21 @@
-"use server"
+"use server";
 import { API_URL } from "@/constants";
-import axios from "axios";
-import { cookies } from "next/headers";
 
-export const GetStats = async () => {
+export const GetStats = async (id: string) => {
   try {
-    const token = cookies().get("jwt")?.value;
-    if (!token) return null;
-    const res = await axios.get(`${API_URL}/attempts/user/stats`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return res.data.data;
-  } catch (err: any) {
-    console.log(err);
-    if (err.response.data) return err.response.data;
-    if (err.message === "Failed to fetch")
-      err.message = `Unable to reach the server. Please check your internet connection...`;
-    throw err;
+    const response = await fetch(`${API_URL}/attempts/user/stats/${id}`, { cache:'no-cache' });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to fetch data");
+    }
+    console.log(data);
+    return data.data;
+  } catch (error: any) {
+    console.error(error);
+    if (error.message === "Failed to fetch") {
+      throw new Error(`Unable to reach the server. Please check your internet connection...`);
+    } else {
+      throw error;
+    }
   }
 };

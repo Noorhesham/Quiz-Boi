@@ -57,7 +57,6 @@ exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunct
 });
 
 exports.getDetails = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
- 
   const user = await User.findById(req.params.id).populate({
     path: "quizzes",
     select: "-questions -usersAttempted",
@@ -218,11 +217,16 @@ exports.becauseYouFollowed = catchAsync(async (req: Request, res: Response, next
     if (followedUser !== req.user) {
       const followedUserData = await User.findById(followedUser).populate({
         path: "quizzes",
-        populate: {
+        populate: [
+          {
             path: "author",
-            select: "name photo id _id followingCount quizzes followersCount"
-        }
-    });
+            select: "name photo id _id followingCount quizzes followersCount",
+          },
+          {
+            path: "comments",
+          },
+        ],
+      });
       return followedUserData.quizzes.filter((quiz: any) => quiz.published === true);
     }
   });

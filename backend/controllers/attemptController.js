@@ -8,7 +8,8 @@ const handlerFactory_1 = __importDefault(require("./handlerFactory"));
 const AppError_1 = __importDefault(require("../utils/AppError"));
 const catchAsync = require("../utils/catchError");
 exports.getUserAttemptStats = catchAsync(async (req, res, next) => {
-    const userAttempts = await userAttemptsModel_1.default.find({ userId: req.user.id });
+    console.log(req.params);
+    const userAttempts = await userAttemptsModel_1.default.find({ userId: req.params.id }).populate({ path: 'quizId', select: "title" });
     if (!userAttempts)
         return next(new AppError_1.default(`There is no quiz found with that id`, 404));
     const totalAttempts = userAttempts.length;

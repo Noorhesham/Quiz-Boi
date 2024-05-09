@@ -10,5 +10,5 @@ const router = express_1.default.Router({ mergeParams: true });
 router.route("/").get(attemptController.getAllAttempts);
 router
     .route("/:id").get(attemptController.getAttempt);
-router.get("/user/stats/", authController.protect, attemptController.getUserAttemptStats);
+router.get("/user/stats/:id", attemptController.getUserAttemptStats);
 module.exports = router;

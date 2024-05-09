@@ -5,7 +5,8 @@ import AppError from "../utils/AppError";
 const catchAsync = require("../utils/catchError");
 
 exports.getUserAttemptStats =  catchAsync(async (req: Request|any, res: Response, next: NextFunction) => {
-      const userAttempts: UserAttemptProps[] = await UserAttempt.find({ userId: req.user.id });
+  console.log(req.params)
+      const userAttempts: UserAttemptProps[] = await UserAttempt.find({ userId:req.params.id }).populate({path:'quizId',select:"title"});
       if(!userAttempts)  return next(new AppError(`There is no quiz found with that id`, 404));
         const totalAttempts: number = userAttempts.length;
       const totalPoints: number = userAttempts.reduce((acc, attempt) => acc + attempt.points, 0);

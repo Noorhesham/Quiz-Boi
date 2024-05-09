@@ -207,10 +207,15 @@ exports.becauseYouFollowed = catchAsync(async (req, res, next) => {
         if (followedUser !== req.user) {
             const followedUserData = await userModel_1.default.findById(followedUser).populate({
                 path: "quizzes",
-                populate: {
-                    path: "author",
-                    select: "name photo id _id followingCount quizzes followersCount"
-                }
+                populate: [
+                    {
+                        path: "author",
+                        select: "name photo id _id followingCount quizzes followersCount",
+                    },
+                    {
+                        path: "comments",
+                    },
+                ],
             });
             return followedUserData.quizzes.filter((quiz) => quiz.published === true);
         }
