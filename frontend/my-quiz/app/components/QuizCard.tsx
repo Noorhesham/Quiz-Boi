@@ -17,16 +17,20 @@ import { item } from "../motion";
 import Time from "./Time";
 import StartButton from "./StartButton";
 import Date from "./Date";
+import Points from "./Points";
+import { BsArrowRightShort } from "react-icons/bs";
 const QuizCard = ({
   quiz,
   card = false,
-  edit = false,
+  edit = false,points,
   href,
+  click = true,
 }: {
   quiz: QuizProps;
   card?: boolean;
   edit?: boolean;
   href?: string;
+  click?: boolean;points?:number
 }) => {
   const [hover, setHover] = useState(false);
   return (
@@ -36,11 +40,15 @@ const QuizCard = ({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className={`relative  ${ card?"":"md:h-[22rem]"}  text-nowrap flex text-center justify-center  items-center w-full `}>
+      <div
+        className={`relative  ${
+          card ? "" : "md:h-[22rem]"
+        }  text-nowrap flex text-center justify-center  items-center w-full `}
+      >
         <div className=" absolute right-2 font-normal py-1 px-2 text-sm text-gray-100 rounded-xl bg-violet-600 bottom-2 z-10">
           {quiz.questionNum} Qs
         </div>
-        {
+        {click ? (
           <DialogueQuiz
             content={<QuizShow quiz={quiz} />}
             btn={
@@ -55,7 +63,17 @@ const QuizCard = ({
               />
             }
           />
-        }
+        ) : (
+          <LazyLoadImage
+            effect="blur"
+            threshold={100}
+            height={"auto"}
+            width={"auto"}
+            className="rounded-t-2xl  h-full block mt-0 pt-0   aspect-[1/1] object-cover w-full"
+            src={`${quiz?.coverImage}` || "/quiz3.png"}
+            alt={quiz?.title}
+          />
+        )}
 
         <AnimatePresence>
           {hover && (
@@ -92,18 +110,22 @@ const QuizCard = ({
           <h5 className="font-bold capitalize  text-gray-900 ">{quiz?.title}</h5>
           <Date date={quiz.createdAt} />
         </div>
+            {points&&<Points className=" mb-2" points={points}/>}
         <div className="flex mb-2 flex-1 py-1  border-b-2 border-gray-200  text-gray-800 flex-wrap justify-between items-center">
-          <div className={`${card&&"gap-2"} ml-auto flex flex-wrap items-center justify-between self-end flex-1`}>
+          <div className={`${card && "gap-2"} ml-auto flex flex-wrap items-center justify-between self-end flex-1`}>
             <StartButton id={quiz._id} />
             <Time duration={quiz.duration} />
+            <div>
+            </div>
           </div>
         </div>
 
         {!card && <Author quiz={quiz} author={quiz.author} />}
         {href && (
-          <Button className="rounded-full hover:bg-pink-400 hover:text-gray-100 self-center duration-200  py-3  px-6">
-            <Link href={href}>Show Attempt</Link>
-          </Button>
+          <Link className="underline text-nowrap flex items-center text-center mx-auto text-pink-500 hover:text-pink-400 duration-200 " href={href}>
+          Show Answers,Score
+          <BsArrowRightShort />
+          </Link>
         )}
       </div>
     </motion.div>

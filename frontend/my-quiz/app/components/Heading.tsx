@@ -35,7 +35,7 @@ const Heading = ({
         </div>
         {icon && icon}
       </div>
-      {paragraph && <p className="text-xl text-[300] leading-[1.5rem]  text-gray-100">{paragraph}</p>}
+      {paragraph && <p className=" text-base md:text-xl text-[300] leading-[1.5rem]  text-gray-100">{paragraph}</p>}
     </div>
   );
 };

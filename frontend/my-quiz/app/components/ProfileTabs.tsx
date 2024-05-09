@@ -16,7 +16,7 @@ export default function ProfileTabs({ user,id }: { user: UserProps,id?:string })
     setPublishedPagination((prevPagination) => prevPagination + 5);
   };
   return (
-    <Tabs defaultValue="published" className="py-3 mt-28 md:mt-20 px-6 min-w-[80%]">
+    <Tabs defaultValue="published" className="py-3 mt-32 md:mt-24 px-6 min-w-[80%]">
       <TabsList className="grid w-full md:text-base text-sm grid-cols-3">
         <TabsTrigger value="published">Published Qs</TabsTrigger>
         <TabsTrigger value="liked">Liked Qs</TabsTrigger>

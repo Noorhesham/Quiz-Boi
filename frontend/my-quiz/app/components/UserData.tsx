@@ -12,6 +12,7 @@ import {
   Bar,
 } from "recharts";
 import Heading from "./Heading";
+import {  FcBarChart } from "react-icons/fc";
 const UserData = ({ stats }: { stats: any }) => {
   console.log(stats);
   const { totalPoints, averagePercentage, totalAttempts, additionalStats, userAttempts } = stats;
@@ -31,7 +32,7 @@ const UserData = ({ stats }: { stats: any }) => {
   return (
     //@ts-ignore
     <ResponsiveContainer className='relative flex flex-col' width={"100%"} height={380}>
-      <Heading text="User stats" paragraph="These are some stats about the user ..."/>
+      <Heading icon={<FcBarChart className=" text-3xl md:mr-auto my-auto ml-3 md:text-6xl" />} text="User stats" paragraph="These are some stats about the user ..."/>
       <BarChart
         className=" bg-gray-50 rounded-xl py-4 px-8 border-2 border-gray-400"
         width={500}

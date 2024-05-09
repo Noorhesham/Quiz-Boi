@@ -3,6 +3,7 @@ import { formatCreatedAt } from "@/utils/date";
 import React from "react";
 import { AreaChart, Area, ResponsiveContainer, YAxis, XAxis, CartesianGrid, Legend, Tooltip } from "recharts";
 import Heading from "./Heading";
+import { FcAreaChart } from "react-icons/fc";
 
 const AreaChartCustom = ({ userAttempts }: { userAttempts: any }) => {
   userAttempts = userAttempts.sort(
@@ -19,7 +20,7 @@ const AreaChartCustom = ({ userAttempts }: { userAttempts: any }) => {
     //@ts-ignore
 
     <ResponsiveContainer className={"px-5 mt-14 md:mt-2 md:px-0"} width={"100%"} height={380}>
-      <Heading
+      <Heading icon={<FcAreaChart className=" text-3xl md:mr-auto my-auto ml-3 md:text-6xl" />}
         text="User Plays !"
         paragraph="Here you can find a brief summary anout your scores in the quizzes you played !"
       />
