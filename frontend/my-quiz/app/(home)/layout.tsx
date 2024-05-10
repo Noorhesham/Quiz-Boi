@@ -24,6 +24,7 @@ export default async function RootLayout({
            <Head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:image" content="/favicon.ico"/>
       </Head>
       <ColorProvider>
         <ColorWrapper>
