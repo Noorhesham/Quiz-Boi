@@ -14,7 +14,7 @@ const Search = ({ setQuery, query }: { setQuery: any; query: string }) => {
         <IoIosSearch />
       </button>
       <input autoFocus={true}
-        placeholder={`Search Quizzes By Title,Tag`}
+        placeholder={`Search User By Name,Email`}
         onChange={(e) => setQuery(e.target.value)}
         value={query}
         className={` placeholder:text-gray-400 bg-transparent w-[100%]  ml-1 outline-none text-xl h-[2rem] `}
