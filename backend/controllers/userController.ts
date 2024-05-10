@@ -60,6 +60,11 @@ exports.getDetails = catchAsync(async (req: Request, res: Response, next: NextFu
   const user = await User.findById(req.params.id).populate({
     path: "quizzes",
     select: "-questions -usersAttempted",
+    populate: [
+      {
+        path: "comments",
+      },
+    ],
   });
 
   if (!user) return next(new AppError("cannot find this user", 404));
