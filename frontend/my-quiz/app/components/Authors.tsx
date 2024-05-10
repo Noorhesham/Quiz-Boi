@@ -33,7 +33,7 @@ const Authors = ({
         align: "center",
         loop: true,
       }}
-      className="max-w-full bg-gray-50/80 p-10 "
+      className="max-w-full bg-gray-50/80 md:p-10 "
     >
       <Heading span={span} dark text={text || "Suggested For You :"}>
         {img && (
@@ -48,8 +48,8 @@ const Authors = ({
             </CarouselItem>
           ))}
       </CarouselContent>
-      <CarouselPrevious className=" absolute left-0 " />
-      <CarouselNext className=" absolute right-0 " />
+      <CarouselPrevious className=" hidden md:block absolute left-0 " />
+      <CarouselNext className=" hidden md:block absolute right-0 " />
     </Carousel>
   );
 };
