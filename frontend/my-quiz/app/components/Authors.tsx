@@ -40,10 +40,10 @@ const Authors = ({
           <Image className=" hidden md:block md:w-[10rem]" src={"/cause.png"} width={200} height={200} alt="Followed" />
         )}
       </Heading>
-      <CarouselContent className=" py-2 mt-4">
+      <CarouselContent className=" px-4 py-2 mt-4">
         {list &&
           list.map((user: any, i: number) => (
-            <CarouselItem key={i} className=" basis-1/4 md:basis-1/4 lg:basis-1/4">
+            <CarouselItem key={i} className=" basis-[31%] md:basis-1/4 lg:basis-1/4">
               <TopAuthor user={user} />
             </CarouselItem>
           ))}
