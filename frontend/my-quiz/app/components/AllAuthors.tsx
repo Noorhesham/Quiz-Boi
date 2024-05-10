@@ -5,10 +5,11 @@ import { UserProps } from "@/types";
 import { useInView } from "react-intersection-observer";
 import AuthorSkeleton from "./AuthorSkeleton";
 import Author from "./Author";
+import { Empty } from "./Empty";
 
 const AllAuthors = () => {
   const [query, setQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState(""); 
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const { data, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetUsers(debouncedQuery);
   const { ref, inView } = useInView();
   useEffect(() => {
@@ -35,6 +36,11 @@ const AllAuthors = () => {
         {data?.pages.flat(1).map((user: UserProps) => (
           <Author author={user} />
         ))}
+        {!isLoading && (!data || data.pages.flat(1).length <= 0) && (
+          <Empty
+            text="There is no user with this Name,Email..! Try search with another keyword 😿"
+          />
+        )}
         {(hasNextPage || isFetchingNextPage) && (
           <div ref={ref} className=" w-full">
             <div className="w-8 h-8 left-1/2 -bottom-2  absolute mx-auto mt-auto">
@@ -42,7 +48,8 @@ const AllAuthors = () => {
             </div>
           </div>
         )}
-        {(hasNextPage && isFetchingNextPage)||isLoading && <AuthorSkeleton />}
+
+        {(hasNextPage && isFetchingNextPage) || (isLoading && <AuthorSkeleton />)}
       </section>
     </section>
   );
