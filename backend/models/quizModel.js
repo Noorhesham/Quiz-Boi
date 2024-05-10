@@ -59,11 +59,12 @@ const quizSchema = new mongoose_1.Schema({
     likesCount: { type: Number, default: 0 }
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 quizSchema.pre("save", function (next) {
+    var _a, _b, _c, _d;
     this.slug = slugify(this.title, { lower: true });
-    this.questionNum = this.questions.length;
-    this.attemptsNum = this.usersAttempted.length;
-    this.numberOfQuestions = this.questions.length;
-    this.likesCount = this.likes.length;
+    this.questionNum = (_a = this.questions) === null || _a === void 0 ? void 0 : _a.length;
+    this.attemptsNum = (_b = this.usersAttempted) === null || _b === void 0 ? void 0 : _b.length;
+    this.numberOfQuestions = (_c = this.questions) === null || _c === void 0 ? void 0 : _c.length;
+    this.likesCount = (_d = this.likes) === null || _d === void 0 ? void 0 : _d.length;
     next();
 });
 quizSchema.virtual("comments", {

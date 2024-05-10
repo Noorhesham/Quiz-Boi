@@ -60,10 +60,10 @@ const quizSchema = new Schema<QuizProps>(
 
 quizSchema.pre("save", function (next) {
   this.slug = slugify(this.title, { lower: true });
-  this.questionNum = this.questions.length;
-  this.attemptsNum = this.usersAttempted.length;
-  this.numberOfQuestions = this.questions.length;
-  this.likesCount=this.likes.length
+  this.questionNum = this.questions?.length;
+  this.attemptsNum = this.usersAttempted?.length;
+  this.numberOfQuestions = this.questions?.length;
+  this.likesCount=this.likes?.length
   next();
 });
 
