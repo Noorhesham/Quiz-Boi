@@ -63,7 +63,7 @@ const Authors = ({
         />
       </div>
 
-      <CarouselContent className=" px-4 md:py-2  mt-3">
+      <CarouselContent className=" px-4 py-2  mt-3">
         {list &&
           list.map((user: any, i: number) => (
             <CarouselItem key={i} className=" basis-[27%] md:basis-1/4 lg:basis-1/5">
