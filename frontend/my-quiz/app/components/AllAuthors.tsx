@@ -26,7 +26,7 @@ const AllAuthors = () => {
     },
     [inView, hasNextPage, fetchNextPage]
   );
-  if (isLoading) return <AuthorSkeleton />;
+  // if (isLoading) return <AuthorSkeleton />;
   console.log(data);
   return (
     <section className=" min-h-[40vh] relative">
@@ -42,7 +42,7 @@ const AllAuthors = () => {
             </div>
           </div>
         )}
-        {(hasNextPage && isFetchingNextPage) && <AuthorSkeleton />}
+        {(hasNextPage && isFetchingNextPage)||isLoading && <AuthorSkeleton />}
       </section>
     </section>
   );
