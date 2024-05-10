@@ -4,6 +4,7 @@ import { AddLike, RemoveLike } from "@/actions/AddLike";
 import { CompleteQuiz } from "@/actions/CompleteQuiz";
 import { DeleteQuestion as DeleteQuestionApi } from "@/actions/DeleteQuestion";
 import { FilterQuizzesHome } from "@/actions/FilterQuizHome";
+import { getAllAuthors } from "@/actions/GetAllAuthors";
 import { getLikedQuizzes, getMyLikedQuizzes } from "@/actions/GetLikedQuizzes";
 import { getMyPlayedQuizzes, getPlayedQuizzes } from "@/actions/GetPlayedQuizzes";
 import { GetQuestions } from "@/actions/GetQuestion";
@@ -12,6 +13,7 @@ import { GetTags } from "@/actions/GetTags";
 import { PublishQuiz as PublishQuizApi } from "@/actions/PublishQuiz";
 import { RemoveQuiz } from "@/actions/RemoveQuiz";
 import { SolveQuiz } from "@/actions/SolveQuestion";
+import { getAuthors } from "@/actions/TopAuthors";
 import { GetAttempt } from "@/actions/getAttempt";
 import { getFollowers, getFollowing } from "@/actions/getFollowers";
 import { getPublicUser, getPublicUserMini, getUser, getUserDetails } from "@/actions/getUser";
@@ -83,14 +85,7 @@ export const useGetMyLikes = (id?: string) => {
   return { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage };
 };
 export const useGetMyPlayed = (id?: string) => {
-  const {
-    data,
-    isLoading,
-    error,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
+  const { data, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: [`playedQuizzes ${id}`],
     queryFn: async ({ pageParam = 1 }) => {
       const data = id ? await getPlayedQuizzes(id, pageParam) : await getMyPlayedQuizzes(pageParam);
@@ -99,6 +94,22 @@ export const useGetMyPlayed = (id?: string) => {
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage?.length === 0) return undefined;
       return allPages.length + 1;
+    },
+    initialPageParam: 1,
+  });
+  return { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage };
+};
+export const useGetUsers = (query?: string) => {
+  console.log(query)
+  const { data, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: [`users ${query}`],
+    queryFn: async ({ pageParam = 1 ,}) => {
+      const data = await getAllAuthors(query || "", pageParam);
+      return data;
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage?.length === 0) return undefined;
+      return allPages.length + 2;
     },
     initialPageParam: 1,
   });
@@ -474,7 +485,7 @@ export const FilterQuizzes = (category: string, page?: number) => {
   return { quizzes, isLoading, error };
 };
 
-export const useGetStats = (id:string) => {
+export const useGetStats = (id: string) => {
   const {
     data: stats,
     isLoading,

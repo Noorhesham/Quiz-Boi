@@ -13,7 +13,7 @@ const Search = ({ setQuery, query }: { setQuery: any; query: string }) => {
       >
         <IoIosSearch />
       </button>
-      <input
+      <input autoFocus={true}
         placeholder={`Search Quizzes By Title,Tag`}
         onChange={(e) => setQuery(e.target.value)}
         value={query}

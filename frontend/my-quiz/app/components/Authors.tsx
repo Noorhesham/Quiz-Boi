@@ -4,6 +4,10 @@ import Autoplay from "embla-carousel-autoplay";
 import Heading from "./Heading";
 import Image from "next/image";
 import TopAuthor from "./TopAuthor";
+import DialogCustom from "./DialogCustom";
+import AllCategories from "./AllCategories";
+import { IoIosArrowForward } from "react-icons/io";
+import AllAuthors from "./AllAuthors";
 
 const Authors = ({
   user,
@@ -21,9 +25,9 @@ const Authors = ({
   DELAY?: number;
 }) => {
   const list = suggesstions;
-  console.log(list)
+  console.log(list);
   return (
-    <Carousel 
+    <Carousel
       plugins={[
         Autoplay({
           delay: DELAY,
@@ -35,15 +39,34 @@ const Authors = ({
       }}
       className="max-w-full bg-gray-50/80 md:p-10 "
     >
-      <Heading span={span} className=" py-2 px-4" dark text={text || "Suggested For You :"}>
-        {img && (
-          <Image className=" hidden md:block md:w-[10rem]" src={"/cause.png"} width={200} height={200} alt="Followed" />
-        )}
-      </Heading>
+      <div className="flex w-full justify-between items-center">
+        <Heading span={span} className=" py-2 px-4" dark text={text || "Suggested For You :"}>
+          {img && (
+            <Image
+              className=" hidden md:block md:w-[10rem]"
+              src={"/cause.png"}
+              width={200}
+              height={200}
+              alt="Followed"
+            />
+          )}
+        </Heading>
+        <DialogCustom
+          title="Search any user !"
+          description="Find Specific User.. and browse thier profile and Follow them !"
+          content={<AllAuthors />}
+          btn={
+            <button className=" text-lg ml-auto  md:text-3xl flex items-center gap-2 text-violet-400 underline hover:text-violet-500 cursor-pointer duration-150">
+              View All <IoIosArrowForward />
+            </button>
+          }
+        />
+      </div>
+
       <CarouselContent className=" px-4 md:py-2  mt-3">
         {list &&
           list.map((user: any, i: number) => (
-            <CarouselItem key={i} className=" basis-[27%] md:basis-1/4 lg:basis-1/4">
+            <CarouselItem key={i} className=" basis-[27%] md:basis-1/4 lg:basis-1/5">
               <TopAuthor user={user} />
             </CarouselItem>
           ))}

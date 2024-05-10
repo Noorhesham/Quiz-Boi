@@ -9,13 +9,13 @@ import { createPortal } from "react-dom";
 import { FcConferenceCall, FcQuestions } from "react-icons/fc";
 import ToolTip from "./ToolTip";
 
-const Author = ({ author, quiz, hover = true }: { author: UserProps; quiz: QuizProps; hover?: boolean }) => {
+const Author = ({ author, quiz, hover = true }: { author: UserProps; quiz?: QuizProps; hover?: boolean }) => {
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
         <div className="flex self-end flex-wrap mt-auto relative items-center justify-between w-full md:gap-2">
           <User author={author} />
-          <div className="flex items-center p-2 ml-auto gap-2">
+         {quiz&& <div className="flex items-center p-2 ml-auto gap-2">
             <Like count={quiz.likesCount} id={quiz._id} />
             <ToolTip
               trigger={
@@ -36,7 +36,7 @@ const Author = ({ author, quiz, hover = true }: { author: UserProps; quiz: QuizP
               content={<p>Number of Players</p>}
             />
            
-          </div>
+          </div>}
         </div>
       </HoverCardTrigger>
       {hover && createPortal(<UserInfro author={author} />, document?.body)}

@@ -23,9 +23,9 @@ class Factory {
       let filters = {};
       if (req.params.quizId) filters = { quizId: req.params.quizId };
       let query = this.Model.find(filters);
-      const totalDocsQuery = this.Model.find(filters).countDocuments();
       if (popOptions) query.populate(popOptions)
       if(select) query.select(select);
+      const totalDocsQuery = this.Model.find(filters).countDocuments();
       const { query: paginatedQuery, queryString } = new ApiFeatures(query, req.query)
       .filter()
       .paginate()

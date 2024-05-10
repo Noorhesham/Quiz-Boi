@@ -266,6 +266,19 @@ exports.topAuthors = catchAsync(async (req, res, next) => {
     });
     res.status(200).json({ status: "success", data: { results: topAuthors.length, topAuthors } });
 });
+exports.searchUsers = catchAsync(async (req, res, next) => {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+    const skip = (+page - 1) * +limit;
+    const q = req.query.q;
+    const users = await userModel_1.default.find({
+        $or: [
+            { name: { $regex: new RegExp(q, 'i') } },
+            { email: { $regex: new RegExp(q, 'i') } },
+        ],
+    }).skip(skip).limit(+limit);
+    res.status(200).json({ status: "success", data: { results: users.length, users } });
+});
 const userFactory = new handlerFactory_1.default(userModel_1.default, "user");
 exports.getAllUsers = userFactory.getAll();
 exports.updateUser = userFactory.updateOne();
