@@ -21,7 +21,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <Head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <GoogleOAuthProvider clientId={process.env.GOOGLE||Google_Client}>

@@ -6,6 +6,7 @@ import { ColorProvider } from "../context/ColorContext";
 import ColorWrapper from "../components/ColorWrapper";
 import { ToastContainer, } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Head from "next/head";
 
 
 export const metadata: Metadata = {
@@ -20,6 +21,10 @@ export default async function RootLayout({
 }>) {
   return (
     <Provider>
+           <Head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <ColorProvider>
         <ColorWrapper>
         <ToastContainer
