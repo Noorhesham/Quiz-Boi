@@ -33,7 +33,7 @@ const Authors = ({
         align: "center",
         loop: true,
       }}
-      className="max-w-full bg-gray-50/80 md:p-10 "
+      className="max-w-full bg-gray-50/80 py-2 px-4 md:p-10 "
     >
       <Heading span={span} dark text={text || "Suggested For You :"}>
         {img && (
