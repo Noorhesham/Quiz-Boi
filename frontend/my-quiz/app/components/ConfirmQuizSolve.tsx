@@ -48,7 +48,6 @@ const ConfirmQuizSolve = ({
           onClick={() => {
             setSubmitting(true);
             SubmitQuiz({ values: data, quizId: id });
-            
           }}
           variant="default"
         >

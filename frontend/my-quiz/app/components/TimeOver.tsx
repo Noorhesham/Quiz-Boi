@@ -15,12 +15,9 @@ const TimeOver = () => {
   let data: any;
   if (user) data = { answers, userId: user._id };
   useEffect(function () {
-    if (timer <= 0) {
-      setSubmitting(true);
-      SubmitQuiz({ values: data, quizId: id });
-      handleQuizEnd();
-    }
-  });
+    setSubmitting(true);
+    SubmitQuiz({ values: data, quizId: id });
+  },[]);
   if (error || error2) router.push("/");
   return (
     <div className="flex flex-col  items-center gap-10">
@@ -29,7 +26,6 @@ const TimeOver = () => {
         <p className=" text-gray-200 font-normal">
           Sadly time of quiz is over ! 😿🌌 But we have submitted your answers ! you can see your results !
         </p>
-
       </div>
       <div className="">
         {isPending || isLoading ? (
