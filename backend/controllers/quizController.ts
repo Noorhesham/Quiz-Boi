@@ -82,7 +82,7 @@ exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: Next
   let totalPoints = 0;
   userAttempt.points = 0;
   console.log(req.body);
-  for (let i = 0; i < req.body.answers.length; i++) {
+  for (let i = 0; i < req.body.answers?.length; i++) {
     const question = await Question.findById(req.body.answers[i].id);
     console.log(question && question.correctAnswerIndex === req.body.answers[i].answer);
     if (!question) {

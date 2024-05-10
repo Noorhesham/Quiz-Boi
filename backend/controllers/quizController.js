@@ -42,6 +42,7 @@ exports.addAuthor = (req, res, next) => {
     next();
 };
 exports.completeQuiz = catchAsync(async (req, res, next) => {
+    var _a;
     const quizId = req.params.quizId;
     const { username, userId, answers } = req.body;
     console.log(req.body);
@@ -78,7 +79,7 @@ exports.completeQuiz = catchAsync(async (req, res, next) => {
     let totalPoints = 0;
     userAttempt.points = 0;
     console.log(req.body);
-    for (let i = 0; i < req.body.answers.length; i++) {
+    for (let i = 0; i < ((_a = req.body.answers) === null || _a === void 0 ? void 0 : _a.length); i++) {
         const question = await questionModel_1.default.findById(req.body.answers[i].id);
         console.log(question && question.correctAnswerIndex === req.body.answers[i].answer);
         if (!question) {
