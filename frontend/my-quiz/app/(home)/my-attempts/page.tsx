@@ -28,7 +28,7 @@ const page = async () => {
           return (
             <QuizCard points={quiz.points}
               href={`/quiz/${quiz.quizId.usersAttempted?.at(-1)}/results`}
-              key={i} click={false}
+              key={i} 
               card={true}
               quiz={quiz.quizId}
             />

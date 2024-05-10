@@ -77,9 +77,9 @@ quizSchema.virtual("likes", {
     foreignField: "quiz",
 });
 quizSchema.pre(/^find/, function (next) {
-    this.populate({
-        path: "likes",
-    });
+    // this.populate({
+    //   path: "likes",
+    // })
     //       .populate({
     //         path: "author",
     //         select: " name photo id _id followingCount quizzes followersCount",

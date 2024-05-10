@@ -16,6 +16,7 @@ router.route("/public/:id/played").get(userController.getPlayedQuizzes);
 router.route("/public/:id/followers").get(userController.getFollowers);
 router.route("/public/:id/following").get(userController.getFollowing);
 router.route("/public-mini/:id").get(userController.getUserMini);
+router.route("/top-authors").get(userController.topAuthors);
 router.use(authController.protect);
 router.get("/me", userController.getMe, userController.getUser);
 router.get("/me-liked", userController.getMe, userController.getLikedQuizzes);

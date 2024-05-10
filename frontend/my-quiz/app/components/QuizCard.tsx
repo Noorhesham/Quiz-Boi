@@ -43,7 +43,7 @@ const QuizCard = ({
       <div
         className={`relative  ${
           card ? "" : "md:h-[22rem]"
-        }  text-nowrap md:min-h-[21rem] flex text-center justify-center  items-center w-full `}
+        }  text-nowrap  flex text-center justify-center  items-center w-full `}
       >
         <div className=" absolute right-2 font-normal py-1 px-2 text-sm text-gray-100 rounded-xl bg-violet-600 bottom-2 z-10">
           {quiz.questionNum} Qs

@@ -8,6 +8,8 @@ import BecauseYouFollowed from "../components/BecauseYouFollowed";
 import { getUser } from "@/actions/getUser";
 import { GetSuggesstions } from "@/actions/getSuggesstions";
 import { Metadata } from "next";
+import { getAuthors } from "@/actions/TopAuthors";
+import Authors from "../components/Authors";
 export const metadata: Metadata = {
   title: "Quiz Boi - Home",
   description: "Explore a wide range of quizzes on Quiz Boi. Find quizzes based on your interests and preferences.",
@@ -22,7 +24,7 @@ export default async function Page({
   };
 }) {
   const user = await getUser();
-
+  const authors=await getAuthors()
   const categorey = searchParams?.categorey || "";
   const page = searchParams?.page || 1;
   const { data, totalPages, totalResults, results } = await FilterQuizzesHome(categorey, page);
@@ -37,6 +39,7 @@ export default async function Page({
       <Welcome />
       {suggesstions && <BecauseYouFollowed DELAY={4000} img={"/cause.png"} text="Based On Your " span="Followings :" suggesstions={suggesstions} />}
       {/* {user && user.likedQuizzes && <BecauseYouFollowed DELAY={3000} user={user} />} */}
+      <Authors DELAY={5000} text="Top" span=" Authors :" suggesstions={authors}/>
       {<Feed hasNext={isNext} categories={categories} totalPages={totalPages} quizzes={data?.quizzes} />}
     </main>
   );

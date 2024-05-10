@@ -75,7 +75,16 @@ exports.getLikedQuizzes = catchAsync(async (req: Request, res: Response, next: N
       path: "likedQuizzes",
       populate: {
         path: "quiz",
-        select: "-usersAttempted -user -questions",
+        select: "-usersAttempted -user  -questions",
+        populate: [
+          {
+            path: "author",
+            select: "name photo id _id followingCount quizzes followersCount",
+          },
+          {
+            path: "comments",
+          },
+        ],
       },
       options: { skip, limit },
     } as PopulateOptions),
@@ -103,7 +112,16 @@ exports.getPlayedQuizzes = catchAsync(async (req: Request, res: Response, next: 
       select: "-answers",
       populate: {
         path: "quizId",
-        select: "-questions",
+        select: "-questions -usersAttempted",
+        populate: [
+          {
+            path: "author",
+            select: "name photo id _id followingCount quizzes followersCount",
+          },
+          {
+            path: "comments",
+          },
+        ],
       },
       options: { skip, limit },
     } as PopulateOptions),
@@ -236,6 +254,23 @@ exports.becauseYouFollowed = catchAsync(async (req: Request, res: Response, next
   const suggestedQuizzes = shuffledQuizzes.slice(0, 10);
   console.log(quizzes, quizzesArrays);
   res.status(200).json({ status: "success", data: { results: suggestedQuizzes.length, suggestedQuizzes } });
+});
+exports.topAuthors = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const users = await User.find()
+    .select("-followers -following")
+    .populate({ path: "quizzes", select: "-questions -usersAttempted  -likes" });
+  console.log(users);
+  const sortedUsers = users.sort((a, b) => {
+    const publishedQuizzesCountA = a.quizzes.filter((q:any) => q.published).length;
+    const publishedQuizzesCountB = b.quizzes.filter((q:any) => q.published).length;
+    return publishedQuizzesCountB - publishedQuizzesCountA;
+  });
+
+  const topAuthors = sortedUsers.slice(0, 10).map((user) => {
+    const { quizzes, ...userWithoutQuizzes } = user.toObject();
+    return userWithoutQuizzes;
+  });
+  res.status(200).json({ status: "success", data: { results: topAuthors.length, topAuthors } });
 });
 
 const userFactory = new Factory(User, "user");
