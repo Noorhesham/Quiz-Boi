@@ -11,7 +11,6 @@ import React from "react";
 export const dynamic = "force-dynamic";
 const page = async () => {
   const attemptedQuizzes = await getMyPlayedQuizzes()
-  console.log(attemptedQuizzes)
   return (
     <section className=" pb-20 pt-20 md:pt-32 px-4 md:px-20  rounded-md min-h-[80vh] ">
       <Heading text={`Quizzes I Played ! `} paragraph={`Total Quizzes You Played up to now :${attemptedQuizzes.length}`}/>
@@ -27,7 +26,7 @@ const page = async () => {
           if (!quiz.quizId) return null;
           return (
             <QuizCard points={quiz.points}
-              href={`/quiz/${quiz.quizId.usersAttempted?.at(-1)}/results`}
+              href={`/quiz/${quiz._id}/results`}
               key={i} 
               card={true}
               quiz={quiz.quizId}

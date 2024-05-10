@@ -52,6 +52,11 @@ exports.getDetails = catchAsync(async (req, res, next) => {
     const user = await userModel_1.default.findById(req.params.id).populate({
         path: "quizzes",
         select: "-questions -usersAttempted",
+        populate: [
+            {
+                path: "comments",
+            },
+        ],
     });
     if (!user)
         return next(new AppError_1.default("cannot find this user", 404));
@@ -251,8 +256,8 @@ exports.topAuthors = catchAsync(async (req, res, next) => {
         .populate({ path: "quizzes", select: "-questions -usersAttempted  -likes" });
     console.log(users);
     const sortedUsers = users.sort((a, b) => {
-        const publishedQuizzesCountA = a.quizzes.filter(q => q.published).length;
-        const publishedQuizzesCountB = b.quizzes.filter(q => q.published).length;
+        const publishedQuizzesCountA = a.quizzes.filter((q) => q.published).length;
+        const publishedQuizzesCountB = b.quizzes.filter((q) => q.published).length;
         return publishedQuizzesCountB - publishedQuizzesCountA;
     });
     const topAuthors = sortedUsers.slice(0, 10).map((user) => {

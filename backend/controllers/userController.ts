@@ -59,7 +59,7 @@ exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunct
 exports.getDetails = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const user = await User.findById(req.params.id).populate({
     path: "quizzes",
-    select: "-questions usersAttempted",
+    select: "-questions -usersAttempted",
     populate: [
       {
         path: "comments",
@@ -80,7 +80,7 @@ exports.getLikedQuizzes = catchAsync(async (req: Request, res: Response, next: N
       path: "likedQuizzes",
       populate: {
         path: "quiz",
-        select: "usersAttempted -user  -questions",
+        select: "-usersAttempted -user  -questions",
         populate: [
           {
             path: "author",
@@ -117,7 +117,7 @@ exports.getPlayedQuizzes = catchAsync(async (req: Request, res: Response, next: 
       select: "-answers",
       populate: {
         path: "quizId",
-        select: "-questions usersAttempted",
+        select: "-questions -usersAttempted",
         populate: [
           {
             path: "author",
