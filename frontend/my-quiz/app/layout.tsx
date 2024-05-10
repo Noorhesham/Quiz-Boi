@@ -10,7 +10,7 @@ const inter = Jost({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Quiz Boi",
   description: "Your biggest plattform to solve quizzes",
-  icons:{icon:'/favicon.ico'}
+  icons: { icon: "/favicon.ico" },
 };
 
 export default async function RootLayout({
@@ -20,11 +20,13 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
+      <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon?<generated>" type="image/<generated>" sizes="<generated>" />
+        <link rel="apple-touch-icon" href="/apple-icon?<generated>" type="image/<generated>" sizes="<generated>" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-      <GoogleOAuthProvider clientId={process.env.GOOGLE||Google_Client}>
+      </head>
+      <GoogleOAuthProvider clientId={process.env.GOOGLE || Google_Client}>
         <ColorProvider>
           <body className={inter.className}>{children}</body>
         </ColorProvider>
