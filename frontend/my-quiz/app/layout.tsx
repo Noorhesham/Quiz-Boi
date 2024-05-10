@@ -8,8 +8,8 @@ import Head from "next/head";
 const inter = Jost({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Quiz Boi",
-  description: "Your biggest plattform to solve quizzes",
+  title: "Quiz Boi - Your Biggest Platform for Quizzes",
+  description: "Quiz Boi is your ultimate destination for solving quizzes, offering a wide range of categories and challenges.",
   icons: { icon: "/favicon.ico" },
 };
 

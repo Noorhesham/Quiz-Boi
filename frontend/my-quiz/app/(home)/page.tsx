@@ -7,7 +7,12 @@ import NotFound from "../components/NotFound";
 import BecauseYouFollowed from "../components/BecauseYouFollowed";
 import { getUser } from "@/actions/getUser";
 import { GetSuggesstions } from "@/actions/getSuggesstions";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Quiz Boi - Home",
+  description: "Explore a wide range of quizzes on Quiz Boi. Find quizzes based on your interests and preferences.",
+  icons: { icon: "/favicon.ico" },
+};
 export default async function Page({
   searchParams,
 }: {
