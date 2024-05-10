@@ -62,7 +62,7 @@ const UserCard = ({ user, mine = false, points }: { user: UserProps; mine: boole
             content={
               <section>
                 <UpdateUserForm user={user} />
-                <UpdatePasswordForm />
+                {!user.isthirdParty&&<UpdatePasswordForm />}
               </section>
             }
           />
