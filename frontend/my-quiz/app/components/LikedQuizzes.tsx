@@ -20,7 +20,7 @@ const LikedQuizzes = ({ id, play }: { id?: string; play?: boolean }) => {
   );
   console.log(data);
   return (
-    <Motion animate={true}>
+    <Motion animate={true} className=" relative">
       {!isLoading && (!data || data.pages.flat(1).length <= 0) && (
         <Empty
           link="/"
@@ -28,16 +28,23 @@ const LikedQuizzes = ({ id, play }: { id?: string; play?: boolean }) => {
           text="You have not liked any quizzes yet !"
         />
       )}
-      <section
-        className=" relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 items-stretch  md:p-10 gap-5"
-      >
+      <section className=" relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 items-stretch  md:p-10 gap-5">
         {data?.pages.flat(1)?.map((quiz: any, i: number) => {
           if ((!quiz.quiz && !play) || (play && !quiz.quizId)) return null;
-          else return <QuizCard key={i} card={true} quiz={play ? quiz.quizId : quiz.quiz} />;
+          else return <QuizCard click={false} key={i} card={true} quiz={play ? quiz.quizId : quiz.quiz} />;
         })}
-        {( isLoading || (hasNextPage&&isFetchingNextPage)) &&
-          Array.from({ length: 6 }).map((_, index) => <div ref={ref} ><SkeletonCard /></div>)}
+        {(isLoading || (hasNextPage && isFetchingNextPage)) &&
+          Array.from({ length: 4 }).map((_, index) => (
+            <div className="md:block hidden" ref={ref}>
+              <SkeletonCard />
+            </div>
+          ))}
       </section>
+        {(isLoading || (hasNextPage && isFetchingNextPage)) && (
+          <div ref={ref} className="w-8 h-8  mx-auto mt-auto">
+            <img src="/loading3.png" className=" animate-spin" alt="" />
+          </div>
+        )}
     </Motion>
   );
 };
