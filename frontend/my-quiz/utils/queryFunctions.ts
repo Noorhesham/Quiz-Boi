@@ -109,7 +109,7 @@ export const useGetUsers = (query?: string) => {
     },
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage?.length === 0) return undefined;
-      return allPages.length + 2;
+      return allPages.length + 1;
     },
     initialPageParam: 1,
   });

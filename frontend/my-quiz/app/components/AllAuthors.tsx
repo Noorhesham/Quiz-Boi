@@ -42,7 +42,7 @@ const AllAuthors = () => {
             </div>
           </div>
         )}
-        {(hasNextPage || isFetchingNextPage) && <AuthorSkeleton />}
+        {(hasNextPage && isFetchingNextPage) && <AuthorSkeleton />}
       </section>
     </section>
   );
