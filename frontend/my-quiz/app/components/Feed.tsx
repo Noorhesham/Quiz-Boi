@@ -13,7 +13,6 @@ import { IoIosArrowForward } from "react-icons/io";
 import PaginationHome from "./Pagination";
 import { container } from "../motion";
 
-
 const Feed = ({
   quizzes,
   categories,
@@ -47,7 +46,10 @@ const Feed = ({
   return (
     <section className=" relative pt-5">
       <div className="md:p-8 p-4 flex md:flex-row flex-col items-stretch justify-between">
-        <Heading  text="Find your desired quiz now !" paragraph="You can Filter the Quizzes by Topics here... just click on the desired topic and quizzes will be filtered ! 🚀👩‍🚀 " />
+        <Heading
+          text="Find your desired quiz now !"
+          paragraph="You can Filter the Quizzes by Topics here... just click on the desired topic and quizzes will be filtered ! 🚀👩‍🚀 "
+        />
         <div className="flex items-center justify-between gap-10 ">
           <button
             onClick={() => handleSearch("")}

@@ -1,5 +1,6 @@
 "use client";
 import { useGetUser } from "@/utils/queryFunctions";
+import { useMotionValue, useTransform, motion, useDragControls } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -8,24 +9,37 @@ import { GoHomeFill } from "react-icons/go";
 import { IoCreate, IoLibrary, IoSettings } from "react-icons/io5";
 
 const Menus = [
-  { name: "Home", icon: <GoHomeFill />, dis: "translate-x-0", href: "/",index:0 },
-  { name: "Create", icon: <IoCreate />, dis: "translate-x-16", href: "my-quizzes",index:1  },
+  { name: "Home", icon: <GoHomeFill />, dis: "translate-x-0", href: "/", index: 0 },
+  { name: "Create", icon: <IoCreate />, dis: "translate-x-16", href: "my-quizzes", index: 1 },
   { img: "/logo.png", dis: "translate-x-32", href: "logo" },
-  { name: "Settings", icon: <IoSettings />, dis: "translate-x-48", href: "my-profile",index:2  },
-  { name: "Played", icon: <BsFillCollectionPlayFill />, dis: "translate-x-64", href: "my-attempts" ,index:3 },
+  { name: "Settings", icon: <IoSettings />, dis: "translate-x-48", href: "my-profile", index: 2 },
+  { name: "Played", icon: <BsFillCollectionPlayFill />, dis: "translate-x-64", href: "my-attempts", index: 3 },
 ];
 const PhoneNav = () => {
   const { user } = useGetUser();
-  const pathName=usePathname()
+  const pathName = usePathname();
   const [active, setActive] = useState(0);
+
+const controls=useDragControls()
   useEffect(() => {
-    const index = Menus.findIndex(menu => pathName === `/${menu.href}`);
+    const index = Menus.findIndex((menu) => pathName === `/${menu.href}`);
     setActive(index !== -1 ? index : 0);
-    console.log(index,active,pathName)
   }, [pathName]);
+
+
+
   if (!user) return null;
   return (
-    <div className="bg-gray-100 min-h-[4rem] md:hidden  fixed bottom-0 z-50 w-full flex px-6 rounded-t-2xl">
+    <motion.div
+      className="bg-gray-100 min-h-[4rem] md:hidden select-none fixed bottom-0 z-50 w-full px-2 rounded-t-2xl"
+      drag="y"
+      dragControls={controls} dragListener={false}    >
+      <div className="flex justify-center">
+        {/* <button onPointerDown={(e)=>controls.start(e)}
+          className="absolute top-0 transform -translate-y-1/2  z-50  h-2 w-12 cursor-grab touch-none bg-neutral-400
+           active:cursor-grabbing rounded-full shadow-md focus:outline-none"
+        ></button> */}
+      </div>
       <ul className="flex relative w-fit mx-auto">
         <span
           className={`bg-rose-600 duration-500 ${Menus[active].dis} border-4 border-rose-600 h-16 w-16 absolute
@@ -42,13 +56,14 @@ const PhoneNav = () => {
         </span>
         {Menus.map((menu, i) => (
           <li key={i} className="w-16">
-           {menu.img ? (
-                <img className=" w-10 pt-2 m-auto" src={menu.img} alt="" />
-              ): <Link
-              href={`/${menu.href}`}
-              className="flex ml-auto flex-col items-center text-center pt-6"
-              onClick={() => setActive(i)}
-            >
+            {menu.img ? (
+              <img className=" w-10 pt-2 m-auto" src={menu.img} alt="" />
+            ) : (
+              <Link
+                href={`/${menu.href}`}
+                className="flex ml-auto flex-col items-center text-center pt-6"
+                onClick={() => setActive(i)}
+              >
                 <>
                   <div
                     className={`text-xl cursor-pointer duration-500 text-gray-300 ${
@@ -67,12 +82,12 @@ const PhoneNav = () => {
                     {menu.name}
                   </div>
                 </>
-              
-            </Link>}
+              </Link>
+            )}
           </li>
         ))}
       </ul>
-    </div>
+    </motion.div>
   );
 };
 

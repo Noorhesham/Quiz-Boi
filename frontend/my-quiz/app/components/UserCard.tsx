@@ -21,7 +21,7 @@ const UserCard = ({ user, mine = false, points }: { user: UserProps; mine: boole
           <h1 className=" font-bold flex items-center gap-2">
             {user.name} <FcApproval />
           </h1>
-          <h4 className="">{user.email}</h4>
+          {mine&&<h4 className="">{user.email}</h4>}
           <div className="grid grid-cols-3 gap-2 my-2 md:my-4 items-center ">
             {user.followersCount && (
               <DialogCustom
