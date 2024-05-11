@@ -25,8 +25,8 @@ const PhoneNav = () => {
   }, [pathName]);
   if (!user) return null;
   return (
-    <div className="bg-gray-100 min-h-[4rem] md:hidden block fixed bottom-0 z-50 w-full px-6 rounded-t-2xl">
-      <ul className="flex relative w-full mx-auto">
+    <div className="bg-gray-100 min-h-[4rem] md:hidden  fixed bottom-0 z-50 w-full flex px-6 rounded-t-2xl">
+      <ul className="flex relative w-fit mx-auto">
         <span
           className={`bg-rose-600 duration-500 ${Menus[active].dis} border-4 border-rose-600 h-16 w-16 absolute
        -top-5 rounded-full `}
