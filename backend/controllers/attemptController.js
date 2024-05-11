@@ -13,8 +13,7 @@ exports.getUserAttemptStats = catchAsync(async (req, res, next) => {
         path: "userId",
         select: "public",
     });
-    if (!(user === null || user === void 0 ? void 0 : user.public) && !req.user)
-        return next(new AppError_1.default(`This Account is private ..`, 404));
+    // if (!user?.public && !req.user) return next(new AppError(`This Account is private ..`, 404));
     const userAttempts = await userAttemptsModel_1.default.find({ userId: req.params.id }).populate({
         path: "quizId",
         select: "title",

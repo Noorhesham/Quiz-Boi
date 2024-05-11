@@ -89,8 +89,7 @@ exports.getLikedQuizzes = catchAsync(async (req, res, next) => {
     ]);
     if (!user)
         return next(new AppError_1.default("cannot find this user", 404));
-    if (!user.public && !req.user)
-        return next(new AppError_1.default(`This Account is private ..`, 404));
+    // if (!user.public && !req.user) return next(new AppError(`This Account is private ..`, 404));
     const { likedQuizzes } = user;
     res.status(200).json({
         status: "success",
@@ -170,7 +169,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     res.status(200).json({ status: "success", data: updatedUser });
 });
 exports.followUser = catchAsync(async (req, res, next) => {
-    var _a, _b;
     const currentUser = req.user;
     const userToFollow = await userModel_1.default.findById(req.params.id);
     console.log(currentUser, userToFollow);
@@ -182,10 +180,11 @@ exports.followUser = catchAsync(async (req, res, next) => {
         return next(new AppError_1.default("You are already following this user.", 400));
     if (!userToFollow.public) {
         // If the account is not public, send a follow request instead
-        (_a = currentUser.followRequests) === null || _a === void 0 ? void 0 : _a.push(userToFollow._id);
-        (_b = userToFollow.receivedRequests) === null || _b === void 0 ? void 0 : _b.push(currentUser._id);
-        await currentUser.save();
-        await userToFollow.save();
+        if (!currentUser.followRequests.includes(userToFollow._id)) {
+            currentUser.followRequests.push(userToFollow._id);
+            userToFollow.receivedRequests.push(currentUser._id);
+            await Promise.all([currentUser.save(), userToFollow.save()]);
+        }
         return res.status(200).json({ status: "success", message: "Follow request sent." });
     }
     currentUser.following.push(req.params.id);
