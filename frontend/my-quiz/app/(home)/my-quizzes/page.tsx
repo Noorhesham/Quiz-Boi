@@ -1,6 +1,7 @@
 import {  getUserDetails } from "@/actions/getUser";
 import DialogCustom from "@/app/components/DialogCustom";
 import { Empty } from "@/app/components/Empty";
+import FloatingTool from "@/app/components/FloatingTool";
 import GlobalButton from "@/app/components/GlobalButton";
 import Heading from "@/app/components/Heading";
 import Quiz from "@/app/components/Quiz";
@@ -20,6 +21,7 @@ const page = async ({
 
   return (
     <section className=" pb-20 pt-20 md:pt-32 px-4 md:px-20 spacebg  rounded-md min-h-[80vh] ">
+                <FloatingTool/>
       <Heading text={`My Quizzes`} paragraph={`Total Quizzes You made up to now :${user.quizzes.length}`}/>
       {user.quizzes.length < 1 && (
         <Empty text="You created no quizzes yet !">

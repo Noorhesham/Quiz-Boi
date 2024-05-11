@@ -43,7 +43,6 @@ export default async function RootLayout({
         />
           <NavBar />
           <PhoneNav/>
-          <FloatingTool/>
           {children}
           {/* <Footer/> */}
         </ColorWrapper>
