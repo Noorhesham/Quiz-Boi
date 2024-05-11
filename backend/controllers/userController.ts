@@ -49,25 +49,21 @@ const filteredObj: any = (obj: any, ...allowedFields: any) => {
   return newObj;
 };
 
-exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const user = await User.findById(req.params.id).select("photo name email");
-
-  if (!user) return next(new AppError("cannot find this user", 404));
-  res.status(200).json({ status: "success", data: { user } });
-});
-
 exports.getDetails = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const user = await User.findById(req.params.id).populate({
+  let user = await User.findById(req.params.id).populate({
     path: "quizzes",
-    select: "-questions -usersAttempted",
+    select: `-questions -usersAttempted `,
     populate: [
       {
         path: "comments",
       },
     ],
-  });
-
+  })
   if (!user) return next(new AppError("cannot find this user", 404));
+  if (!user.public) {
+    const { quizzes, ...userPrivate } = user.toObject();
+    user={...userPrivate}
+  }
   res.status(200).json({ status: "success", data: { user } });
 });
 
@@ -98,8 +94,9 @@ exports.getLikedQuizzes = catchAsync(async (req: Request, res: Response, next: N
       .lean()
       .then((user: any) => user?.likedQuizzes.length || 0),
   ]);
-
   if (!user) return next(new AppError("cannot find this user", 404));
+  if (!user.public && !req.user) return next(new AppError(`This Account is private ..`, 404));
+
   const { likedQuizzes } = user;
 
   res.status(200).json({
@@ -137,6 +134,8 @@ exports.getPlayedQuizzes = catchAsync(async (req: Request, res: Response, next: 
   ]);
 
   if (!user) return next(new AppError("cannot find this user", 404));
+  if (!user.public && !req.user) return next(new AppError(`This Account is private ..`, 404));
+
   const { attemptedQuizzes } = user;
 
   res.status(200).json({
@@ -155,10 +154,13 @@ exports.getUserMini = catchAsync(async (req: Request | any, res: Response, next:
   res.status(200).json({ status: "success", data: { user } });
 });
 exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const user = await User.findById(req.params.id).populate({ path: "likedQuizzes", select: "quiz -user -_id" });
+  let user = await User.findById(req.params.id).populate({ path: "likedQuizzes", select: "quiz -user -_id" })
   // .populate({ path: "attemptedQuizzes" ,select:"-answers quizId _id"});
-
   if (!user) return next(new AppError(`There is no user found with that id`, 404));
+  if (!user.public) {
+    const { quizzes, ...userPrivate } = user.toObject();
+    user={...userPrivate}
+  }
   res.status(200).json({ status: "success", data: { user } });
 });
 exports.updateMe = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -166,21 +168,31 @@ exports.updateMe = catchAsync(async (req: Request, res: Response, next: NextFunc
   if (req.body.password || req.body.passwordConfirm)
     return next(new AppError("you cannot update password in this route", 400));
   //2)update user doc
-  const updatedData = filteredObj(req.body, "name", "email", "photo");
+  const updatedData = filteredObj(req.body, "name", "email", "photo", "public");
   const updatedUser = await User.findByIdAndUpdate(req.user.id, updatedData, {
     new: true,
     runValidators: true,
   });
+  console.log(updatedUser, updatedData);
   res.status(200).json({ status: "success", data: updatedUser });
 });
 
 exports.followUser = catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
   const currentUser = req.user;
-  const userToFollow = await User.findById(req.params.id);
-  if (currentUser === userToFollow._id) return next(new AppError("You are already Cannot follow yourself !", 400));
-  console.log(userToFollow, currentUser);
-  if (!userToFollow) return next(new AppError("You are already following this user.", 400));
-  if (currentUser.following.includes(req.params.id)) return next(new AppError("cannot find this user", 404));
+  const userToFollow :any = await User.findById(req.params.id);
+  console.log(currentUser,userToFollow)
+  if (currentUser._id=== userToFollow._id) return next(new AppError("You  Cannot follow yourself !", 404));
+  if (!userToFollow) return next(new AppError("cannot find this user", 400));
+  if (currentUser.following.includes(req.params.id)) return next(new AppError("You are already following this user.", 400));
+  if (!userToFollow.public) {
+    // If the account is not public, send a follow request instead
+    if (!currentUser.followRequests.includes(userToFollow._id)) {
+      currentUser.followRequests.push(userToFollow._id);
+      userToFollow.receivedRequests.push(currentUser._id);
+      await Promise.all([currentUser.save(), userToFollow.save()]);
+    }
+    return res.status(200).json({ status: "success", message: "Follow request sent." });
+  }
   currentUser.following.push(req.params.id);
   userToFollow.followers.push(currentUser._id);
   await Promise.all([currentUser.save(), userToFollow.save()]);
@@ -266,8 +278,8 @@ exports.topAuthors = catchAsync(async (req: Request, res: Response, next: NextFu
     .populate({ path: "quizzes", select: "-questions -usersAttempted  -likes" });
   console.log(users);
   const sortedUsers = users.sort((a, b) => {
-    const publishedQuizzesCountA = a.quizzes.filter((q:any) => q.published).length;
-    const publishedQuizzesCountB = b.quizzes.filter((q:any) => q.published).length;
+    const publishedQuizzesCountA = a.quizzes.filter((q: any) => q.published).length;
+    const publishedQuizzesCountB = b.quizzes.filter((q: any) => q.published).length;
     return publishedQuizzesCountB - publishedQuizzesCountA;
   });
 
@@ -277,19 +289,18 @@ exports.topAuthors = catchAsync(async (req: Request, res: Response, next: NextFu
   });
   res.status(200).json({ status: "success", data: { results: topAuthors.length, topAuthors } });
 });
-exports.searchUsers=catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+exports.searchUsers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const page = req.query.page || 1;
   const limit = req.query.limit || 10;
   const skip = (+page - 1) * +limit;
   const q = req.query.q as string;
   const users = await User.find({
-    $or: [
-      { name: { $regex: new RegExp(q, 'i') } }, 
-      { email: { $regex: new RegExp(q, 'i') } }, 
-    ],
-  }).skip(skip).limit(+limit);
+    $or: [{ name: { $regex: new RegExp(q, "i") } }, { email: { $regex: new RegExp(q, "i") } }],
+  })
+    .skip(skip)
+    .limit(+limit);
   res.status(200).json({ status: "success", data: { results: users.length, users } });
-})
+});
 
 const userFactory = new Factory(User, "user");
 exports.getAllUsers = userFactory.getAll();

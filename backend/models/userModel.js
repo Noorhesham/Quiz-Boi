@@ -82,8 +82,11 @@ const userSchema = new mongoose_1.Schema({
     },
     isthirdParty: { type: Boolean, default: false },
     followers: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "User" }],
+    followRequests: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "User", }],
+    receivedRequests: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "User", }],
     followersCount: { type: Number, default: 0 },
     followingCount: { type: Number, default: 0 },
+    public: { type: Boolean, default: true }
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 userSchema.pre('save', function (next) {
     // Update followersCount and followingCount before saving

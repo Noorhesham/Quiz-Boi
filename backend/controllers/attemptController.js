@@ -9,7 +9,16 @@ const AppError_1 = __importDefault(require("../utils/AppError"));
 const catchAsync = require("../utils/catchError");
 exports.getUserAttemptStats = catchAsync(async (req, res, next) => {
     console.log(req.params);
-    const userAttempts = await userAttemptsModel_1.default.find({ userId: req.params.id }).populate({ path: 'quizId', select: "title" });
+    const user = await userAttemptsModel_1.default.find({ userId: req.params.id }).populate({
+        path: "userId",
+        select: "public",
+    });
+    if (!(user === null || user === void 0 ? void 0 : user.public) && !req.user)
+        return next(new AppError_1.default(`This Account is private ..`, 404));
+    const userAttempts = await userAttemptsModel_1.default.find({ userId: req.params.id }).populate({
+        path: "quizId",
+        select: "title",
+    });
     if (!userAttempts)
         return next(new AppError_1.default(`There is no quiz found with that id`, 404));
     const totalAttempts = userAttempts.length;
@@ -17,15 +26,16 @@ exports.getUserAttemptStats = catchAsync(async (req, res, next) => {
     const averagePercentage = totalAttempts > 0 ? (totalPoints / totalAttempts) * 100 : 0;
     const additionalStats = await userAttemptsModel_1.default.aggregate([
         { $match: { userId: req.params.userId } },
-        { $group: { _id: null, maxPoints: { $max: '$points' }, minPoints: { $min: '$points' } } },
+        { $group: { _id: null, maxPoints: { $max: "$points" }, minPoints: { $min: "$points" } } },
     ]);
     res.status(200).json({
-        status: 'success',
+        status: "success",
         data: {
             totalAttempts,
             totalPoints,
             averagePercentage,
-            additionalStats, userAttempts
+            additionalStats,
+            userAttempts,
         },
     });
 });

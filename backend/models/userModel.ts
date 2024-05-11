@@ -58,8 +58,11 @@ const userSchema = new Schema<UserProps>(
     },
     isthirdParty: { type: Boolean, default: false },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    followRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", }],
+    receivedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" ,}],
     followersCount:{type:Number,default:0},
     followingCount:{type:Number,default:0},
+    public:{type:Boolean,default:true}
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

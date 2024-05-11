@@ -24,7 +24,6 @@ router.get("/me", userController.getMe, userController.getUser);
 router.get("/me-liked", userController.getMe, userController.getLikedQuizzes);
 router.get("/me-attempted", userController.getMe, userController.getPlayedQuizzes);
 router.get("/me-details", userController.getMe, userController.getDetails);
-router.get("/me-details", userController.getMe, userController.getPlayedQuizzes);
 router.patch("/updateMe", userController.upload, userController.resizeQuizPhoto, userController.updateMe);
 router.patch("/updateMyPassword", authController.protect, authController.updatePassword); //token + new password
 router.post("/:id/follow", authController.protect, userController.followUser);

@@ -8,12 +8,15 @@ export interface UserProps extends Document {
     passwordChangeAt: Date | number;
     likedQuizzes:[mongoose.Types.ObjectId]
     photo: string;
+    receivedRequests:[mongoose.Types.ObjectId]
+    followRequests:[mongoose.Types.ObjectId]
     active: boolean;
     _id:string
     role:'user'|'admin'
     bio?:string
     passwordResetToken: String,
     googleAccessToken:String
+    public:boolean
     passwordResetExpires: Date,
     following: mongoose.Types.ObjectId[];
     followers: mongoose.Types.ObjectId[];

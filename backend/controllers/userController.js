@@ -42,16 +42,10 @@ const filteredObj = (obj, ...allowedFields) => {
     //this applies only if that field in allowed in the arr
     return newObj;
 };
-exports.getUser = catchAsync(async (req, res, next) => {
-    const user = await userModel_1.default.findById(req.params.id).select("photo name email");
-    if (!user)
-        return next(new AppError_1.default("cannot find this user", 404));
-    res.status(200).json({ status: "success", data: { user } });
-});
 exports.getDetails = catchAsync(async (req, res, next) => {
-    const user = await userModel_1.default.findById(req.params.id).populate({
+    let user = await userModel_1.default.findById(req.params.id).populate({
         path: "quizzes",
-        select: "-questions -usersAttempted",
+        select: `-questions -usersAttempted `,
         populate: [
             {
                 path: "comments",
@@ -60,6 +54,10 @@ exports.getDetails = catchAsync(async (req, res, next) => {
     });
     if (!user)
         return next(new AppError_1.default("cannot find this user", 404));
+    if (!user.public) {
+        const { quizzes, ...userPrivate } = user.toObject();
+        user = { ...userPrivate };
+    }
     res.status(200).json({ status: "success", data: { user } });
 });
 exports.getLikedQuizzes = catchAsync(async (req, res, next) => {
@@ -91,6 +89,8 @@ exports.getLikedQuizzes = catchAsync(async (req, res, next) => {
     ]);
     if (!user)
         return next(new AppError_1.default("cannot find this user", 404));
+    if (!user.public && !req.user)
+        return next(new AppError_1.default(`This Account is private ..`, 404));
     const { likedQuizzes } = user;
     res.status(200).json({
         status: "success",
@@ -127,6 +127,8 @@ exports.getPlayedQuizzes = catchAsync(async (req, res, next) => {
     ]);
     if (!user)
         return next(new AppError_1.default("cannot find this user", 404));
+    if (!user.public && !req.user)
+        return next(new AppError_1.default(`This Account is private ..`, 404));
     const { attemptedQuizzes } = user;
     res.status(200).json({
         status: "success",
@@ -144,10 +146,14 @@ exports.getUserMini = catchAsync(async (req, res, next) => {
     res.status(200).json({ status: "success", data: { user } });
 });
 exports.getUser = catchAsync(async (req, res, next) => {
-    const user = await userModel_1.default.findById(req.params.id).populate({ path: "likedQuizzes", select: "quiz -user -_id" });
+    let user = await userModel_1.default.findById(req.params.id).populate({ path: "likedQuizzes", select: "quiz -user -_id" });
     // .populate({ path: "attemptedQuizzes" ,select:"-answers quizId _id"});
     if (!user)
         return next(new AppError_1.default(`There is no user found with that id`, 404));
+    if (!user.public) {
+        const { quizzes, ...userPrivate } = user.toObject();
+        user = { ...userPrivate };
+    }
     res.status(200).json({ status: "success", data: { user } });
 });
 exports.updateMe = catchAsync(async (req, res, next) => {
@@ -155,23 +161,33 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     if (req.body.password || req.body.passwordConfirm)
         return next(new AppError_1.default("you cannot update password in this route", 400));
     //2)update user doc
-    const updatedData = filteredObj(req.body, "name", "email", "photo");
+    const updatedData = filteredObj(req.body, "name", "email", "photo", "public");
     const updatedUser = await userModel_1.default.findByIdAndUpdate(req.user.id, updatedData, {
         new: true,
         runValidators: true,
     });
+    console.log(updatedUser, updatedData);
     res.status(200).json({ status: "success", data: updatedUser });
 });
 exports.followUser = catchAsync(async (req, res, next) => {
+    var _a, _b;
     const currentUser = req.user;
     const userToFollow = await userModel_1.default.findById(req.params.id);
-    if (currentUser === userToFollow._id)
-        return next(new AppError_1.default("You are already Cannot follow yourself !", 400));
-    console.log(userToFollow, currentUser);
+    console.log(currentUser, userToFollow);
+    if (currentUser._id === userToFollow._id)
+        return next(new AppError_1.default("You  Cannot follow yourself !", 404));
     if (!userToFollow)
-        return next(new AppError_1.default("You are already following this user.", 400));
+        return next(new AppError_1.default("cannot find this user", 400));
     if (currentUser.following.includes(req.params.id))
-        return next(new AppError_1.default("cannot find this user", 404));
+        return next(new AppError_1.default("You are already following this user.", 400));
+    if (!userToFollow.public) {
+        // If the account is not public, send a follow request instead
+        (_a = currentUser.followRequests) === null || _a === void 0 ? void 0 : _a.push(userToFollow._id);
+        (_b = userToFollow.receivedRequests) === null || _b === void 0 ? void 0 : _b.push(currentUser._id);
+        await currentUser.save();
+        await userToFollow.save();
+        return res.status(200).json({ status: "success", message: "Follow request sent." });
+    }
     currentUser.following.push(req.params.id);
     userToFollow.followers.push(currentUser._id);
     await Promise.all([currentUser.save(), userToFollow.save()]);
@@ -272,11 +288,10 @@ exports.searchUsers = catchAsync(async (req, res, next) => {
     const skip = (+page - 1) * +limit;
     const q = req.query.q;
     const users = await userModel_1.default.find({
-        $or: [
-            { name: { $regex: new RegExp(q, 'i') } },
-            { email: { $regex: new RegExp(q, 'i') } },
-        ],
-    }).skip(skip).limit(+limit);
+        $or: [{ name: { $regex: new RegExp(q, "i") } }, { email: { $regex: new RegExp(q, "i") } }],
+    })
+        .skip(skip)
+        .limit(+limit);
     res.status(200).json({ status: "success", data: { results: users.length, users } });
 });
 const userFactory = new handlerFactory_1.default(userModel_1.default, "user");
