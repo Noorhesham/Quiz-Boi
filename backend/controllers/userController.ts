@@ -95,7 +95,7 @@ exports.getLikedQuizzes = catchAsync(async (req: Request, res: Response, next: N
       .then((user: any) => user?.likedQuizzes.length || 0),
   ]);
   if (!user) return next(new AppError("cannot find this user", 404));
-  if (!user.public && !req.user) return next(new AppError(`This Account is private ..`, 404));
+  // if (!user.public && !req.user) return next(new AppError(`This Account is private ..`, 404));
 
   const { likedQuizzes } = user;
 
