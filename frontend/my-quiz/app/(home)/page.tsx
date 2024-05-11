@@ -38,7 +38,6 @@ export default async function Page({
     <main className="flex max-w-full relative overflow-hidden scroll-smooth w-full min-h-[100vh] flex-col   items-stretch justify-center">
       <Landing />
       <Welcome />
-      <FloatingTool/>
       {suggesstions && (
         <BecauseYouFollowed DELAY={4000} text="Based On Your " span="Followings :" suggesstions={suggesstions} />
       )}
