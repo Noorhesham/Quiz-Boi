@@ -51,7 +51,7 @@ const FloatingTool = () => {
             {heroIcons.map((icon, i) => (
               <motion.li
                 key={i}
-                className=" p-3 xl:p-5 hover:bg-gray-500/40 text-gray-100 rounded-3xl text-sm xl:text-3xl cursor-pointer duration-150 "
+                className=" p-3 xl:p-4 hover:bg-gray-500/40 text-gray-100 rounded-3xl text-sm xl:text-3xl cursor-pointer duration-150 "
                 whileHover={{ scale: 1.1 }}
               >
                 {icon}
