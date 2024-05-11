@@ -47,7 +47,9 @@ const NavBar = () => {
           {!user && (
             <div className="flex items-center gap-3">
               <Link href="/login">
-                <button className="bg-none   shadow-none mr-3 md:mr-0 text-nowrap font-normal text-white">Log in</button>
+                <button className="bg-none   shadow-none mr-3 md:mr-0 text-nowrap font-normal text-white">
+                  Log in
+                </button>
               </Link>
               <Link href="/signup">
                 <Button className="bg-white hover:bg-pink-600  text-gray-800 text-nowrap hover:text-white hover:opacity-95 duration-150 rounded-full">

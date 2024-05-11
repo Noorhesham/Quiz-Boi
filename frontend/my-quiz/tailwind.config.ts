@@ -14,6 +14,10 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        myShadow1: "4.1px -5px 0 0 rgb(225 ,29 ,72)",
+        myShadow2: "-4.1px -5px 0 0 rgb(225 ,29 ,72)",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -7,6 +7,7 @@ import ColorWrapper from "../components/ColorWrapper";
 import { ToastContainer, } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Head from "next/head";
+import PhoneNav from "../components/PhoneNav";
 
 
 export const metadata: Metadata = {
@@ -40,6 +41,7 @@ export default async function RootLayout({
           theme="light"
         />
           <NavBar />
+          <PhoneNav/>
           {children}
           {/* <Footer/> */}
         </ColorWrapper>
