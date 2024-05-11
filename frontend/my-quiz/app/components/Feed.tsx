@@ -45,6 +45,7 @@ const Feed = ({
   }
   return (
     <section className=" relative pt-5">
+
       <div className="md:p-8 p-4 flex md:flex-row flex-col items-stretch justify-between">
         <Heading
           text="Find your desired quiz now !"

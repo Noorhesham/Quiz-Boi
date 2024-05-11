@@ -10,6 +10,7 @@ import { GetSuggesstions } from "@/actions/getSuggesstions";
 import { Metadata } from "next";
 import { getAuthors } from "@/actions/TopAuthors";
 import Authors from "../components/Authors";
+import FloatingTool from "../components/FloatingTool";
 export const metadata: Metadata = {
   title: "Quiz Boi - Home",
   description: "Explore a wide range of quizzes on Quiz Boi. Find quizzes based on your interests and preferences.",
@@ -34,9 +35,10 @@ export default async function Page({
   const isNext = page < totalPages && results < totalResults;
   if (!data) return <NotFound text="there are no quizzes" />;
   return (
-    <main className="flex max-w-full overflow-hidden scroll-smooth w-full min-h-[100vh] flex-col relative  items-stretch justify-center">
+    <main className="flex max-w-full relative overflow-hidden scroll-smooth w-full min-h-[100vh] flex-col   items-stretch justify-center">
       <Landing />
       <Welcome />
+      <FloatingTool/>
       {suggesstions && (
         <BecauseYouFollowed DELAY={4000} text="Based On Your " span="Followings :" suggesstions={suggesstions} />
       )}

@@ -28,7 +28,7 @@ export default async function RootLayout({
       </head>
       <GoogleOAuthProvider clientId={process.env.GOOGLE || Google_Client}>
         <ColorProvider>
-          <body className={inter.className}>{children}</body>
+          <body className={`${inter.className} relative`}>{children}</body>
         </ColorProvider>
       </GoogleOAuthProvider>
     </html>
