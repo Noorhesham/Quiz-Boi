@@ -87,8 +87,8 @@ const Feed = ({
         {quizzes?.map((quiz, i) => (
           <QuizCard key={i} quiz={quiz} />
         ))}
-      </motion.div>
       <PaginationHome hasNext={hasNext} totalPages={totalPages} length={quizzes.length} onClick={handlePagination} />
+      </motion.div>
     </section>
   );
 };
