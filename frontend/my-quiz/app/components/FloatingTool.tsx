@@ -48,9 +48,9 @@ const FloatingTool = () => {
             dragElastic={0.5}
             dragConstraints={{
               top: 20,
-              left: -window?.innerWidth / 3,
-              right: window?.innerWidth / 3,
-              bottom: window?.innerHeight - 100,
+              left: -global?.window?.innerWidth / 3,
+              right: global?.window?.innerWidth / 3,
+              bottom: global?.window?.innerHeight - 100,
             }}
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
