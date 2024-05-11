@@ -28,8 +28,8 @@ export default function PaginationHome({ onClick,totalPages,length,hasNext }: { 
   };
   const links = Array.from({ length: end - start + 1 }, (_, index) => start + index);
   return (
-    <Pagination className=" py-6 mx-auto">
-      <PaginationContent>
+    <Pagination className="flex justify-center w-full py-6 mx-auto">
+      <PaginationContent classNamr="mx-auto">
         {start > 1 && (
             <PaginationItem>
             <Button onClick={handlePrev} >Previous</Button>
