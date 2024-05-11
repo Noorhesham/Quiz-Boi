@@ -75,7 +75,7 @@ const FloatingTool = () => {
         {isVisible ? "Hide Menu" : "Show Menu"}
       </button>
     </>,
-    document.body
+    global?.document?.body
   );
 };
 
