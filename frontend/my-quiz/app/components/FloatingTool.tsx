@@ -50,7 +50,7 @@ const FloatingTool = () => {
               top: 20,
               left: -global?.window?.innerWidth / 3,
               right: global?.window?.innerWidth / 3,
-              bottom: global?.window?.innerHeight - 100,
+              bottom: global?.window?.innerHeight ,
             }}
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
