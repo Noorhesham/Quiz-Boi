@@ -11,9 +11,10 @@ import AllAuthors from "./AllAuthors";
 import DialogCustom from "./DialogCustom";
 import { UploadQuiz } from "@/actions/UploadQuiz";
 import UploadQuizForm from "./UploadQuizForm";
+import Link from "next/link";
 
 const heroIcons = [
-  <IoHome />,
+  <Link href={'/'}><IoHome/></Link>,
   <DialogCustom
     title="Search any user !"
     description="Find Specific User.. and browse thier profile and Follow them !"
@@ -43,8 +44,7 @@ const FloatingTool = () => {
             className=" fixed z-50 left-1/3 xl:left-1/2 top-32 px-1 py-1     bg-gray-900/40 backdrop-blur border border-n-1/10 rounded-2xl flex"
             drag
             dragElastic={0.5}
-            dragConstraints={{ top: 20, bottom: window.innerHeight }}
-            initial={{ opacity: 0, y: -50 }}
+            dragConstraints={{ top: 20, left: -window.innerWidth / 3, right: window.innerWidth / 3, bottom: window.innerHeight - 100 }}            initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
           >
