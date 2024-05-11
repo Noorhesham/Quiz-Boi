@@ -1,6 +1,7 @@
 import { getMyPlayedQuizzes } from "@/actions/GetPlayedQuizzes";
 import DialogCustom from "@/app/components/DialogCustom";
 import { Empty } from "@/app/components/Empty";
+import FloatingTool from "@/app/components/FloatingTool";
 import GlobalButton from "@/app/components/GlobalButton";
 import Heading from "@/app/components/Heading";
 import Motion from "@/app/components/Motion";
@@ -13,6 +14,7 @@ const page = async () => {
   const attemptedQuizzes = await getMyPlayedQuizzes()
   return (
     <section className=" pb-20 pt-20 md:pt-32 px-4 md:px-20  rounded-md min-h-[80vh] ">
+                      <FloatingTool/>
       <Heading text={`Quizzes I Played ! `} paragraph={`Total Quizzes You Played up to now :${attemptedQuizzes.length}`}/>
       {attemptedQuizzes.length < 1 && (
         <Empty text="You Attempted no quizzes yet !">

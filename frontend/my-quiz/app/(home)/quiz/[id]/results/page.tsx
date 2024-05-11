@@ -1,6 +1,7 @@
 import { GetQuestions } from "@/actions/GetQuestion";
 import { GetAttempt } from "@/actions/getAttempt";
 import Celebrate from "@/app/components/Celebrate";
+import FloatingTool from "@/app/components/FloatingTool";
 import Heading from "@/app/components/Heading";
 import LeaderBoard from "@/app/components/LeaderBoard";
 import Results from "@/app/components/Results";
@@ -8,11 +9,11 @@ import Results from "@/app/components/Results";
 const page = async ({ params }: { params: { id: string } }) => {
   const attempt = await GetAttempt(params.id);
   const { questions, usersAttempted } = attempt.quizId;
-  console.log(questions)
-  const list=await Promise.all(questions.map((question:any) => GetQuestions(question)))
+  console.log(questions);
+  const list = await Promise.all(questions.map((question: any) => GetQuestions(question)));
   const answers = attempt.answers;
   const howGood =
-    (attempt.percentage <= 20||attempt.percentage<=0)
+    attempt.percentage <= 20 || attempt.percentage <= 0
       ? "bad"
       : attempt.percentage <= 34
       ? "ok"
@@ -26,8 +27,9 @@ const page = async ({ params }: { params: { id: string } }) => {
   return (
     <main className=" relative spacer  flex flex-col items-center">
       <Celebrate text={`You Scored ${attempt.points}`} img={howGood} />
-      <Heading text={`Your percentage is ${Math.trunc(attempt.percentage)}%`}/>
-      {attempt.username&&<Heading text={`Hey ${attempt.username}`}/>}
+      <FloatingTool />
+      <Heading text={`Your percentage is ${Math.trunc(attempt.percentage)}%`} />
+      {attempt.username && <Heading text={`Hey ${attempt.username}`} />}
       <Results answers={answers} list={list} />
       {/* <LeaderBoard attempts={usersAttempted}/> */}
     </main>
