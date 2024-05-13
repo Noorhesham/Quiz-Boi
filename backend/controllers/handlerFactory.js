@@ -14,10 +14,10 @@ class Factory {
             console.log(newDoc);
             res.status(200).json({ status: "success", data: { [this.name]: newDoc } });
         });
-        this.getAll = (popOptions, select) => catchAsync(async (req, res, next) => {
+        this.getAll = (popOptions, select, filter) => catchAsync(async (req, res, next) => {
             let filters = {};
             if (req.params.quizId)
-                filters = { quizId: req.params.quizId };
+                filters = { quizId: req.params.quizId, ...filter };
             let query = this.Model.find(filters);
             if (popOptions)
                 query.populate(popOptions);
@@ -37,7 +37,9 @@ class Factory {
             const totalPages = Math.ceil(totalResults / (queryString.limit || 10));
             if (!docs)
                 return next(new AppError_1.default(`There is no ${this.name} found with that id`, 404));
-            res.status(200).json({ status: "success", results: docs.length, totalPages, totalResults, data: { [this.name]: docs } });
+            res
+                .status(200)
+                .json({ status: "success", results: docs.length, totalPages, totalResults, data: { [this.name]: docs } });
         });
         this.getOne = (id = "id", popOptions) => catchAsync(async (req, res, next) => {
             var _a;
@@ -48,12 +50,14 @@ class Factory {
                 return next(new AppError_1.default(`There is no ${this.name} found with that id`, 404));
             res.status(200).json({ status: "success", data: { [this.name.toLowerCase()]: doc } });
         });
-        this.updateOne = () => catchAsync(async (req, res, next) => {
+        this.updateOne = (popOptions) => catchAsync(async (req, res, next) => {
             console.log(req.params);
-            const editedDoc = await this.Model.findByIdAndUpdate(req.params.id || req.params.quizId, req.body, {
+            let query = this.Model.findByIdAndUpdate(req.params.id || req.params.quizId, req.body, {
                 runValidators: true,
                 new: true,
             });
+            popOptions && query.populate(popOptions);
+            const editedDoc = await query;
             if (!editedDoc)
                 return next(new AppError_1.default(`There is no ${this.name} found with that id`, 404));
             res.status(201).json({ status: "success", data: { [this.name]: editedDoc } });

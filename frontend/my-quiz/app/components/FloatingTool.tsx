@@ -4,12 +4,10 @@ import { BsFillInfoSquareFill } from "react-icons/bs";
 import { FaSearch } from "react-icons/fa";
 import { IoHome } from "react-icons/io5";
 import { MdAssignmentAdd } from "react-icons/md";
-import { ScrollParallax } from "react-just-parallax";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 import AllAuthors from "./AllAuthors";
 import DialogCustom from "./DialogCustom";
-import { UploadQuiz } from "@/actions/UploadQuiz";
 import UploadQuizForm from "./UploadQuizForm";
 import Link from "next/link";
 
@@ -37,7 +35,6 @@ const FloatingTool = () => {
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };
-
   return createPortal(
     <>
       <AnimatePresence>
@@ -50,7 +47,7 @@ const FloatingTool = () => {
               top: 20,
               left: -global?.window?.innerWidth / 3,
               right: global?.window?.innerWidth / 3,
-              bottom: global?.window?.innerHeight ,
+              bottom: 450,
             }}
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}

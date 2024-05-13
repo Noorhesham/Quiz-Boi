@@ -28,7 +28,7 @@ export default function PaginationHome({ onClick,totalPages,length,hasNext }: { 
   };
   const links = Array.from({ length: end - start + 1 }, (_, index) => start + index);
   return (
-    <Pagination className="flex col-span-3 justify-center w-full py-6 mx-auto">
+    <Pagination className="flex sm:col-span-2 pb-20 sm:pb-0 sm:mb-20 lg:col-span-3 xl:col-span-4 self-center justify-center w-full py-6 mx-auto">
       <PaginationContent className="mx-auto">
         {start > 1 && (
             <PaginationItem>
@@ -43,9 +43,7 @@ export default function PaginationHome({ onClick,totalPages,length,hasNext }: { 
             </PaginationLink>
           </PaginationItem>
         ))}
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>{" "}
+
         {(end>totalPages&&hasNext)&&<PaginationItem>
           <Button onClick={handleNext} >Next</Button>
         </PaginationItem>}

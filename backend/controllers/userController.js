@@ -103,6 +103,7 @@ exports.getPlayedQuizzes = catchAsync(async (req, res, next) => {
     const [user, totalAttemptedQuizzes] = await Promise.all([
         userModel_1.default.findById(req.params.id).populate({
             path: "attemptedQuizzes",
+            match: req.user ? {} : { isPublic: { $ne: false } },
             select: "-answers",
             populate: {
                 path: "quizId",

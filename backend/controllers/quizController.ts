@@ -48,7 +48,7 @@ exports.addAuthor = (req: Request, res: Response, next: NextFunction) => {
 
 exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const quizId = req.params.quizId;
-  const { username, userId, answers } = req.body;
+  const { username, userId, answers,isPublic } = req.body;
   console.log(req.body);
   if (!quizId)
     return next(new AppError("This attempt must relate to a quiz! Provide the ID of the quiz in the URL", 404));
@@ -66,13 +66,13 @@ exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: Next
           userId,
           quizId,
           answers,
-          points: 0,
+          points: 0,isPublic
         })
       : await UserAttempt.create({
           username,
           quizId,
           answers,
-          points: 0,
+          points: 0,isPublic
         });
     quiz.usersAttempted.push(userAttempt._id);
   } else {

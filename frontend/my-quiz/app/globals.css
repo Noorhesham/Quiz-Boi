@@ -180,6 +180,12 @@ border: 1px solid rgba(255, 255, 255, 0.3);
   background-size: cover;
   background-repeat: no-repeat;
 }
+button:active {
+  -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+     -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+          box-shadow: inset 0px 0px 5px #c1c1c1;
+   outline: none;
+} 
 .friends {
   background-image: url("/friendbg.png");
   background-position: center;

@@ -58,11 +58,11 @@ exports.getDetails = catchAsync(async (req: Request, res: Response, next: NextFu
         path: "comments",
       },
     ],
-  })
+  });
   if (!user) return next(new AppError("cannot find this user", 404));
   if (!user.public) {
     const { quizzes, ...userPrivate } = user.toObject();
-    user={...userPrivate}
+    user = { ...userPrivate };
   }
   res.status(200).json({ status: "success", data: { user } });
 });
@@ -111,6 +111,7 @@ exports.getPlayedQuizzes = catchAsync(async (req: Request, res: Response, next: 
   const [user, totalAttemptedQuizzes] = await Promise.all([
     User.findById(req.params.id).populate({
       path: "attemptedQuizzes",
+      match: req.user?{}: { isPublic: { $ne: false } },
       select: "-answers",
       populate: {
         path: "quizId",
@@ -154,12 +155,12 @@ exports.getUserMini = catchAsync(async (req: Request | any, res: Response, next:
   res.status(200).json({ status: "success", data: { user } });
 });
 exports.getUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  let user = await User.findById(req.params.id).populate({ path: "likedQuizzes", select: "quiz -user -_id" })
+  let user = await User.findById(req.params.id).populate({ path: "likedQuizzes", select: "quiz -user -_id" });
   // .populate({ path: "attemptedQuizzes" ,select:"-answers quizId _id"});
   if (!user) return next(new AppError(`There is no user found with that id`, 404));
   if (!user.public) {
     const { quizzes, ...userPrivate } = user.toObject();
-    user={...userPrivate}
+    user = { ...userPrivate };
   }
   res.status(200).json({ status: "success", data: { user } });
 });
@@ -179,11 +180,12 @@ exports.updateMe = catchAsync(async (req: Request, res: Response, next: NextFunc
 
 exports.followUser = catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
   const currentUser = req.user;
-  const userToFollow :any = await User.findById(req.params.id);
-  console.log(currentUser,userToFollow)
-  if (currentUser._id=== userToFollow._id) return next(new AppError("You  Cannot follow yourself !", 404));
+  const userToFollow: any = await User.findById(req.params.id);
+  console.log(currentUser, userToFollow);
+  if (currentUser._id === userToFollow._id) return next(new AppError("You  Cannot follow yourself !", 404));
   if (!userToFollow) return next(new AppError("cannot find this user", 400));
-  if (currentUser.following.includes(req.params.id)) return next(new AppError("You are already following this user.", 400));
+  if (currentUser.following.includes(req.params.id))
+    return next(new AppError("You are already following this user.", 400));
   if (!userToFollow.public) {
     // If the account is not public, send a follow request instead
     if (!currentUser.followRequests.includes(userToFollow._id)) {

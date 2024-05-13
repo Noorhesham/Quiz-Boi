@@ -1,4 +1,4 @@
-export const container = {
+export const container ={
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,

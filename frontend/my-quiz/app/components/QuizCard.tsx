@@ -36,7 +36,7 @@ const QuizCard = ({
   return (
     <motion.div
       variants={item}
-      className="relative h-full cursor-pointer rounded-2xl bg-white/60 shadow-md items-start flex flex-col"
+      className="relative  h-full cursor-pointer rounded-2xl bg-white/60 shadow-md items-start flex flex-col"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >

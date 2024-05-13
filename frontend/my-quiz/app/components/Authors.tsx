@@ -25,7 +25,6 @@ const Authors = ({
   DELAY?: number;
 }) => {
   const list = suggesstions;
-  console.log(list);
   return (
     <section className=" md:px-4 md:py-2">
       <div className=" px-1 md:px-0">

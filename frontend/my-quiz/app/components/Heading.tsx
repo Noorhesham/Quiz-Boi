@@ -28,7 +28,7 @@ const Heading = ({
             } flex items-center capitalize font-semibold text-xl md:text-4xl`}
           >
             {text}
-            {span && <h5 className=" ml-3  text-pink-400">{span}</h5>}
+            {span && <div className=" ml-3  text-pink-400">{span}</div>}
             {children}
           </h2>
           {image && <Image width={40} height={40} src={image} alt="" />}

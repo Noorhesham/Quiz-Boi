@@ -49,17 +49,10 @@ const userAttemptSchema = new mongoose_1.Schema({
         required: true,
         default: 0,
     },
+    isPublic: { type: Boolean, default: true },
     totalPoints: { type: Number },
     percentage: { type: Number },
     attemptedAt: { type: Date, default: new Date(Date.now()) },
 });
-let populate = false;
-// userAttemptSchema.pre<any>(/^find/, function (next: any) {
-//     // this.populate({ path: "userId" }).
-//   //   this.populate({
-//   //   path: "quizId",select:"-questions -answers -usersAttempted"
-//   // });
-//   next();
-// });
 const UserAttempt = mongoose_1.default.model("UserAttempt", userAttemptSchema);
 exports.default = UserAttempt;

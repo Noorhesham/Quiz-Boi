@@ -11,8 +11,17 @@ import DialogCustom from "./DialogCustom";
 import AllCategories from "./AllCategories";
 import { IoIosArrowForward } from "react-icons/io";
 import PaginationHome from "./Pagination";
-import { container } from "../motion";
-
+const container ={
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delayChildren: 0.1,
+      staggerChildren: 0.1,
+    },
+  },
+};
 const Feed = ({
   quizzes,
   categories,
@@ -81,8 +90,9 @@ const Feed = ({
         variants={container}
         initial="hidden"
         whileInView="visible"
+        animate="visible"
         id="play"
-        className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5"
+        className=" grid grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5"
       >
         {quizzes?.map((quiz, i) => (
           <QuizCard key={i} quiz={quiz} />

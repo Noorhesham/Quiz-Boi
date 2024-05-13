@@ -7,6 +7,14 @@ const userAttemptsModel_1 = __importDefault(require("../models/userAttemptsModel
 const handlerFactory_1 = __importDefault(require("./handlerFactory"));
 const AppError_1 = __importDefault(require("../utils/AppError"));
 const catchAsync = require("../utils/catchError");
+exports.checkIfAuthor = catchAsync(async (req, res, next) => {
+    const attempt = await userAttemptsModel_1.default.findById(req.params.id);
+    console.log(req.params);
+    console.log(attempt === null || attempt === void 0 ? void 0 : attempt.userId, req.user.id);
+    if ((attempt === null || attempt === void 0 ? void 0 : attempt.userId.toString()) !== req.user.id && req.user.role !== "admin")
+        return next(new AppError_1.default(`You cannot edit someone's else attempt.`, 403));
+    next();
+});
 exports.getUserAttemptStats = catchAsync(async (req, res, next) => {
     console.log(req.params);
     const user = await userAttemptsModel_1.default.find({ userId: req.params.id }).populate({
@@ -38,6 +46,18 @@ exports.getUserAttemptStats = catchAsync(async (req, res, next) => {
         },
     });
 });
+exports.updateAttempt = catchAsync(async (req, res, next) => {
+    let editedDoc = await userAttemptsModel_1.default.findByIdAndUpdate(req.params.id, { isPublic: req.body.isPublic }, {
+        runValidators: true,
+        new: true,
+    }).select('-answers');
+    if (!editedDoc)
+        return next(new AppError_1.default(`There is no attempt found with that id`, 404));
+    res.status(201).json({ status: "success", data: { editedDoc } });
+});
+// exports.leaderBoard=catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+//   const leaderboard=await UserAttempt.find({quizId:req.params.quizId}).populate({path:'userId'}).select('-answers')
+// })
 const attemptfactory = new handlerFactory_1.default(userAttemptsModel_1.default, "attempt");
-exports.getAllAttempts = attemptfactory.getAll();
-exports.getAttempt = attemptfactory.getOne("id", { path: "quizId", select: "questions answers usersAttempted" });
+exports.getAllAttempts = attemptfactory.getAll({ path: "userId" }, "-answers ", { isPublic: { $ne: false } });
+exports.getAttempt = attemptfactory.getOne("id", { path: "quizId", select: "questions answers usersAttempted author" });

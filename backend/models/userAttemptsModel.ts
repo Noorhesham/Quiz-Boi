@@ -9,6 +9,7 @@ export interface UserAttemptProps extends Document {
   attemptedAt?: Date;
   percentage: number;
   totalPoints: number;
+  isPublic:boolean
 }
 
 const userAttemptSchema = new Schema<UserAttemptProps>({
@@ -36,21 +37,12 @@ const userAttemptSchema = new Schema<UserAttemptProps>({
     required: true,
     default: 0,
   },
+  isPublic:{type:Boolean,default:true},
   totalPoints: { type: Number },
   percentage: { type: Number },
   attemptedAt: { type: Date, default: new Date(Date.now()) },
 });
-let populate = false;
 
-
-
-// userAttemptSchema.pre<any>(/^find/, function (next: any) {
-//     // this.populate({ path: "userId" }).
-//   //   this.populate({
-//   //   path: "quizId",select:"-questions -answers -usersAttempted"
-//   // });
-//   next();
-// });
 
 const UserAttempt: Model<UserAttemptProps> = mongoose.model<UserAttemptProps>("UserAttempt", userAttemptSchema);
 export default UserAttempt;
