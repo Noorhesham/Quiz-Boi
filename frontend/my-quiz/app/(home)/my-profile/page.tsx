@@ -21,6 +21,7 @@ const page = async () => {
           <AreaChartCustom userAttempts={userData.userAttempts}/>
         <ProfileTabs user={user} />
       </div>
+      
     </section>
   );
 };

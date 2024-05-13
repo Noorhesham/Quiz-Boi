@@ -14,7 +14,7 @@ import { PublishQuiz as PublishQuizApi } from "@/actions/PublishQuiz";
 import { RemoveQuiz } from "@/actions/RemoveQuiz";
 import { SolveQuiz } from "@/actions/SolveQuestion";
 import { getAuthors } from "@/actions/TopAuthors";
-import { GetAttempt } from "@/actions/getAttempt";
+import { GetAttempt, GetusersforAttempt } from "@/actions/getAttempt";
 import { getFollowers, getFollowing } from "@/actions/getFollowers";
 import { getPublicUser, getPublicUserMini, getUser, getUserDetails } from "@/actions/getUser";
 import { logout as logoutAPI } from "@/actions/logout";
@@ -520,14 +520,22 @@ export const useGetQuizzes = (catergorey: string, page: number) => {
   });
   return { quizzes, isLoading, error };
 };
-export const useGetAttempts = (arr: Array<string>) => {
+export const useGetAttempts = (id:string) => {
   const {
     data: attemptedUsers,
     isLoading,
     error,
-  } = useQuery({
-    queryKey: [`attempt ${arr}`],
-    queryFn: async () => await Promise.all(arr.map((ar) => GetAttempt(ar))),
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: [`attempt ${id}`],
+    queryFn: async ({ pageParam = 1 }) => await  GetusersforAttempt(id,pageParam),
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage?.length === 0) return undefined;
+      return allPages.length + 1;
+    },
+    initialPageParam: 1,
   });
-  return { attemptedUsers, isLoading, error };
+  return { attemptedUsers,isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage};
 };

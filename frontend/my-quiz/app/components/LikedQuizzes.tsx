@@ -31,7 +31,7 @@ const LikedQuizzes = ({ id, play }: { id?: string; play?: boolean }) => {
       <section className=" relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 items-stretch  md:p-10 gap-5">
         {data?.pages.flat(1)?.map((quiz: any, i: number) => {
           if ((!quiz.quiz && !play) || (play && !quiz.quizId)) return null;
-          else return <QuizCard key={i} quiz={play ? quiz.quizId : quiz.quiz} />;
+          else return <QuizCard key={i} href={play?`/quiz/${quiz._id}/results`:""} quiz={play ? quiz.quizId : quiz.quiz} />;
         })}
         {(isLoading || (hasNextPage && isFetchingNextPage)) && (
           <div ref={ref} className=" w-full">

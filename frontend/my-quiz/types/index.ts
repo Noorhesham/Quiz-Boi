@@ -7,6 +7,7 @@ export interface UserProps {
   likedQuizzes: Array<any>;
   attemptedQuizzes: Array<any>;
   followers:Array<any>
+  username:string
   following:Array<any>
   isthirdParty:boolean
   followingCount:number

@@ -40,7 +40,7 @@ const FloatingTool = () => {
       <AnimatePresence>
         {isVisible && (
           <motion.ul
-            className=" fixed z-50 left-1/3 xl:left-1/2 top-32 px-1 py-1     bg-gray-900/40 backdrop-blur border border-n-1/10 rounded-2xl flex"
+            className=" fixed z-50 left-1/3 xl:left-[60%] top-24 px-1 py-1     bg-gray-900/40 backdrop-blur border border-n-1/10 rounded-2xl flex"
             drag
             dragElastic={0.5}
             dragConstraints={{

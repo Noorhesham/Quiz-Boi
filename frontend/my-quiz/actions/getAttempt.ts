@@ -3,17 +3,35 @@ import { API_URL } from "@/constants";
 import axios from "axios";
 import { cookies } from "next/headers";
 
+export const GetusersforAttempt = async (id: string,page:number) => {
+  try {
+    const response = await fetch(`${API_URL}/quiz/${id}/attempts?sort=-points&limit=10&page=${page}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch');
+    }
+    const data = await response.json();
+    return data.data.attempt;
+  } catch (err:any) {
+    console.log(err);
+    if (err.message === 'Failed to fetch') {
+      throw new Error(`Unable to reach the server. Please check your internet connection...`);
+    }
+    throw err;
+  }
+};
 export const GetAttempt = async (id: string) => {
   try {
-    const res = await axios.get(`${API_URL}/attempts/${id}`, {
-
-    });
-    return res.data.data.attempt;
-  } catch (err: any) {
+    const response = await fetch(`${API_URL}/attempts/${id}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch');
+    }
+    const data = await response.json();
+    return data.data.attempt;
+  } catch (err:any) {
     console.log(err);
-    if (err.response.data) return err.response.data;
-    if (err.message === "Failed to fetch")
-      err.message = `Unable to reach the server. Please check your internet connection...`;
+    if (err.message === 'Failed to fetch') {
+      throw new Error(`Unable to reach the server. Please check your internet connection...`);
+    }
     throw err;
   }
 };

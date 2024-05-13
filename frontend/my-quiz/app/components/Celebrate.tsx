@@ -5,7 +5,7 @@ import Heading from "./Heading";
 import Confetti from "react-confetti";
 import BlobBackground from "./BlobBackground ";
 
-const Celebrate = ({ img, text }: { img: string; text: string }) => {
+const Celebrate = ({ img, text }: { img?: string; text?: string }) => {
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(function () {
@@ -17,8 +17,8 @@ const Celebrate = ({ img, text }: { img: string; text: string }) => {
   return (
     <div className=" pt-20 z-10 relative overflow-hidden rounded-lg py-3 px-6 flex flex-col items-center justify-center">
       {isRunning && <Confetti numberOfPieces={100} width={1000} height={600} />}
-      <Image className="z-10" alt="result" width={300} height={300} src={`/${img}.png`} />
-      <Heading text={`${text} points !`} />
+      {img&&<Image className="z-10" alt="result" width={400} height={400} src={`/${img}.png`} />}
+      {text&&<Heading text={`${text} points !`} />}
       <BlobBackground />
     </div>
   );

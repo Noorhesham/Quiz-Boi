@@ -10,6 +10,8 @@ import { CommentProvider } from "../context/CommentContext";
 import YouAreNotAuth from "./YouAreNotAuth";
 import { useGetUser } from "@/utils/queryFunctions";
 import Share from "./Share";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import LeaderBoard from "./LeaderBoard";
 
 const QuizShow = ({ quiz }: { quiz: QuizProps }) => {
   const { user } = useGetUser();
@@ -39,7 +41,13 @@ const QuizShow = ({ quiz }: { quiz: QuizProps }) => {
             <Share link={`https://quiz-boi.vercel.app/quiz/${quiz._id}`}/>
         </div>
       </div>
-      <div className="flex flex-col">
+      <Tabs defaultValue="comments">
+      <TabsList className="grid md:text-base text-sm grid-cols-2">
+          <TabsTrigger value="comments">Quiz Comments</TabsTrigger>
+          <TabsTrigger value="board">LeaderBoard</TabsTrigger>
+        </TabsList>
+        <TabsContent value="comments">
+        <div className="flex flex-col">
         <p>{quiz.description}</p>
         <CommentProvider>
           <h2 className="text-gray-800 font-semibold text-3xl p-3">Comments</h2>
@@ -51,6 +59,11 @@ const QuizShow = ({ quiz }: { quiz: QuizProps }) => {
           )}
         </CommentProvider>
       </div>
+        </TabsContent>
+        <TabsContent value="board">
+          <LeaderBoard id={quiz._id}/>
+        </TabsContent>
+      </Tabs>
     </section>
   );
 };
