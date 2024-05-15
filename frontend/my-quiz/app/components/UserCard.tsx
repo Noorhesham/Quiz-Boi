@@ -23,20 +23,20 @@ const UserCard = ({ user, mine = false, points }: { user: UserProps; mine: boole
           </h1>
           {mine&&<h4 className="">{user.email}</h4>}
           <div className="grid grid-cols-3 gap-2 my-2 md:my-4 items-center ">
-            {user.followersCount && (
+            {(
               <DialogCustom
                 title="Followers"
                 description="See Followers"
                 content={<FollowList length={user.followersCount} id={user._id} />}
-                btn={<MiniHeaderLink span={`${user.followersCount}`} text={`followers`} />}
+                btn={<MiniHeaderLink span={`${user.followersCount||0}`} text={`followers`} />}
               />
             )}
-            {user.followingCount && (
+            { (
               <DialogCustom
                 title="Following"
                 description="See Followings"
                 content={<FollowingList length={user.followingCount} id={user._id} />}
-                btn={<MiniHeaderLink span={`${user.followingCount}`} text={`following`} />}
+                btn={<MiniHeaderLink span={`${user.followingCount||0}`} text={`following`} />}
               />
             )}
             {points && (
