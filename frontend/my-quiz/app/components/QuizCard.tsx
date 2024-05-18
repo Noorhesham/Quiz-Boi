@@ -54,7 +54,6 @@ const QuizCard = ({
             btn={
               <LazyLoadImage
                 effect="blur"
-                threshold={100}
                 height={"auto"}
                 width={"auto"}
                 className="rounded-t-2xl  h-full block mt-0 pt-0   aspect-[1/1] object-cover w-full"
