@@ -59,6 +59,7 @@ export default function PaginationHome({
                 //@ts-ignore
                 +searchParams.get("page") === item && " bg-pink-400 hover:bg-red-400 "
               } select-none text-white cursor-pointer`}
+              //@ts-ignore
               onClick={() => handlePagination(item)}
             >
               {item}
