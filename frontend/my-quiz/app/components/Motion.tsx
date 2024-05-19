@@ -3,9 +3,19 @@ import { motion } from "framer-motion";
 import { container } from "../motion";
 import { ReactNode } from "react";
 
-const Motion = ({ children, className, animate }: { children: ReactNode; className?: string; animate?: boolean }) => {
+const Motion = ({
+  children,
+  className,
+  animate,
+  id,
+}: {
+  children: ReactNode;
+  className?: string;
+  animate?: boolean;
+  id?: string;
+}) => {
   return animate ? (
-    <motion.div className={`${className || ""}`} initial="hidden" animate="visible" variants={container}>
+    <motion.div id={id} className={`${className || ""}`} initial="hidden" animate="visible" variants={container}>
       {children}
     </motion.div>
   ) : (
