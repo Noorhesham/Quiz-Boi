@@ -17,7 +17,7 @@ export const Empty = ({
 }) => {
   return (
     <div className=" flex m-auto col-span-3  mx-auto   w-full  items-center justify-center p-10 flex-col">
-      <h1 className=" text-gray-700 capitalize  text-xl md:text-3xl font-semibold">{text}</h1>
+      <h1 className=" text-gray-100 capitalize  text-xl md:text-3xl font-semibold">{text}</h1>
       <Image width={300} height={300} src={image ? image : "/play2.png"} alt="asking" />
       {children}
       {link && (
