@@ -1,17 +1,11 @@
-import Welcome from "../components/Welcome";
-import Landing from "../components/Landing";
-import Filter from "../components/Filter";
-import { GetTags } from "@/actions/GetTags";
-import BecauseYouFollowed from "../components/BecauseYouFollowed";
-import { getUser } from "@/actions/getUser";
-import { GetSuggesstions } from "@/actions/getSuggesstions";
 import { Metadata } from "next";
-import { getAuthors } from "@/actions/TopAuthors";
-import Authors from "../components/Authors";
-import FloatingTool from "../components/FloatingTool";
-import ThreeDSpace from "../components/ThreeDSpace";
 import { Suspense } from "react";
+import FloatingTool from "../components/FloatingTool";
+import HomeFetches from "../components/HomeFetches";
+import Landing from "../components/Landing";
 import QuizzesList from "../components/QuizzesList";
+import ThreeDSpace from "../components/ThreeDSpace";
+import Welcome from "../components/Welcome";
 export const metadata: Metadata = {
   title: "Quiz Boi - Home",
   description: "Explore a wide range of quizzes on Quiz Boi. Find quizzes based on your interests and preferences.",
@@ -25,8 +19,6 @@ export default async function Page({
     page?: number;
   };
 }) {
-  const user = await getUser();
-   const [authors,suggesstions,categories]=await Promise.all([getAuthors(),GetSuggesstions(),GetTags()])
   const categorey = searchParams?.categorey || "";
   const page = searchParams?.page || 1;
   return (
@@ -34,11 +26,6 @@ export default async function Page({
       <Landing />
       <Welcome />
       <FloatingTool />
-      {suggesstions && (
-        <BecauseYouFollowed DELAY={4000} text="Based On Your " span="Followings :" suggesstions={suggesstions} />
-      )}
-      <Authors DELAY={5000} text="Top" span=" Authors :" suggesstions={authors} />
-      <Filter categories={categories} />
       <Suspense
         key={categorey}
         fallback={
@@ -48,7 +35,8 @@ export default async function Page({
             </div>
           </div>
         }
-      >
+        >
+        <HomeFetches/>
         <QuizzesList page={page} categorey={categorey} />
       </Suspense>
       <div className="flex px-5 md:px-10  flex-col md:mb-20 md:flex-row items-center">
