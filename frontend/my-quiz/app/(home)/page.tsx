@@ -12,6 +12,8 @@ import { getAuthors } from "@/actions/TopAuthors";
 import Authors from "../components/Authors";
 import FloatingTool from "../components/FloatingTool";
 import ThreeDSpace from "../components/ThreeDSpace";
+import { Suspense } from "react";
+import { FaSpinner } from "react-icons/fa";
 export const metadata: Metadata = {
   title: "Quiz Boi - Home",
   description: "Explore a wide range of quizzes on Quiz Boi. Find quizzes based on your interests and preferences.",
@@ -40,13 +42,12 @@ export default async function Page({
       <Landing />
       <Welcome />
       <FloatingTool />
-      {suggesstions && (
-        <BecauseYouFollowed DELAY={4000} text="Based On Your " span="Followings :" suggesstions={suggesstions} />
-      )}
-      {/* {user && user.likedQuizzes && <BecauseYouFollowed DELAY={3000} user={user} />} */}
+      {suggesstions && (<BecauseYouFollowed DELAY={4000} text="Based On Your " span="Followings :" suggesstions={suggesstions} />)}
       <Authors DELAY={5000} text="Top" span=" Authors :" suggesstions={authors} />
-      {<Feed hasNext={isNext} categories={categories} totalPages={totalPages} quizzes={data?.quizzes} />}
-      <div className="flex  flex-col md:mb-20 md:flex-row items-center">
+      <Suspense fallback={<FaSpinner className={`  z-50 text-red-400 animate-spin mx-auto  text-center text-5xl`} />}>
+      <Feed hasNext={isNext} categories={categories} totalPages={totalPages} quizzes={data?.quizzes} />
+      </Suspense>
+      <div className="flex px-5 md:px-10  flex-col md:mb-20 md:flex-row items-center">
         <ThreeDSpace className="w-full md:w-1/2 lg:w-[80%] h-[400px] md:h-[500px]" />
         <div className="text-center mt-16 text-gray-100 md:text-left md:w-1/2 p-4">
           <h1 className="text-3xl font-bold">Fly In the space of the Quiz Boi!</h1>
