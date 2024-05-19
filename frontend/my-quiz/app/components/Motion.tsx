@@ -19,7 +19,7 @@ const Motion = ({
       {children}
     </motion.div>
   ) : (
-    <motion.div className={`${className || ""}`} initial="hidden" whileInView="visible" variants={container}>
+    <motion.div id={id} className={`${className || ""}`} initial="hidden" whileInView="visible" variants={container}>
       {children}
     </motion.div>
   );
