@@ -14,8 +14,11 @@ import Topic from "@/app/components/Topic";
 import { QuestionProps, QuizProps } from "@/types";
 import { redirect } from "next/navigation";
 import React from "react";
-export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const quiz = await GetQuiz(params.id);
+  return { title: quiz.title };
+}
 const page = async ({ params }: { params: { id: string } }) => {
   const user = await getUser();
   if (!user) return redirect("/");
@@ -24,7 +27,7 @@ const page = async ({ params }: { params: { id: string } }) => {
   if (!quiz) return <NotFound text="This Quiz is not available" />;
   return (
     <main className="text-gray-50 pt-20 sm:pt-24 flex flex-col gap-3 p-5 md:px-10 pb-10">
-                      <FloatingTool/>
+      <FloatingTool />
       <div className="flex flex-wrap justify-between items-center">
         <Heading text={`Your ${quiz.title} quiz is here ! Get prepared to publish it !`} />
         <div className="flex items-center gap-2">

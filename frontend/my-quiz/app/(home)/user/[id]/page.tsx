@@ -6,7 +6,12 @@ import ProfileTabs from "@/app/components/ProfileTabs";
 import UserCard from "@/app/components/UserCard";
 import UserData from "@/app/components/UserData";
 import React from "react";
-export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const user = await getPublicUser(params.id);
+  return { title: user.name };
+}
+
 const page = async ({ params }: { params: { id: string } }) => {
   const user = await getPublicUser(params.id);
   const userData = await await GetStats(params.id);

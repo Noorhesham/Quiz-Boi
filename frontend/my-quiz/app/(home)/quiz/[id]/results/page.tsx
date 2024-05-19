@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const page = async ({ params }: { params: { id: string } }) => {
   const attempt = await GetAttempt(params.id);
-  const { questions ,} = attempt.quizId;
+  const { questions } = attempt.quizId;
   const list = await Promise.all(questions.map((question: any) => GetQuestions(question)));
   const answers = attempt.answers;
   console.log(attempt);
@@ -25,7 +25,7 @@ const page = async ({ params }: { params: { id: string } }) => {
       : attempt.percentage <= 90
       ? "great"
       : "complete";
-   
+
   return (
     <main className=" relative spacer  flex flex-col items-center">
       <Celebrate text={`You Scored ${attempt.points}`} img={howGood} />

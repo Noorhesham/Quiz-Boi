@@ -11,7 +11,7 @@ import PhoneNav from "../components/PhoneNav";
 
 
 export const metadata: Metadata = {
-  title: "Quiz Boi",
+  title: {template:"%s / Quiz Boi",default:'Welcome / Quiz Boi'},
   description: "Best Plattform to Solve,Upload Your desired quizzes",
   icons:{icon:'/favicon.ico'}};
 

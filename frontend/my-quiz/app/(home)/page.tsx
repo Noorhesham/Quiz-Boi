@@ -26,12 +26,9 @@ export default async function Page({
   };
 }) {
   const user = await getUser();
-  const authors = await getAuthors();
+   const [authors,suggesstions,categories]=await Promise.all([getAuthors(),GetSuggesstions(),GetTags()])
   const categorey = searchParams?.categorey || "";
   const page = searchParams?.page || 1;
-  let suggesstions;
-  if (user) suggesstions = await GetSuggesstions();
-  const categories = await GetTags();
   return (
     <main className="flex max-w-full relative overflow-hidden scroll-smooth w-full min-h-[100vh] flex-col   items-stretch justify-center">
       <Landing />
