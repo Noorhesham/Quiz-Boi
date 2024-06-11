@@ -15,10 +15,7 @@ import { QuestionProps, QuizProps } from "@/types";
 import { redirect } from "next/navigation";
 import React from "react";
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const quiz = await GetQuiz(params.id);
-  return { title: quiz.title };
-}
+
 const page = async ({ params }: { params: { id: string } }) => {
   const user = await getUser();
   if (!user) return redirect("/");

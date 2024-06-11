@@ -10,7 +10,6 @@ import FormSuccess from "./FormSuccess";
 import { useRouter } from "next/navigation";
 import QuestionNum from "./QuestionNum";
 import Duration from "./Duration";
-import TagsForm from "./TagsForm";
 import Description from "./Description";
 import { UploadQuiz } from "@/actions/UploadQuiz";
 import { QuizProps } from "@/types";
@@ -20,7 +19,6 @@ import Loader from "./Loader";
 import TextInput from "./QuestionInput";
 import MyButton from "./MyButton";
 import TaggingComponent from "./TaggingComponent";
-import { useQueryClient } from "@tanstack/react-query";
 
 const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) => {
   const [error, setFormError] = useState<string | any>("");

@@ -73,16 +73,16 @@ export const BackgroundCircles = ({ parallaxRef }: { parallaxRef?: any }) => {
             }`}
           />
         </div>
-        <div className=" rotate-12 floating block w-[20rem] h-[20rem] rounded-full absolute left-[40%] -translate-x-1/2 top-[28%] ">
+        <div className=" rotate-12 xl:floating block w-[20rem] h-[20rem] rounded-full absolute left-[40%] -translate-x-1/2 top-[28%] ">
           <img src="/planet.png" alt="" />
         </div>
-        <div className=" rotate-12 floating  w-[20rem] h-[20rem] rounded-full absolute left-[25rem] md:-left-[10%] md:-translate-x-1/2 top-[63%] md:top-[68%] ">
+        <div className=" rotate-12 xl:floating  w-[20rem] h-[20rem] rounded-full absolute left-[25rem] md:-left-[10%] md:-translate-x-1/2 top-[63%] md:top-[68%] ">
           <img src="/planet2.png" alt="" />
         </div>
-        <div className=" rotate-12 floating  z-10  w-[20rem] h-[20rem] rounded-full absolute left-[25rem] md:left-auto md:right-[3%] md:-translate-x-1/2 top-[100%] md:top-[69%] ">
+        <div className=" rotate-12 xl:floating  z-10  w-[20rem] h-[20rem] rounded-full absolute left-[25rem] md:left-auto md:right-[3%] md:-translate-x-1/2 top-[100%] md:top-[69%] ">
           <img src="/planet3.png" alt="" />
         </div>
-        <div className=" rotate-12 floating  w-[25rem] h-[25rem] rounded-full absolute left-[25rem] md:left-auto md:right-[3%] md:-translate-x-1/2 top-[130%] md:top-[44%] ">
+        <div className=" rotate-12 xl:floating  w-[25rem] h-[25rem] rounded-full absolute left-[25rem] md:left-auto md:right-[3%] md:-translate-x-1/2 top-[130%] md:top-[44%] ">
           <img src="/planet4.png" alt="" />
         </div>
 
