@@ -63,9 +63,6 @@ export const BackgroundCircles = ({ parallaxRef }: { parallaxRef?: any }) => {
             }`}
           />
         </div>
-        <div className="absolute top-[110%] md:top-[65%] left-1/2 w-[65.875rem] aspect-square border border-pink-500 rounded-full -translate-x-1/2 md:-translate-y-1/2">
-            <img src="/stars.png" alt="" />
-        </div>
         <div className="absolute bottom-1/2 left-1/2 w-0.25 h-1/2 origin-bottom rotate-[54deg]">
           <div
             className={`hidden w-4 h-4 -ml-1 mt-[12.9rem] bg-gradient-to-b from-[#B9AEDF] to-[#1A1A32] rounded-full xl:block transit transition-transform duration-500 ease-out ${
