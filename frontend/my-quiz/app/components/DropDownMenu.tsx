@@ -1,6 +1,6 @@
 "use client";
 import { useCloseModal } from "@/hooks/useCloseModel";
-import React, { useContext, createContext, useState, ReactNode, RefAttributes } from "react";
+import React, { useContext, createContext, useState, ReactNode, RefAttributes, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
 interface MenuContextType {
@@ -67,10 +67,14 @@ function Toggle({ id, children }: { id: string; children: ReactNode }) {
 
 function Menu({ children, id }: { children: ReactNode; id: string }) {
   const { open, closeMenu } = useContext(MenuContext);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   //this hook is responsible for handling the click on menu not to trigger a close
   const ref = useCloseModal(closeMenu);
   if (open !== id) return;
-  return createPortal(<div ref={ref}>{children}</div>, document.body);
+  return mounted && createPortal(<div ref={ref}>{children}</div>, document.body);
 }
 DropDownMenu.Toggle = Toggle;
 DropDownMenu.Menu = Menu;

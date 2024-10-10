@@ -2,19 +2,21 @@ import React, { useEffect, useState } from "react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { AnimatePresence } from "framer-motion";
 import CategoreyCadHover from "./CategoreyCadHover";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import { useSearchParams } from "next/navigation";
-import {motion} from 'framer-motion'
+import { motion } from "framer-motion";
 import { item } from "../motion";
+import Image from "next/image";
 const CategoreyCard = ({ tag, setCategorey, large = false }: { tag: any; setCategorey: any; large?: boolean }) => {
   const [hover, setHover] = useState(false);
   const searchParams = useSearchParams();
   const search = searchParams.get("categorey");
-  useEffect(function () {
-    if (search === tag.tag) setHover(true);
-    else setHover(false)
-  }, [search]);
+  useEffect(
+    function () {
+      if (search === tag.tag) setHover(true);
+      else setHover(false);
+    },
+    [search]
+  );
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
@@ -30,12 +32,10 @@ const CategoreyCard = ({ tag, setCategorey, large = false }: { tag: any; setCate
                 if (search === tag.tag) return;
                 else setHover(false);
               }}
-              className="md:h-96 h-auto relative cursor-pointer bg-gray-200 rounded-lg overflow-hidden"
+              className="md:h-96 w-full h-auto relative cursor-pointer bg-gray-200 rounded-lg overflow-hidden"
             >
-              <LazyLoadImage
-                effect="blur"
-                threshold={100}
-                style={{ display: "block" }}
+              <Image
+                fill
                 src={tag?.photo}
                 alt={tag?.tag}
                 className="w-full h-full rounded-lg object-cover block md:object-top"
@@ -53,11 +53,10 @@ const CategoreyCard = ({ tag, setCategorey, large = false }: { tag: any; setCate
             onClick={() => setCategorey(tag.tag)}
             className="md:h-48 h-36 cursor-pointer  relative w-36  md:w-48 bg-gray-200 rounded-lg "
           >
-            <LazyLoadImage
-              effect="blur"
-              threshold={100}
-              src={tag.photo}
-              alt={tag.tag}
+            <Image
+              fill
+              src={tag?.photo}
+              alt={tag?.tag}
               className="w-full block rounded-lg h-full object-cover aspect-[1/1]"
             />
             <AnimatePresence>{hover && <CategoreyCadHover tag={tag.tag} />}</AnimatePresence>

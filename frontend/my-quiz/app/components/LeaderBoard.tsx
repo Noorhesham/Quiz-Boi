@@ -6,8 +6,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Empty } from "./Empty";
 import { useInView } from "react-intersection-observer";
 import AuthorSkeleton from "./AuthorSkeleton";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import Confetti from "react-confetti";
+import Image from "next/image";
 const LeaderBoard = ({ id, me }: { id: string; me?: string }) => {
   const { attemptedUsers, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetAttempts(id);
   console.log(attemptedUsers);
@@ -55,7 +55,9 @@ const LeaderBoard = ({ id, me }: { id: string; me?: string }) => {
                       alt=""
                     />
                   </div>
-                  <LazyLoadImage
+                  <Image
+                    width={300}
+                    height={300}
                     className=" absolute bottom-[1.6rem] left-[1.3rem] md:left-[3rem] z-20 w-[12rem] md:w-[13rem]"
                     src="/winner3.png"
                     alt=""
@@ -75,7 +77,9 @@ const LeaderBoard = ({ id, me }: { id: string; me?: string }) => {
                     author={attemptedUsers?.pages.flat(1)[0]?.userId || attemptedUsers?.pages.flat(1)[0]}
                   />
                 </div>
-                <LazyLoadImage
+                <Image
+                  width={300}
+                  height={300}
                   className=" absolute bottom-[1.6rem] left-0 z-20 w-[10rem] md:w-[15rem]"
                   src="/winner1.png"
                   alt=""
@@ -102,7 +106,9 @@ const LeaderBoard = ({ id, me }: { id: string; me?: string }) => {
                   <h1 className=" text-xl md:text-4xl absolute bottom-0 left-[19%] md:left-[32%] font-bold text-gray-50 z-30">
                     2
                   </h1>
-                  <LazyLoadImage
+                  <Image
+                    width={300}
+                    height={300}
                     className=" absolute bottom-[1.6rem] left-[-1.3rem] md:left-[-3rem] z-20 w-[9rem] md:w-[14rem]"
                     src="/winner2.png"
                     alt=""
@@ -136,11 +142,7 @@ const LeaderBoard = ({ id, me }: { id: string; me?: string }) => {
             </div>
           )}
           {attemptedUsers?.pages?.flat(1).length === 0 && (
-            <Empty
-              link={`/quiz/${id}`}
-              linkText="Play it ?"
-              text="this quiz has not been played yet ! "
-            />
+            <Empty link={`/quiz/${id}`} linkText="Play it ?" text="this quiz has not been played yet ! " />
           )}
         </CardContent>
       </Card>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsFillInfoSquareFill } from "react-icons/bs";
 import { FaSearch } from "react-icons/fa";
 import { IoHome } from "react-icons/io5";
@@ -32,47 +32,55 @@ const heroIcons = [
 
 const FloatingTool = () => {
   const [isVisible, setIsVisible] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };
-  return createPortal(
-    <>
-      <AnimatePresence>
-        {isVisible && (
-          <motion.ul
-            className=" fixed z-50 left-1/3 xl:left-[60%] top-24 px-1 py-1     bg-gray-900/40 backdrop-blur border border-n-1/10 rounded-2xl flex"
-            drag
-            dragElastic={0.5}
-            dragConstraints={{
-              top: 20,
-              left: -global?.window?.innerWidth / 3,
-              right: global?.window?.innerWidth / 3,
-              bottom: 450,
-            }}
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -50 }}
-          >
-            {heroIcons.map((icon, i) => (
-              <motion.li
-                key={i}
-                className=" p-3 xl:p-4 hover:bg-gray-500/40 text-gray-100 rounded-3xl text-sm xl:text-3xl cursor-pointer duration-150 "
-                whileHover={{ scale: 1.1 }}
-              >
-                {icon}
-              </motion.li>
-            ))}
-          </motion.ul>
-        )}
-      </AnimatePresence>
-      <button
-        className="fixed z-50 top-20 right-4 text-sm xl:text-base  bg-gray-900/80 text-white px-3 py-1 rounded-lg"
-        onClick={toggleVisibility}
-      >
-        {isVisible ? "Hide Menu" : "Show Menu"}
-      </button>
-    </>,
-    global?.document?.body
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  return (
+    mounted &&
+    createPortal(
+      <>
+        <AnimatePresence>
+          {isVisible && (
+            <motion.ul
+              className=" fixed z-50 left-1/3 xl:left-[60%] top-24 px-1 py-1     bg-gray-900/40 backdrop-blur border border-n-1/10 rounded-2xl flex"
+              drag
+              dragElastic={0.5}
+              dragConstraints={{
+                top: 20,
+                left: -global?.window?.innerWidth / 3,
+                right: global?.window?.innerWidth / 3,
+                bottom: 450,
+              }}
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -50 }}
+            >
+              {heroIcons.map((icon, i) => (
+                <motion.li
+                  key={i}
+                  className=" p-3 xl:p-4 hover:bg-gray-500/40 text-gray-100 rounded-3xl text-sm xl:text-3xl cursor-pointer duration-150 "
+                  whileHover={{ scale: 1.1 }}
+                >
+                  {icon}
+                </motion.li>
+              ))}
+            </motion.ul>
+          )}
+        </AnimatePresence>
+        <button
+          className="fixed z-50 top-20 right-4 text-sm xl:text-base  bg-gray-900/80 text-white px-3 py-1 rounded-lg"
+          onClick={toggleVisibility}
+        >
+          {isVisible ? "Hide Menu" : "Show Menu"}
+        </button>
+      </>,
+      global?.document?.body
+    )
   );
 };
 

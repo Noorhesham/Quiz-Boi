@@ -6,6 +6,7 @@ import Landing from "../components/Landing";
 import QuizzesList from "../components/QuizzesList";
 import ThreeDSpace from "../components/ThreeDSpace";
 import Welcome from "../components/Welcome";
+import QuizSkeleton from "../components/QuizSkeleton";
 export const metadata: Metadata = {
   title: "Quiz Boi - Home",
   description: "Explore a wide range of quizzes on Quiz Boi. Find quizzes based on your interests and preferences.",
@@ -27,16 +28,15 @@ export default async function Page({
       <Welcome />
       <FloatingTool />
       <Suspense
-        key={categorey}
         fallback={
-          <div className=" w-full  z-50">
-            <div className="w-8 h-8 left-1/2 -bottom-2  absolute mx-auto mt-auto">
-              <img src="/loading3.png" className=" animate-spin" alt="" />
-            </div>
+          <div className=" grid grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5">
+            {Array.from({ length: 14 }, (_, i) => (
+              <QuizSkeleton key={i} />
+            ))}
           </div>
         }
-        >
-        <HomeFetches/>
+      >
+        <HomeFetches />
         <QuizzesList page={page} categorey={categorey} />
       </Suspense>
       <div className="flex px-5 md:px-10  flex-col md:mb-20 md:flex-row items-center">

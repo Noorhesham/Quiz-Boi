@@ -9,9 +9,6 @@ import QuizShow from "./QuizShow";
 import DialogueQuiz from "./DialogueQuiz";
 import Link from "next/link";
 import { MdModeEdit } from "react-icons/md";
-import { Button } from "@/components/ui/button";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import Share from "./Share";
 import { item } from "../motion";
 import Time from "./Time";
@@ -19,10 +16,12 @@ import StartButton from "./StartButton";
 import Date from "./Date";
 import Points from "./Points";
 import { BsArrowRightShort } from "react-icons/bs";
+import Image from "next/image";
 const QuizCard = ({
   quiz,
   card = false,
-  edit = false,points,
+  edit = false,
+  points,
   href,
   click = true,
 }: {
@@ -30,9 +29,11 @@ const QuizCard = ({
   card?: boolean;
   edit?: boolean;
   href?: string;
-  click?: boolean;points?:number
+  click?: boolean;
+  points?: number;
 }) => {
   const [hover, setHover] = useState(false);
+  console.log(quiz);
   return (
     <motion.div
       variants={item}
@@ -52,26 +53,25 @@ const QuizCard = ({
           <DialogueQuiz
             content={<QuizShow quiz={quiz} />}
             btn={
-              <LazyLoadImage
-                effect="blur"
-                height={"auto"}
-                width={"auto"}
-                className="rounded-t-2xl  h-full block mt-0 pt-0   aspect-[1/1] object-cover w-full"
-                src={`${quiz?.coverImage}` || "/quiz3.png"}
-                alt={quiz?.title}
-              />
+              <div className=" aspect-[1/1] w-full h-72 relative">
+                <Image
+                  src={`${quiz?.coverImage?.includes("quiz") ? "/quiz3.png" : quiz?.coverImage}` || "/quiz3.png"}
+                  alt={quiz?.title}
+                  fill
+                  className="rounded-t-2xl  h-full block mt-0 pt-0    object-cover w-full"
+                />
+              </div>
             }
           />
         ) : (
-          <LazyLoadImage
-            effect="blur"
-            threshold={100}
-            height={"auto"}
-            width={"auto"}
-            className="rounded-t-2xl  h-full block mt-0 pt-0   aspect-[1/1] object-cover w-full"
-            src={`${quiz?.coverImage}` || "/quiz3.png"}
-            alt={quiz?.title}
-          />
+          <div className=" aspect-[1/1] w-full h-72 relative">
+            <Image
+              src={`${quiz?.coverImage}` || "/quiz3.png"}
+              alt={quiz?.title}
+              fill
+              className="rounded-t-2xl  h-full block mt-0 pt-0    object-cover w-full"
+            />
+          </div>
         )}
 
         <AnimatePresence>
@@ -109,21 +109,22 @@ const QuizCard = ({
           <h5 className="font-bold capitalize  text-gray-900 ">{quiz?.title}</h5>
           <Date date={quiz.createdAt} />
         </div>
-            {points&&<Points className=" mb-2" points={points}/>}
+        {points && <Points className=" mb-2" points={points} />}
         <div className="flex mb-2 flex-1 py-1  border-b-2 border-gray-200  text-gray-800 flex-wrap justify-between items-center">
           <div className={`${card && "gap-2"} ml-auto flex flex-wrap items-center justify-between self-end flex-1`}>
             <StartButton id={quiz._id} />
             <Time duration={quiz.duration} />
-            <div>
-            </div>
           </div>
         </div>
 
         {!card && <Author quiz={quiz} author={quiz.author} />}
         {href && (
-          <Link className="underline text-nowrap flex items-center text-center mx-auto text-pink-500 hover:text-pink-400 duration-200 " href={href}>
-          Show Answers,Score
-          <BsArrowRightShort />
+          <Link
+            className="underline text-nowrap flex items-center text-center mx-auto text-pink-500 hover:text-pink-400 duration-200 "
+            href={href}
+          >
+            Show Answers,Score
+            <BsArrowRightShort />
           </Link>
         )}
       </div>
