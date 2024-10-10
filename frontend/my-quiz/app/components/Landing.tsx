@@ -7,11 +7,12 @@ import DialogCustom from "./DialogCustom";
 import { WhoAmI } from "./WhoAmI";
 import TechStack from "./TechStack";
 import { BackgroundCircles } from "./BackgroundCircles";
+import MaxWidthWrapper from "./MaxWidthWrapper";
 const Landing = () => {
   return (
     <section className="flex space   flex-wrap items-center relative  pt-32 justify-between gap-20 p-8 md:p-20">
       <Image src="/sun1.png" width={250} height={250} alt="effect" className="absolute z-[1] top-14 left-1" />
-      <div className="flex relative z-20 flex-col gap-5 md:gap-10 flex-[100%] md:flex-[20%] ">
+      <MaxWidthWrapper noPadding className="flex relative z-20 flex-col gap-5 md:gap-10 flex-[100%] md:flex-[20%] ">
         <h1 className=" text-gray-50 text-[2.5rem] md:text-[4rem] lg:text-[5rem] font-bold ">
           The Best Plattform <div className={` text-red-400`}>Quiz Web-App</div>
         </h1>
@@ -40,7 +41,7 @@ const Landing = () => {
             }
           />
         </div>
-      </div>
+      </MaxWidthWrapper>
       <motion.div
         className=" relative z-10 mb-4 flex-1 text-center"
         initial={{ y: -10 }}
