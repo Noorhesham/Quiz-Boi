@@ -7,11 +7,8 @@ import QuizzesList from "../components/QuizzesList";
 import ThreeDSpace from "../components/ThreeDSpace";
 import Welcome from "../components/Welcome";
 import QuizSkeleton from "../components/QuizSkeleton";
-export const metadata: Metadata = {
-  title: "Quiz Boi - Home",
-  description: "Explore a wide range of quizzes on Quiz Boi. Find quizzes based on your interests and preferences.",
-  icons: { icon: "/favicon.ico" },
-};
+import MaxWidthWrapper from "../components/MaxWidthWrapper";
+
 export default async function Page({
   searchParams,
 }: {
@@ -23,7 +20,7 @@ export default async function Page({
   const categorey = searchParams?.categorey || "";
   const page = searchParams?.page || 1;
   return (
-    <main className="flex max-w-full relative overflow-hidden scroll-smooth w-full min-h-[100vh] flex-col   items-stretch justify-center">
+    <main className="flex  relative overflow-hidden w-full min-h-[100vh] flex-col   items-stretch justify-center">
       <Landing />
       <Welcome />
       <FloatingTool />
@@ -39,11 +36,11 @@ export default async function Page({
         <HomeFetches />
         <QuizzesList page={page} categorey={categorey} />
       </Suspense>
-      <div className="flex px-5 md:px-10  flex-col md:mb-20 md:flex-row items-center">
+      <MaxWidthWrapper className="flex flex-col md:mb-20 md:flex-row items-center">
         <ThreeDSpace className="w-full md:w-1/2 lg:w-[80%] h-[400px] md:h-[500px]" />
         <div className="text-center mt-16 text-gray-100 md:text-left md:w-1/2 p-4">
           <h1 className="text-3xl font-bold">Fly In the space of the Quiz Boi!</h1>
-          <p className="mt-4">
+          <p className="mt-4 body-2">
             Explore engaging quizzes tailored to your interests. Create and upload your own quizzes, inspiring others
             with diverse topics. Learn and grow while having fun. Connect with friends, compete, and collaborate on
             quizzes. Climb the leaderboards to showcase your skills. Follow your favorite topics and creators to stay
@@ -51,7 +48,7 @@ export default async function Page({
             and immersive experience. Join us today and discover endless quizzes, learning, and fun.
           </p>
         </div>
-      </div>
+      </MaxWidthWrapper>
     </main>
   );
 }

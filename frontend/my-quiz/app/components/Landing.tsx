@@ -7,6 +7,7 @@ import { WhoAmI } from "./WhoAmI";
 import TechStack from "./TechStack";
 import { BackgroundCircles } from "./BackgroundCircles";
 import MaxWidthWrapper from "./MaxWidthWrapper";
+import Wave from "./Wave";
 const Landing = () => {
   return (
     <section className="flex space   flex-wrap items-center relative  pt-32 justify-between gap-20 p-8 md:p-20">
@@ -55,7 +56,7 @@ const Landing = () => {
         <Image src="/landing.png" width={500} height={500} alt="landing" />
         <Image className=" absolute top-10 right-96" src="/sunn.png" width={500} height={500} alt="landing" />
       </motion.div>
-      {/* <Wave /> */}
+      <Wave />
 
       <BackgroundCircles />
     </section>

@@ -117,7 +117,7 @@ body,
 .CircularProgressbar-text {
   fill: #e27a96 !important;
 }
-/* .wave {
+.wave {
   background-image: url("/wave.png");
   background-size: 1000px 100px;
   height: 100px;
@@ -154,7 +154,7 @@ body,
   opacity: 0.7;
   animation-delay: -5s;
   background-position-x: 100px;
-} */
+}
 .LazyLoad {
   opacity: 0;
   transition: all 1s ease-in-out;
@@ -248,14 +248,14 @@ button:active {
   }
 }
 
-/* @keyframes wave2 {
+@keyframes wave2 {
   0% {
     background-position-x: 0;
   }
   100% {
     background-position-x: -1000px;
   }
-} */
+}
 
 @layer base {
   :root {
