@@ -2,7 +2,7 @@ import React from "react";
 import User from "./User";
 import { UserProps } from "@/types";
 import Follow from "./Follow";
-import { HoverCardContent } from "@radix-ui/react-hover-card";
+import { HoverCardContent } from "@/components/ui/hover-card";
 
 const UserInfro = ({ author }: { author: UserProps }) => {
   return (

@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Wave from "./Wave";
 import DialogCustom from "./DialogCustom";
 import { WhoAmI } from "./WhoAmI";
 import TechStack from "./TechStack";
@@ -53,16 +52,11 @@ const Landing = () => {
           ease: "easeInOut",
         }}
       >
-        <Image priority={true} src="/landing.png" width={500} height={500} alt="landing" />
+        <Image src="/landing.png" width={500} height={500} alt="landing" />
         <Image className=" absolute top-10 right-96" src="/sunn.png" width={500} height={500} alt="landing" />
       </motion.div>
-      <Wave />
-      <div className=" absolute floating top-[80%] right-1/2 w-full h-full flex justify-center items-center">
-        <div className="w-[31rem] h-[30rem] bg-gradient-to-br from-pink-500 to-purple-500 rounded-full"></div>
-      </div>
-      <div className=" absolute top-full lg:top-[68.4%] left-[40%] w-full h-full flex justify-center items-center">
-        <div className="w-[60rem] h-[60rem] bg-gradient-to-br custom-clip-path from-pink-500 to-purple-500 rounded-3xl"></div>
-      </div>
+      {/* <Wave /> */}
+
       <BackgroundCircles />
     </section>
   );

@@ -1,16 +1,28 @@
 import type { Metadata } from "next";
-import { Jost } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Google_Client } from "@/constants";
 import { ColorProvider } from "./context/ColorContext";
-import Head from "next/head";
-const inter = Jost({ subsets: ["latin"] });
+const inter = Roboto({ weight: ["400", "700", "300"], subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Quiz Boi - Your Biggest Platform for Quizzes",
-  description: "Quiz Boi is your ultimate destination for solving quizzes, offering a wide range of categories and challenges.",
+  description:
+    "Quiz Boi is your ultimate destination for solving quizzes, offering a wide range of categories and challenges.",
   icons: { icon: "/favicon.ico" },
+  openGraph: {
+    type: "website",
+    title: "Noor Hesham Portfolio",
+    description: "MERN Stack Developer specializing in React, Next.js, TypeScript, Node.js, MongoDB, and Tailwind CSS.",
+    images: [
+      {
+        url: "/favicon.ico",
+        alt: "Quiz Boi - Your Biggest Platform for Quizzes",
+      },
+    ],
+    url: "https://quiz-boi.vercel.app/",
+  },
 };
 
 export default async function RootLayout({
@@ -20,12 +32,6 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon?<generated>" type="image/<generated>" sizes="<generated>" />
-        <link rel="apple-touch-icon" href="/apple-icon?<generated>" type="image/<generated>" sizes="<generated>" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </head>
       <GoogleOAuthProvider clientId={process.env.GOOGLE || Google_Client}>
         <ColorProvider>
           <body className={`${inter.className} relative`}>{children}</body>

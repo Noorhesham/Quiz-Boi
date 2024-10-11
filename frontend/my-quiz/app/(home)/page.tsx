@@ -29,7 +29,7 @@ export default async function Page({
       <FloatingTool />
       <Suspense
         fallback={
-          <div className=" grid grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch p-10 gap-5">
+          <div className=" grid grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-3  items-stretch p-10 gap-5">
             {Array.from({ length: 14 }, (_, i) => (
               <QuizSkeleton key={i} />
             ))}

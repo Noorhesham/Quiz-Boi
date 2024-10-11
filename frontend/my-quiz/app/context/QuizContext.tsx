@@ -34,8 +34,8 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
   useEffect(() => {
     const timerId = setInterval(() => {
       setTimer((prevTimer) => prevTimer - 1);
-      if (submitting) clearInterval(timer);
     }, 1000);
+    if (submitting) clearInterval(timerId);
     if (timer <= 0) {
       clearInterval(timerId);
       localStorage.removeItem("timer");
@@ -53,7 +53,7 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
   useEffect(() => {
     localStorage.setItem("answers", JSON.stringify(answers));
     localStorage.setItem("questionIndex", questionIndex.toString());
-    localStorage.setItem("progress", progress.toString()||0);
+    localStorage.setItem("progress", progress.toString() || 0);
     localStorage.setItem("timer", timer?.toString());
     localStorage.setItem("currentquiz", JSON.stringify(Id));
     if (timer <= 0) localStorage.removeItem("timer");
@@ -86,7 +86,7 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
     if (questionIndex === 0) return;
     setQuestionIndex((currentIndex: number) => {
       const PrevIndex = currentIndex - 1;
-      const prevProgress = progress -10;
+      const prevProgress = progress - 10;
       setProgress(prevProgress);
       return PrevIndex;
     });
@@ -98,7 +98,7 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
     localStorage.removeItem("timer");
   };
   const handleQuizEnd = function () {
-    setStart(false)
+    setStart(false);
     handleReset();
     localStorage.removeItem("timer");
     localStorage.removeItem("answers");
@@ -108,11 +108,11 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
   };
   useEffect(
     function () {
-      if (id !== Id){
+      if (id !== Id) {
         handleQuizEnd();
         setId(id);
         localStorage.setItem("currentquiz", Id);
-        handleStart(initial)
+        handleStart(initial);
       }
     },
     [Id]

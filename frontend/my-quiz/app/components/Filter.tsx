@@ -6,6 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import DialogCustom from "./DialogCustom";
 import AllCategories from "./AllCategories";
 import { IoIosArrowForward } from "react-icons/io";
+import MaxWidthWrapper from "./MaxWidthWrapper";
 
 const Filter = ({ categories }: { categories: any }) => {
   const searchParams = useSearchParams();
@@ -23,7 +24,7 @@ const Filter = ({ categories }: { categories: any }) => {
   }
 
   return (
-    <section className=" relative pt-5">
+    <MaxWidthWrapper className=" relative pt-5">
       <div className="md:p-8 p-4 flex md:flex-row flex-col items-stretch justify-between">
         <Heading
           text="Find your desired quiz now !"
@@ -52,7 +53,7 @@ const Filter = ({ categories }: { categories: any }) => {
         </div>
       </div>
       <Categories categories={categories} setCategorey={handleSearch} />
-    </section>
+    </MaxWidthWrapper>
   );
 };
 

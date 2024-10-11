@@ -5,7 +5,6 @@ import MiniLogo from "./MiniLogo";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useGetUser } from "@/utils/queryFunctions";
-import ChooseColor from "./ChooseColor";
 import { useColor } from "../context/ColorContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import MaxWidthWrapper from "./MaxWidthWrapper";
@@ -41,7 +40,6 @@ const NavBar = () => {
       <MaxWidthWrapper noPadding className="flex items-center justify-between w-full">
         <MiniLogo />
         <div className="flex items-center gap-2 md:gap-10">
-          <ChooseColor />
           {isLoading ? (
             <Skeleton className="h-12 w-12 rounded-full" />
           ) : user ? (
