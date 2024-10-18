@@ -10,6 +10,7 @@ import { useMultiPlayer } from "../context/MultiPlayerContext";
 import { CircularProgressbar } from "react-circular-progressbar";
 import QuestionMulti from "./QuestionMulti";
 import TimeOver from "./TimeOver";
+import Status from "./Status";
 
 interface QuizMultiPlayerProps {
   quiz: QuizProps;
@@ -21,8 +22,6 @@ interface QuizMultiPlayerProps {
 const TIMERCOUNT = 60;
 
 const QuizMultiPlayer = ({ quiz, socket, userName, sessionId }: QuizMultiPlayerProps) => {
-  console.log(sessionId);
-
   const [timer, setTimer] = useState<number>(TIMERCOUNT);
   const { questionIndex, progress, handleQuizEnd, handleNext } = useMultiPlayer();
   const [isMoving, setIsMoving] = useState(false);
@@ -82,11 +81,7 @@ const QuizMultiPlayer = ({ quiz, socket, userName, sessionId }: QuizMultiPlayerP
       socket.on("done-notification", handleDoneNotification);
       socket.on("timeoutall", () => handleTimeOut());
       socket.on("end-quiz", handleQuizEnd);
-      socket.on("opponent-joined", ({ message, id }) => {
-        console.log(message, id);
-        toast.done(message);
-        setAttemptId(id);
-      });
+
       socket.on("reset-timer", handleTimer);
       socket.on("finish-quiz", ({ message }) => {
         setSendResults(true);
@@ -103,11 +98,6 @@ const QuizMultiPlayer = ({ quiz, socket, userName, sessionId }: QuizMultiPlayerP
       socket.off("finish-quiz", ({ message }) => {
         setSendResults(true);
         toast.done(message);
-      });
-      socket.off("opponent-joined", ({ message, id }) => {
-        console.log(message, id);
-        toast.done(message);
-        setAttemptId(id);
       });
     };
 
@@ -176,13 +166,13 @@ const QuizMultiPlayer = ({ quiz, socket, userName, sessionId }: QuizMultiPlayerP
   };
   const totalQuestions = quiz.questions.length;
   return (
-    <div className="flex flex-col items-center md:w-[80%]">
+    <div className="flex mt-4 min-h-[50vh] flex-col items-center w-full md:w-[80%]">
       {!sendResults && (
         <>
           {showTimer && timer > 0 && (
-            <div className="flex items-center relative w-[40%] md:w-[100%] gap-3 px-2 md:px-5 flex-col">
+            <div className="flex items-center relative w-[100%] gap-3 px-2 md:px-5 flex-col">
               <div
-                className=" text-pink-400 font-semibold fill-pink-400 absolute left-[50%] translate-x-[-50%] z-10 top-[-5rem]"
+                className=" text-pink-400 font-semibold fill-pink-400 text-center absolute left-[50%] translate-x-[-50%] z-10 top-[-5rem]"
                 style={{ width: 70, height: 70 }}
               >
                 <CircularProgressbar
@@ -197,39 +187,9 @@ const QuizMultiPlayer = ({ quiz, socket, userName, sessionId }: QuizMultiPlayerP
             </div>
           )}
           {isMoving ? (
-            <div className=" flex flex-col">
-              <h4 className="text-4xl text-pink-500 font-semibold text-center">MOVING TO SECOND QUESTION</h4>
-              <motion.div
-                initial={{ y: -10 }}
-                animate={{ y: -50 }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  ease: "easeInOut",
-                }}
-                className=" w-full h-96 relative"
-              >
-                <Image alt="online" className=" object-contain" fill src={"/fight.png"} />
-              </motion.div>
-            </div>
+            <Status text="  MOVING TO SECOND QUESTION" image={"/fight.png"} />
           ) : isWaitingForOtherPlayer ? (
-            <div className=" flex flex-col">
-              <h4 className="text-4xl text-pink-500 font-semibold text-center">WAITING FOR OTHER PLAYER</h4>
-              <motion.div
-                initial={{ y: -10 }}
-                animate={{ y: -50 }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  ease: "easeInOut",
-                }}
-                className=" w-full h-96 relative"
-              >
-                <Image alt="online" className=" object-contain" fill src={"/rb_8026.png"} />
-              </motion.div>
-            </div>
+            <Status text="WAITING FOR OTHER PLAYER" image={"/rb_8026.png"} />
           ) : (
             <>
               <QuestionMulti

@@ -29,7 +29,6 @@ const QuizPage = () => {
   const { id }: { id: string } = useParams();
   const { user, isLoading: isLoading2 } = useGetUser();
   const { quiz: data, isLoading, error } = useStartQuiz(id);
-  console.log(user);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isQuizStarted, setIsQuizStarted] = useState(false);
   const [userName, setUserName] = useState<string>("");
@@ -37,6 +36,10 @@ const QuizPage = () => {
   const [err, setError] = useState("");
   const [waitingForOpponent, setWaitingForOpponent] = useState(false);
   const [clicked, setClicked] = useState(false);
+  const [otherUser, setOtherUser] = useState<{
+    userName: string;
+    avatar: string;
+  }>({ userName: "", avatar: "" });
   useEffect(() => {
     const socketInstance = io("https://quiz-boi.onrender.com");
     setSocket(socketInstance);
@@ -52,12 +55,13 @@ const QuizPage = () => {
     });
 
     socketInstance.on("quiz-ended", () => {
-      console.log("Quiz ended");
       toast.done("The quiz has ended because the other user disconnected.");
       setIsQuizStarted(false);
     });
-    socketInstance.on("opponent-joined", ({ userName }) => {
-      toast.done(`${userName} joined the quiz. Get ready!`);
+    socketInstance.on("opponent-joined", ({ userName, message, avatar }) => {
+      setOtherUser({ userName, avatar });
+      toast.success(`${userName} joined the quiz. Get ready!`);
+      console.log(otherUser);
       setIsQuizStarted(false);
     });
 
@@ -71,7 +75,7 @@ const QuizPage = () => {
     else {
       setClicked(true);
       // i emmit this and wait and listen to the start from backend when 2 players join room
-      socket?.emit("join-quiz", { quizId: id, userName });
+      socket?.emit("join-quiz", { quizId: id, userName, avatar: user?.photo || "/4000_5_02.jpg" });
       setWaitingForOpponent(true);
     }
   };
@@ -79,15 +83,13 @@ const QuizPage = () => {
     if (user) setUserName(user.name);
   }, [user]);
   if (isLoading || isLoading2) return <Loader />;
-  console.log(data);
-  const questionTime = Math.floor(+data.duration / +data.questions.length);
-  console.log(questionTime);
+
   return (
-    <section className=" pt-32 quizbg flex items-center justify-center px-20 bg-gray-100 rounded-md min-h-[100vh] ">
+    <section className=" lg:pt-32 pt-10 quizbg flex items-center justify-center lg:px-20 bg-gray-100 rounded-md min-h-[100vh] ">
       {!isQuizStarted && (
         <MaxWidthWrapper
-          className=" w-full grid grid-cols-1 lg:grid-cols-2 bg-gray-100 py-3 px-6
-         lg:py-4 lg:px-8 rounded-2xl border border-input"
+          className=" w-full grid grid-cols-1 lg:grid-cols-2 bg-gray-100 
+          rounded-2xl border border-input"
         >
           <div>
             {
@@ -97,7 +99,7 @@ const QuizPage = () => {
                   className=" text-center font-bold text-rose-400 lg:text-4xl text-3xl"
                   title="PLAY AGAINST PLAYER ALL AROUND THE WORLD "
                 />
-                {!isQuizStarted && (
+                {!isQuizStarted&&!waitingForOpponent && (
                   <div className=" flex flex-col py-4 px-8 gap-5 text-3xl">
                     {!user && (
                       <Input
@@ -107,9 +109,11 @@ const QuizPage = () => {
                         value={userName}
                       />
                     )}
+                    {err&&<p className=" text-xs text-red-500  font-semibold text-center">{err}</p>}
                     {!clicked && (
                       <Button
-                        className="px-12 py-6  rounded-3xl text-2xl bg-red-400 hover:bg-transparent duration-200 text-white"
+                        className="px-12 py-6 relative z-50
+                          rounded-3xl text-2xl bg-red-400 hover:bg-transparent duration-200 text-white"
                         onClick={joinQuiz}
                       >
                         Join Quiz
@@ -119,7 +123,7 @@ const QuizPage = () => {
                 )}{" "}
                 {!isQuizStarted && waitingForOpponent && (
                   <p
-                    className=" font-semibold text-black capitalize
+                    className=" font-semibold text-rose-400 mx-auto w-fit  text-center capitalize
            lg:text-xl text-balance flex items-center gap-2"
                   >
                     waiting for an oponenet to join the game <Spinner />
@@ -173,9 +177,35 @@ const QuizPage = () => {
       )}
       {isQuizStarted && (
         <MultiPlayerProvider>
-          {(user || userName) && (
-            <QuizMultiPlayer sessionId={sessionId} userName={userName} socket={socket} quiz={data} />
-          )}
+          <section className=" flex items-center gap-2 flex-col">
+            <div className=" mx-auto justify-center flex items-center gap-5">
+              <div className=" flex flex-col items-center">
+                <div className=" relative rounded-full overflow-hidden w-32 h-32">
+                  <Image src={user?.photo || "/4000_5_02.jpg"} alt={user?.name} fill className=" object-cover" />
+                </div>
+                <h2 className=" text-white line-clamp-1 text-center w-[120px] lg:w-[140px] text-xs  bg-pink-500 font-semibold px-3 py-2 rounded-full border border-purple-200">
+                  {user?.name || userName}
+                </h2>
+              </div>
+              <h2 className=" font-bold text-purple-400 text-xl">VS</h2>
+              <div className=" flex flex-col items-center">
+                <div className=" relative rounded-full overflow-hidden w-32 h-32">
+                  <Image
+                    src={otherUser?.avatar || "/4000_5_02.jpg"}
+                    alt={otherUser?.userName}
+                    fill
+                    className=" object-cover"
+                  />
+                </div>
+                <h2 className=" text-white line-clamp-1  text-center w-[120px] lg:w-[140px] text-xs  bg-pink-500 font-semibold px-3 py-2 rounded-full border border-purple-200">
+                  {otherUser?.userName}
+                </h2>
+              </div>
+            </div>
+            {(user || userName) && (
+              <QuizMultiPlayer sessionId={sessionId} userName={userName} socket={socket} quiz={data} />
+            )}
+          </section>
         </MultiPlayerProvider>
       )}
     </section>

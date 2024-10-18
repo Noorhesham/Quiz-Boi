@@ -43,7 +43,7 @@ const TimeOver = ({
             </p>
           </>
         ) : (
-          <h1 className=" text-3xl font-semibold text-pink-400">{text}</h1>
+          <h1 className="text-2xl lg:text-4xl text-pink-500 font-semibold text-center">{text}</h1>
         )}
       </div>
       <div className="">

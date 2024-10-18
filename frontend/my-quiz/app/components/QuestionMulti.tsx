@@ -5,12 +5,14 @@ import DialogCustom from "./DialogCustom";
 import Answer from "./Answer";
 import Hint from "./Hint";
 import { useMultiPlayer } from "../context/MultiPlayerContext";
+import Status from "./Status";
 
 const QuestionMulti = ({ question, len, nextFn }: { question: QuestionProps; len: number; nextFn?: any }) => {
   const { handleNext, questionIndex, handleQuizEnd, answers, handlePrev } = useMultiPlayer();
   const [answer, setAnswer] = useState<{ answer: number | undefined; id: string }>();
+  const [finish, setFinish] = useState(false);
   return (
-    <div className={`flex flex-col  gap-2  max-w-full lg:w-[80%] rounded-lg py-3 md:py-5  md:px-10`}>
+    <div className={`flex flex-col  gap-2  max-w-full w-full lg:w-[80%] rounded-lg py-3 md:py-5  md:px-10`}>
       {question?.coverImage && <img src={question?.coverImage} className="w-[20rem] mx-auto" />}
       <div className="bg-white shadow-md flex flex-col items-end px-5 py-3 md:py-10 md:px-20 relative border-gray-300 border-2 rounded-md">
         <h2 className="  capitalize text-base md:text-2xl text-left self-start text-gray-800 font-semibold">
@@ -44,22 +46,27 @@ const QuestionMulti = ({ question, len, nextFn }: { question: QuestionProps; len
       </div>
 
       <div className="flex justify-between gap-10 py-5 px-10  items-center">
-        <Button
-          size="lg"
-          variant="default"
-          className={` rounded-full hover:bg-red-400 self-center my-4 py-5 px-10 bg-gray-200 hover:text-white   text-gray-800`}
-          //@ts-ignore
-          onClick={() => {
-            if (nextFn) nextFn();
+        {!finish ? (
+          <Button disabled={!answer}
+            size="lg"
+            variant="default"
+            className={` rounded-full w-full hover:bg-red-400 self-center  py-5 px-10 bg-gray-200 hover:text-white   text-gray-800`}
             //@ts-ignore
-            if (answer?.answer >= 0) {
-              handleNext(answer, len);
-            }
-            setAnswer({ answer: undefined, id: "" });
-          }}
-        >
-          {questionIndex + 1 < len ? "Next" : "Finish Quiz"}
-        </Button>
+            onClick={() => {
+              if (nextFn) nextFn();
+              //@ts-ignore
+              if (answer?.answer >= 0) {
+                handleNext(answer, len);
+              }
+              if (questionIndex + 1 === len) setFinish(true);
+              setAnswer({ answer: undefined, id: "" });
+            }}
+          >
+            {questionIndex + 1 < len ? "Next" : "Finish Quiz"}
+          </Button>
+        ) : (
+          <Status text="WAITING FOR OTHER PLAYER" image={"/rb_8026.png"} />
+        )}
       </div>
     </div>
   );
