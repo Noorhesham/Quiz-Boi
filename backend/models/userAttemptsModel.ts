@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model, model } from "mongoose";
 
 export interface UserAttemptProps extends Document {
   userId: mongoose.Types.ObjectId;
@@ -9,7 +9,8 @@ export interface UserAttemptProps extends Document {
   attemptedAt?: Date;
   percentage: number;
   totalPoints: number;
-  isPublic:boolean
+  isPublic: boolean;
+  sessionId?: string;
 }
 
 const userAttemptSchema = new Schema<UserAttemptProps>({
@@ -37,12 +38,12 @@ const userAttemptSchema = new Schema<UserAttemptProps>({
     required: true,
     default: 0,
   },
-  isPublic:{type:Boolean,default:true},
+  isPublic: { type: Boolean, default: true },
   totalPoints: { type: Number },
   percentage: { type: Number },
   attemptedAt: { type: Date, default: new Date(Date.now()) },
+  sessionId: { type: String },
 });
-
 
 const UserAttempt: Model<UserAttemptProps> = mongoose.model<UserAttemptProps>("UserAttempt", userAttemptSchema);
 export default UserAttempt;

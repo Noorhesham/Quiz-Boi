@@ -106,12 +106,12 @@ exports.getLikedQuizzes = catchAsync(async (req: Request, res: Response, next: N
 });
 exports.getPlayedQuizzes = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const page = req.query.page || 1;
-  const limit = req.query.limit || 10;
+  const limit = req.query.limit || 20;
   const skip = (+page - 1) * +limit;
   const [user, totalAttemptedQuizzes] = await Promise.all([
     User.findById(req.params.id).populate({
       path: "attemptedQuizzes",
-      match: req.user?{}: { isPublic: { $ne: false } },
+      match: req.user ? {} : { isPublic: { $ne: false } },
       select: "-answers",
       populate: {
         path: "quizId",

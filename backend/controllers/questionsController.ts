@@ -55,6 +55,7 @@ exports.addQuestionToQuiz = catchAsync(async (req: any, res: Response, next: Nex
   });
   const quiz = await Quiz.findById(req.params.quizId);
   if (!quiz) return next(new AppError("quiz not found", 404));
+  //@ts-ignore
   quiz.questions.push(newQuestion._id);
   await quiz.save();
   res.status(201).json({ status: "success", data: { newQuestion } });

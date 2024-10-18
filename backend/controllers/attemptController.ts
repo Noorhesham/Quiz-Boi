@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import UserAttempt, { UserAttemptProps } from "../models/userAttemptsModel";
 import Factory from "./handlerFactory";
 import AppError from "../utils/AppError";
-import { UserProps } from "types";
+import { UserProps } from "../types";
 const catchAsync = require("../utils/catchError");
 
 exports.checkIfAuthor = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -48,10 +48,14 @@ exports.getUserAttemptStats = catchAsync(async (req: Request | any, res: Respons
 });
 
 exports.updateAttempt = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  let editedDoc = await UserAttempt.findByIdAndUpdate(req.params.id, {isPublic:req.body.isPublic}, {
-    runValidators: true,
-    new: true,
-  }).select('-answers');
+  let editedDoc = await UserAttempt.findByIdAndUpdate(
+    req.params.id,
+    { isPublic: req.body.isPublic },
+    {
+      runValidators: true,
+      new: true,
+    }
+  ).select("-answers");
   if (!editedDoc) return next(new AppError(`There is no attempt found with that id`, 404));
   res.status(201).json({ status: "success", data: { editedDoc } });
 });
@@ -59,5 +63,5 @@ exports.updateAttempt = catchAsync(async (req: Request, res: Response, next: Nex
 //   const leaderboard=await UserAttempt.find({quizId:req.params.quizId}).populate({path:'userId'}).select('-answers')
 // })
 const attemptfactory = new Factory(UserAttempt, "attempt");
-exports.getAllAttempts = attemptfactory.getAll({ path: "userId" }, "-answers ", { isPublic: { $ne: false } });
+exports.getAllAttempts = attemptfactory.getAll({ path: "userId" }, "", { isPublic: { $ne: false } });
 exports.getAttempt = attemptfactory.getOne("id", { path: "quizId", select: "questions answers usersAttempted author" });

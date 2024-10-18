@@ -9,7 +9,8 @@ import cloudinary from "../utils/cloudinary";
 import { UserProps } from "../types";
 import Question from "../models/questionModel";
 import ApiFeatures from "../utils/ApiFeatures";
-import User from "models/userModel";
+import User from "../models/userModel";
+import Games from "../models/multiplayerModel";
 const catchAsync = require("../utils/catchError");
 declare module "express-serve-static-core" {
   interface Request {
@@ -48,59 +49,70 @@ exports.addAuthor = (req: Request, res: Response, next: NextFunction) => {
 
 exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const quizId = req.params.quizId;
-  const { username, userId, answers,isPublic } = req.body;
-  console.log(req.body);
+  const { username, userId, answers, isPublic, sessionId } = req.body;
+  console.log(answers, username, userId, isPublic);
   if (!quizId)
     return next(new AppError("This attempt must relate to a quiz! Provide the ID of the quiz in the URL", 404));
 
   const quiz = await Quiz.findById(quizId);
   if (!quiz) return next(new AppError("Could not find a quiz with that ID!", 404));
-  const find = userId ? userId : username;
-  let userAttempt = userId
-    ? await UserAttempt.findOne({ quizId, userId })
-    : await UserAttempt.findOne({ quizId, username });
-  console.log(userAttempt);
+
+  const find = userId ? { quizId, userId } : { quizId, username };
+  let userAttempt = await UserAttempt.findOne(find);
+
   if (!userAttempt) {
-    userAttempt = userId
-      ? await UserAttempt.create({
-          userId,
-          quizId,
-          answers,
-          points: 0,isPublic
-        })
-      : await UserAttempt.create({
-          username,
-          quizId,
-          answers,
-          points: 0,isPublic
-        });
-    quiz.usersAttempted.push(userAttempt._id);
-  } else {
-    if (userAttempt.attemptedAt && userAttempt.attemptedAt >= new Date(Date.now() - 12 * 60 * 60 * 1000))
-      return next(new AppError("Attempt made within the last 12 hours. Cannot update.", 403));
-  }
-  let totalPoints = 0;
-  userAttempt.points = 0;
-  console.log(req.body);
-  for (let i = 0; i < req.body.answers?.length; i++) {
-    const question = await Question.findById(req.body.answers[i].id);
-    console.log(question && question.correctAnswerIndex === req.body.answers[i].answer);
-    if (!question) {
-      console.log("Question not found for ID:", req.body.answers[i].id);
-      continue;
+    userAttempt = await UserAttempt.create({
+      userId: userId || undefined,
+      username: username || undefined,
+      quizId,
+      answers,
+      points: 0,
+      isPublic,
+      sessionId,
+    });
+    if (!userAttempt || !userAttempt._id) {
+      return next(new AppError("Failed to create a user attempt.", 500));
     }
-    if (question.correctAnswerIndex === +req.body.answers[i].answer) userAttempt.points += question.points || 10;
+
+    await Quiz.findByIdAndUpdate(quizId, { $push: { usersAttempted: userAttempt._id } });
+  }
+
+  let totalPoints = 0;
+  let points = 0;
+
+  for (let i = 0; i < answers?.length; i++) {
+    const question = await Question.findById(answers[i].id);
+    if (!question) continue;
+
+    if (question.correctAnswerIndex === +answers[i].answer) {
+      points += question.points || 10;
+    }
     totalPoints += question.points || 10;
   }
-  userAttempt.percentage = (userAttempt.points / totalPoints) * 100;
-  userAttempt.answers = answers;
-  userAttempt.totalPoints = totalPoints;
-  userAttempt.attemptedAt = new Date(Date.now());
-  quiz.usersAttempted = quiz.usersAttempted.filter((id) => id !== userAttempt?._id);
-  quiz.usersAttempted.push(userAttempt._id);
-  await Promise.all([quiz.save(), userAttempt.save()]);
-  res.status(201).json({ status: "success", data: { userAttempt } });
+
+  const percentage = (points / totalPoints) * 100;
+  const updatedAttempt = await UserAttempt.findOneAndUpdate(
+    find,
+    {
+      $set: {
+        points,
+        answers,
+        totalPoints,
+        percentage,
+        attemptedAt: new Date(Date.now()),
+        sessionId,
+      },
+    },
+    { new: true }
+  );
+
+  res.status(201).json({ status: "success", data: { userAttempt: updatedAttempt } });
 });
+
+// else {
+//   if (userAttempt.attemptedAt && userAttempt.attemptedAt >= new Date(Date.now() - 12 * 60 * 60 * 1000))
+//     return next(new AppError("Attempt made within the last 12 hours. Cannot update.", 403));
+// }
 
 exports.publishQuiz = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const quiz = await Quiz.findById(req.params.quizId);
@@ -141,8 +153,8 @@ exports.solveQuiz = catchAsync(async (req: Request, res: Response, next: NextFun
   if (!quiz) return next(new AppError("could not find a quiz with that id!", 404));
   const attempt = quiz?.usersAttempted.filter((a: any) => a.userId === req.body.userId);
   //@ts-ignore
-  if (attempt.attemptedAt && attempt.attemptedAt >= new Date(Date.now() - 12 * 60 * 60 * 1000))
-    return next(new AppError("Attempt made within the last 12 hours. Cannot update.", 403));
+  // if (attempt.attemptedAt && attempt.attemptedAt >= new Date(Date.now() - 12 * 60 * 60 * 1000))
+  //   return next(new AppError("Attempt made within the last 12 hours. Cannot update.", 403));
   res.status(201).json({ status: "success", data: { quiz } });
   next();
 });
@@ -189,7 +201,6 @@ exports.getAllQuizes = catchAsync(async (req: Request, res: Response, next: Next
     data: { quizzes },
   });
 });
-
 
 exports.getQuiz = quizFactory.getOne("id", { path: "questions" });
 exports.updateQuiz = quizFactory.updateOne();
