@@ -41,7 +41,7 @@ const QuizPage = () => {
     avatar: string;
   }>({ userName: "", avatar: "" });
   useEffect(() => {
-    const socketInstance = io("https://quiz-boi.onrender.com");
+    const socketInstance = io(" https://quiz-boi.onrender.com");
     setSocket(socketInstance);
 
     socketInstance.on("connect", () => {
@@ -61,7 +61,7 @@ const QuizPage = () => {
     socketInstance.on("opponent-joined", ({ userName, message, avatar }) => {
       setOtherUser({ userName, avatar });
       toast.success(`${userName} joined the quiz. Get ready!`);
-      console.log(otherUser);
+      console.log(userName, message, avatar);
       setIsQuizStarted(false);
     });
 

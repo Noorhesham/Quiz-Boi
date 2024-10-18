@@ -25,7 +25,7 @@ const Heading = ({
           <h2
             className={`${
               dark ? " text-gray-800" : " text-white"
-            } flex items-center capitalize font-semibold text-xl md:text-4xl`}
+            } flex items-center  capitalize font-semibold text-xl md:text-4xl`}
           >
             {text}
             {span && <div className=" ml-3  text-pink-400">{span}</div>}

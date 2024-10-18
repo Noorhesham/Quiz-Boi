@@ -46,7 +46,7 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
           <TabsTrigger value="winner">{theWinnwer.username || theWinnwer.userId.name}</TabsTrigger>
           <TabsTrigger value="loser">{theLoser.username || theLoser.userId.name}</TabsTrigger>
         </TabsList>
-        <TabsContent className="mt-10 w-full" value="winner">
+        <TabsContent className=" min-w-full mt-5 " value="winner">
           <Heading
             className=" text-center"
             text={`${theWinnwer.username} percentage is ${Math.trunc(theWinnwer.percentage)}%`}
@@ -54,7 +54,7 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
           {<Heading className=" text-center" text={`Hey ${theWinnwer.username || theWinnwer.userId.name}`} />}
           <Results answers={theWinnwer.answers} list={questions} />
         </TabsContent>
-        <TabsContent value="loser" className=" min-w-full">
+        <TabsContent value="loser" className=" mt-5 min-w-full">
           <Heading
             className=" text-center"
             text={`${theLoser.username || theLoser.userId.name} percentage is ${Math.trunc(theLoser.percentage)}%`}
