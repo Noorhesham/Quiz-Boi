@@ -16,7 +16,7 @@ const socketServer = (httpServer: HTTPServer) => {
   io.on("connection", (socket: Socket) => {
     console.log(`New client connected: ${socket.id}`);
 
-    socket.on("join-quiz", ({ quizId, userName }) => handleJoinQuiz(socket, quizId, userName));
+    socket.on("join-quiz", ({ quizId, userName, avatar }) => handleJoinQuiz(socket, quizId, userName, avatar));
     socket.on("done", ({ sessionId, userName }) => {
       console.log(sessionId, userName);
       handleDone(sessionId, userName);
@@ -27,11 +27,11 @@ const socketServer = (httpServer: HTTPServer) => {
     socket.on("timeOut", ({ sessionId, userName }) => io.to(sessionId).emit("next-question"));
   });
 
-  const handleJoinQuiz = async (socket: Socket, quizId: string, userName: string) => {
+  const handleJoinQuiz = async (socket: Socket, quizId: string, userName: string, avatar: string) => {
     const tempKey = `${quizId}`;
     if (!activeQuizzes[tempKey]) {
       // If no active quiz, create one and add the current user
-      activeQuizzes[tempKey] = { users: [{ socketId: socket.id, userName }] };
+      activeQuizzes[tempKey] = { users: [{ socketId: socket.id, userName, avatar }] };
       socket.join(tempKey);
       console.log(`${userName} is waiting for an opponent on quiz ${quizId}`);
     } else {
@@ -42,7 +42,7 @@ const socketServer = (httpServer: HTTPServer) => {
 
       // Create a new session for the two users
       activeQuizzes[sessionId] = {
-        users: [opponent, { socketId: socket.id, userName }],
+        users: [opponent, { socketId: socket.id, userName, avatar }],
         currentQuestion: 0,
         answers: {},
         doneCount: 0,
@@ -58,18 +58,23 @@ const socketServer = (httpServer: HTTPServer) => {
 
       // Delete the temp key to prevent others from joining this session
       delete activeQuizzes[tempKey];
-
+      console.log({
+        message: `${userName} has joined the quiz`,
+        userName: userName,
+        avatar: avatar,
+      });
       // Emit "opponent-joined" event to both users
       io.to(opponent.socketId).emit("opponent-joined", {
         message: `${userName} has joined the quiz`,
-        id: firstUserId,
+        userName: userName,
+        avatar: avatar,
       });
       io.to(socket.id).emit("opponent-joined", {
         message: `${opponent.userName} has joined the quiz`,
-        id: secondUserId,
+        userName: opponent.userName,
+        avatar: opponent.avatar,
       });
 
-      // Start the quiz
       io.to(sessionId).emit("start-quiz", { id: sessionId });
     }
     console.log(activeQuizzes, tempKey);
