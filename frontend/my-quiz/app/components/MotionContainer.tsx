@@ -1,4 +1,5 @@
 "use client";
+import { useIsMobile } from "@/hooks/useMobile";
 import { motion, Variants } from "framer-motion";
 import React, { ReactNode, Children, cloneElement, ReactElement } from "react";
 
@@ -19,6 +20,13 @@ const MotionContainer = ({
   customstaggerEffect,
   id,
 }: MotionContainerProps) => {
+  const isMobile = useIsMobile();
+  if (isMobile)
+    return (
+      <div id={id} className={className}>
+        {children}
+      </div>
+    );
   const childrenArray = Children.toArray(children) as ReactElement[];
   const totalItems = childrenArray.length;
 

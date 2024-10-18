@@ -24,20 +24,22 @@ export const QuestionSchema = z.object({
   answers: z.array(z.string().nonempty({ message: "Answer text is required" })),
   correctAnswerIndex: z.number(),
   explain: z.string().optional(),
-  hint:  z.object({
-    coverImage: z
-    .any()
-    .optional()
-    .refine((files) => {
-      // Check if files are provided and meet size criteria
-      return !files || !files[0] || files[0].size <= MAX_FILE_SIZE;
-    }, `Max image size is ${MAX_FILE_SIZE / (1024 * 1024)}MB.`)
-    .refine((files) => {
-      // Check if files are provided and meet type criteria
-      return !files || !files[0] || ACCEPTED_IMAGE_MIME_TYPES.includes(files[0].type);
-    }, "Only .jpg, .jpeg, .png, and .webp formats are supported."),
-    text: z.string().min(0,"You must provide the hint text"),
-  }).optional(),
+  hint: z
+    .object({
+      coverImage: z
+        .any()
+        .optional()
+        .refine((files) => {
+          // Check if files are provided and meet size criteria
+          return !files || !files[0] || files[0].size <= MAX_FILE_SIZE;
+        }, `Max image size is ${MAX_FILE_SIZE / (1024 * 1024)}MB.`)
+        .refine((files) => {
+          // Check if files are provided and meet type criteria
+          return !files || !files[0] || ACCEPTED_IMAGE_MIME_TYPES.includes(files[0].type);
+        }, "Only .jpg, .jpeg, .png, and .webp formats are supported."),
+      text: z.string().min(0, "You must provide the hint text"),
+    })
+    .optional(),
   coverImage: z
     .any()
     .optional()
@@ -50,7 +52,10 @@ export const QuestionSchema = z.object({
       return !files || !files[0] || ACCEPTED_IMAGE_MIME_TYPES.includes(files[0].type);
     }, "Only .jpg, .jpeg, .png, and .webp formats are supported."),
 });
-
+export const MapSchema = z.object({
+  mapImage: z.any().optional(),
+  name: z.string().min(3, { message: "You must add a name of at least 3 characters 😿!" }),
+});
 export const QuizSchema = z.object({
   title: z.string().nonempty({ message: "You must add a title to your quiz" }),
   description: z.string().optional(),
@@ -72,16 +77,12 @@ export const QuizSchema = z.object({
       return !files || !files[0] || ACCEPTED_IMAGE_MIME_TYPES.includes(files[0].type);
     }, "Only .jpg, .jpeg, .png, and .webp formats are supported."),
 });
-export const UpdateSchema = z
-  .object({
-    name: z.string().min(3, { message: "You must add a name of at least 3 characters 😿!" }),
-    email: z.string().email({ message: "Email is required 😿" }),
-    photo: z
-    .any()
-    .optional()
-  })
- ;
- export const UpdatePasswordSchema = z
+export const UpdateSchema = z.object({
+  name: z.string().min(3, { message: "You must add a name of at least 3 characters 😿!" }),
+  email: z.string().email({ message: "Email is required 😿" }),
+  photo: z.any().optional(),
+});
+export const UpdatePasswordSchema = z
   .object({
     passwordCurrent: z.string().min(1, { message: "Password is required 😿" }),
     password: z.string().min(6, { message: "Enter At Least 6 Characters 😿" }),

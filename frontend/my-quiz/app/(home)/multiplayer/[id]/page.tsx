@@ -86,7 +86,7 @@ const QuizPage = () => {
   if (isLoading || isLoading2) return <Loader />;
 
   return (
-    <section className=" lg:pt-32 pt-10 quizbg flex items-center w-full justify-center lg:px-20 bg-gray-100 rounded-md min-h-[100vh] ">
+    <section className="  pt-10 quizbg flex items-center w-full justify-center bg-gray-100 rounded-md min-h-[100vh] ">
       {!isQuizStarted && (
         <MaxWidthWrapper
           className=" w-full grid grid-cols-1 lg:grid-cols-2 bg-gray-100 
@@ -180,7 +180,7 @@ const QuizPage = () => {
         <MultiPlayerProvider>
           <MaxWidthWrapper className=" w-full flex items-center gap-5 flex-col">
             <div className=" mx-auto justify-center flex items-center gap-5">
-              <Compatetor otherUser={user||{name:userName,}} />
+              <Compatetor otherUser={user || { name: userName }} />
               <h2 className=" font-bold text-purple-400 text-xl">VS</h2>
               <Compatetor otherUser={otherUser} />
             </div>

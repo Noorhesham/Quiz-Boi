@@ -1,0 +1,139 @@
+"use client";
+import { useState, useRef } from "react";
+import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import MyButton from "@/app/components/MyButton";
+
+// Schema for Map Form
+const MapSchema = z.object({
+  name: z.string().min(1, "Map name is required"),
+  mapImage: z.any().optional(), // Image for the map
+});
+
+// Form Component
+const UploadMapForm = () => {
+  const [mapImage, setMapImage] = useState<File | null>(null); // Store selected map image
+  const [quizzes, setQuizzes] = useState([]); // Store associated quizzes
+  const [selectedPositions, setSelectedPositions] = useState([]); // Track clicked positions on the map
+
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const form = useForm({
+    resolver: zodResolver(MapSchema),
+  });
+  const { handleSubmit, register } = form;
+
+  // Handle uploading quizzes (could be another form for quizzes)
+  const handleQuizUpload = () => {
+    // Dummy quiz upload
+    const quizId = Math.random().toString(36).substr(2, 9);
+    const newQuiz = { id: quizId, title: `Quiz ${quizId}` };
+    setQuizzes([...quizzes, newQuiz]);
+  };
+
+  // Handle selecting position on the map
+  const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = mapRef.current?.getBoundingClientRect();
+    if (rect) {
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      setSelectedPositions([...selectedPositions, { x, y, quizId: null }]);
+    }
+  };
+
+  // Assign quiz to position
+  const assignQuizToPosition = (quizId: string, positionIndex: number) => {
+    const updatedPositions = [...selectedPositions];
+    updatedPositions[positionIndex].quizId = quizId;
+    setSelectedPositions(updatedPositions);
+  };
+
+  // Form Submission (could save the map, quizzes, and positions to the backend)
+  const onSubmit = (data: z.infer<typeof MapSchema>) => {
+    const mapData = {
+      name: data.name,
+      image: mapImage,
+      quizzes,
+      positions: selectedPositions,
+    };
+    console.log("Submitting Map Data:", mapData);
+    // Handle form submission logic here (e.g., API call)
+  };
+
+  return (
+    <div className="p-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* Map Name Input */}
+        <input type="text" placeholder="Map Name" {...register("name")} className="border p-2 w-full" />
+
+        {/* Map Image Upload */}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setMapImage(e.target.files ? e.target.files[0] : null)}
+          className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+        />
+
+        {/* Map Preview */}
+        <div
+          ref={mapRef}
+          onClick={handleMapClick}
+          className="relative border border-gray-400"
+          style={{ width: "100%", height: "400px", background: "#f0f0f0" }}
+        >
+          {mapImage && <Image src={URL.createObjectURL(mapImage)} alt="Map" layout="fill" objectFit="contain" />}
+
+          {/* Render dots on the map where quizzes are placed */}
+          {selectedPositions.map((pos, index) => (
+            <div
+              key={index}
+              className="absolute w-4 h-4 bg-red-500 rounded-full"
+              style={{
+                left: `${pos.x}px`,
+                top: `${pos.y}px`,
+                transform: "translate(-50%, -50%)",
+              }}
+            ></div>
+          ))}
+        </div>
+
+        {/* Quizzes and Assign to positions */}
+        <div>
+          <h3>Associated Quizzes</h3>
+          {quizzes.length > 0 ? (
+            <div className="flex flex-col space-y-2">
+              {quizzes.map((quiz, index) => (
+                <div key={quiz.id}>
+                  <span>{quiz.title}</span>
+                  <select onChange={(e) => assignQuizToPosition(e.target.value, index)}>
+                    <option value="">Assign to position</option>
+                    {selectedPositions.map((_, i) => (
+                      <option key={i} value={i}>
+                        Position {i + 1}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No quizzes uploaded yet.</p>
+          )}
+        </div>
+
+        {/* Add Quiz Button */}
+        <MyButton
+          text="Upload Quiz"
+          onClick={handleQuizUpload}
+          disabled={quizzes.length >= 4} // Restrict the number of quizzes
+        />
+
+        {/* Submit Map Button */}
+        <MyButton text="Publish Map" type="submit" />
+      </form>
+    </div>
+  );
+};
+
+export default UploadMapForm;

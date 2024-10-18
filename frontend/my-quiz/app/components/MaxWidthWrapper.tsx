@@ -12,7 +12,7 @@ const MaxWidthWrapper = ({
   return (
     <div
       className={`${className || ""} max-w-[1375px] w-full mx-auto ${
-        noPadding ? " py-0" : "py-5 lg:py-12"
+        noPadding ? " py-0" : "py-5 lg:py-8"
       }   px-4 md:px-10`}
     >
       {children}

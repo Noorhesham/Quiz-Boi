@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { motion, Variants } from "framer-motion";
+import { useIsMobile } from "@/hooks/useMobile";
 
 const MotionItem = ({
   children,
@@ -27,6 +28,8 @@ const MotionItem = ({
   onMouseEnter?: any;
   onMouseLeave?: any;
 }) => {
+  const isMobile = useIsMobile();
+  if (isMobile) return <div className={className}>{children}</div>;
   return (
     <motion.div
       whileHover={nohover ? {} : { y: -10 }}

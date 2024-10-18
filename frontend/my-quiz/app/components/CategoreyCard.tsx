@@ -1,36 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import CategoreyCadHover from "./CategoreyCadHover";
 import { useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
-import { item } from "../motion";
 import Image from "next/image";
+import { useIsMobile } from "@/hooks/useMobile";
+import { item } from "../motion"; // assuming motion variants are defined in "../motion"
+
 const CategoreyCard = ({ tag, setCategorey, large = false }: { tag: any; setCategorey: any; large?: boolean }) => {
   const [hover, setHover] = useState(false);
   const searchParams = useSearchParams();
   const search = searchParams.get("categorey");
-  useEffect(
-    function () {
-      if (search === tag.tag) setHover(true);
-      else setHover(false);
-    },
-    [search]
-  );
+
+  // Check if the search param matches the current tag to set hover state
+  useEffect(() => {
+    if (search === tag.tag) setHover(true);
+    else setHover(false);
+  }, [search, tag.tag]);
+
+  const isMobile = useIsMobile();
+
+  // Use `div` for mobile, and `motion.div` for larger screens
+  const Container = isMobile ? "div" : motion.div;
+
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
         {large ? (
-          <motion.div variants={item} key={tag?.tag}>
+          <Container
+            {...(!isMobile && { variants: item })} // Only add motion variants if not mobile
+            key={tag?.tag}
+          >
             <div
               onClick={() => setCategorey(tag.tag)}
               onMouseEnter={() => {
-                if (search === tag.tag) return;
-                else setHover(true);
+                if (search !== tag.tag) setHover(true);
               }}
               onMouseLeave={() => {
-                if (search === tag.tag) return;
-                else setHover(false);
+                if (search !== tag.tag) setHover(false);
               }}
               className="md:h-96 w-full h-auto relative cursor-pointer bg-gray-200 rounded-lg overflow-hidden"
             >
@@ -42,16 +49,15 @@ const CategoreyCard = ({ tag, setCategorey, large = false }: { tag: any; setCate
               />
               <AnimatePresence>{hover && <CategoreyCadHover tag={tag.tag} />}</AnimatePresence>
             </div>
-          </motion.div>
+          </Container>
         ) : (
           <div
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => {
-              if (search === tag.tag) return;
-              else setHover(false);
+              if (search !== tag.tag) setHover(false);
             }}
             onClick={() => setCategorey(tag.tag)}
-            className="md:h-48 h-36 cursor-pointer  relative w-36  md:w-48 bg-gray-200 rounded-lg "
+            className="md:h-48 h-36 cursor-pointer relative w-36 md:w-48 bg-gray-200 rounded-lg"
           >
             <Image
               fill
@@ -63,13 +69,14 @@ const CategoreyCard = ({ tag, setCategorey, large = false }: { tag: any; setCate
           </div>
         )}
       </HoverCardTrigger>
+
       <HoverCardContent className="w-80">
         <div className="flex justify-between space-x-4">
           <div className="space-y-1">
             <h4 className="text-sm font-semibold">{tag.tag}</h4>
-            <p className="text-sm">Filter Quizzes By your favouriate topic! {tag.tag}.</p>
+            <p className="text-sm">Filter Quizzes by your favorite topic! {tag.tag}.</p>
             <div className="flex items-center pt-2">
-              <span className="text-xs text-muted-foreground">Get Quizzes for certain topic</span>
+              <span className="text-xs text-muted-foreground">Get Quizzes for this topic</span>
             </div>
           </div>
         </div>
