@@ -38,7 +38,7 @@ const QuizPage = () => {
   const [waitingForOpponent, setWaitingForOpponent] = useState(false);
   const [clicked, setClicked] = useState(false);
   useEffect(() => {
-    const socketInstance = io(`https://quiz-boi.onrender.com`);
+    const socketInstance = io("http://127.0.0.1:3000");
     setSocket(socketInstance);
 
     socketInstance.on("connect", () => {
@@ -85,7 +85,10 @@ const QuizPage = () => {
   return (
     <section className=" pt-32 quizbg flex items-center justify-center px-20 bg-gray-100 rounded-md min-h-[100vh] ">
       {!isQuizStarted && (
-        <MaxWidthWrapper className=" w-full grid grid-cols-2 bg-gray-100 py-4 px-8 rounded-2xl border border-input">
+        <MaxWidthWrapper
+          className=" w-full grid grid-cols-1 lg:grid-cols-2 bg-gray-100 py-3 px-6
+         lg:py-4 lg:px-8 rounded-2xl border border-input"
+        >
           <div>
             {
               <>
