@@ -27,13 +27,14 @@ function howGood(percentage: number): string {
 const page = async ({ params: { id } }: { params: { id: string } }) => {
   const data = await fetch(`${API_URL}/attempts?sessionId=${id}`, { cache: "no-store" }).then((res) => res.json());
   const quiz = await SolveQuiz(data.data.attempt[0].quizId);
+  const list = await Promise.all(quiz.questions.map((question: any) => GetQuestions(question._id)));
+
   const attempts = data?.data?.attempt;
   console.log(quiz);
-  const { questions } = quiz;
   const theWinnwerIndex = attempts[0].totalPoints > attempts[1].totalPoints ? 0 : 1;
   const theWinnwer = attempts[theWinnwerIndex];
   const theLoser = attempts[1 - theWinnwerIndex];
-  console.log(questions);
+  console.log(list);
   return (
     <main className=" relative spacer  flex flex-col items-center">
       <Celebrate
@@ -49,10 +50,10 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
         <TabsContent className=" min-w-full mt-5 " value="winner">
           <Heading
             className=" text-center"
-            text={`${theWinnwer.username} percentage is ${Math.trunc(theWinnwer.percentage)}%`}
+            text={`${theWinnwer.username|| theWinnwer.userId.name} percentage is ${Math.trunc(theWinnwer.percentage)}%`}
           />
           {<Heading className=" text-center" text={`Hey ${theWinnwer.username || theWinnwer.userId.name}`} />}
-          <Results answers={theWinnwer.answers} list={questions} />
+          <Results answers={theWinnwer.answers} list={list} />
         </TabsContent>
         <TabsContent value="loser" className=" mt-5 min-w-full">
           <Heading
@@ -60,7 +61,7 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
             text={`${theLoser.username || theLoser.userId.name} percentage is ${Math.trunc(theLoser.percentage)}%`}
           />
           {<Heading className=" text-center" text={`Hey ${theLoser.username || theLoser.userId.name}`} />}
-          <Results answers={theLoser.answers} list={questions} />
+          <Results answers={theLoser.answers} list={list} />
         </TabsContent>
       </Tabs>
     </main>
