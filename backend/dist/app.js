@@ -13,6 +13,7 @@ const commentsRouter = require("./routes/commentsRouter");
 const multiplayerRouter = require("./routes/multiplayerRouter");
 const attemptRouter = require("./routes/attemptRouter");
 const tagsRouter = require("./routes/tagsRouter");
+const mapRouter = require("./routes/mapRouter");
 const globalErrorHandler = require("./controllers/errorController");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -31,6 +32,7 @@ app.use("/api/v1/comments", commentsRouter);
 app.use("/api/v1/attempts", attemptRouter);
 app.use("/api/v1/tags", tagsRouter);
 app.use("/api/v1/multiplayer", multiplayerRouter);
+app.use("/api/v1/map", mapRouter);
 app.all("*", (err, req, res, next) => {
     next(new AppError_1.default(`cant find ${req.originalUrl} on this server`, 404));
 });

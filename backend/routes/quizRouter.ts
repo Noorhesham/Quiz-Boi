@@ -31,6 +31,7 @@ router
   .route("/:quizId/like")
   .post(authController.protect, quizController.likeQuiz)
   .delete(authController.protect, quizController.unLikeQuiz);
+router.get("/all", quizController.getAll);
 router
   .route("/:id")
   .get(authController.protect, quizController.checkIfAuthor, quizController.getQuiz)
@@ -43,6 +44,5 @@ router
   )
   .delete(authController.protect, quizController.checkIfAuthor, quizController.deleteQuiz);
 router.route("/:id/public").get(quizController.getQuiz);
-
 
 module.exports = router;

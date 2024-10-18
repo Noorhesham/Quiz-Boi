@@ -9,8 +9,7 @@ import cloudinary from "../utils/cloudinary";
 import { UserProps } from "../types";
 import Question from "../models/questionModel";
 import ApiFeatures from "../utils/ApiFeatures";
-import User from "../models/userModel";
-import Games from "../models/multiplayerModel";
+import Map from "../models/mapModel";
 const catchAsync = require("../utils/catchError");
 declare module "express-serve-static-core" {
   interface Request {
@@ -55,6 +54,7 @@ exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: Next
     return next(new AppError("This attempt must relate to a quiz! Provide the ID of the quiz in the URL", 404));
 
   const quiz = await Quiz.findById(quizId);
+
   if (!quiz) return next(new AppError("Could not find a quiz with that ID!", 404));
 
   const find = userId ? { quizId, userId } : { quizId, username };
@@ -74,7 +74,7 @@ exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: Next
       return next(new AppError("Failed to create a user attempt.", 500));
     }
 
-    await Quiz.findByIdAndUpdate(quizId, { $push: { usersAttempted: userAttempt._id } });
+    await Quiz.findByIdAndUpdate(quizId, { $push: { usersAttempted: userAttempt._id }, done: true });
   }
 
   let totalPoints = 0;
@@ -138,7 +138,8 @@ exports.unLikeQuiz = catchAsync(async (req: Request | any, res: Response, next: 
 
 exports.checkIfAuthor = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const quiz = await Quiz.findById(req.params.id || req.params.quizId).populate("author");
-  console.log(req.params);
+  console.log(req.user.id, quiz, req.params);
+
   console.log(quiz?.author?._id !== req.user.id, quiz?.author._id, req.user.id);
   if (quiz?.author?.id !== req.user.id && req.user.role !== "admin")
     return next(new AppError(`You cannot edit someone's else quiz.`, 403));
@@ -160,12 +161,40 @@ exports.solveQuiz = catchAsync(async (req: Request, res: Response, next: NextFun
 });
 
 const quizFactory = new Factory(Quiz, "quiz");
-exports.uploadQuiz = quizFactory.createOne();
+exports.uploadQuiz = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  console.log(req.body);
+  const newDoc = await Quiz.create(req.body);
+  if (req.body.map) {
+    const updatedMap = await Map.findOneAndUpdate(
+      { _id: req.body.map },
+      {
+        $push: {
+          levels: {
+            quizId: newDoc._id,
+            position: { x: 0, y: 0 },
+            difficulty: req.body.difficulty || "medium",
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedMap) {
+      return res.status(404).json({ status: "fail", message: "Map not found" });
+    }
+  }
+  console.log(newDoc);
+  res.status(200).json({ status: "success", data: { quiz: newDoc } });
+});
+exports.getAll = quizFactory.getAll();
 exports.getAllQuizes = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  console.log(req.params);
   let filters = {};
   if (req.params.quizId) filters = { quizId: req.params.quizId };
+  if (req.params.map) filters = { map: req.params.map };
   //@ts-ignore
   filters.published = true;
+
   let query = Quiz.find(filters)
     .select("-questions -usersAttempted")
     .populate({
@@ -204,4 +233,18 @@ exports.getAllQuizes = catchAsync(async (req: Request, res: Response, next: Next
 
 exports.getQuiz = quizFactory.getOne("id", { path: "questions" });
 exports.updateQuiz = quizFactory.updateOne();
-exports.deleteQuiz = quizFactory.deleteOne();
+exports.deleteQuiz = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  // Step 1: Find and delete the quiz
+  const deletedQuiz = await Quiz.findByIdAndDelete(req.params.id);
+
+  // Check if quiz exists
+  if (!deletedQuiz) {
+    return next(new AppError(`There is no Quiz found with that id`, 404));
+  }
+
+  // Step 2: Remove the quiz from all maps where it exists in the levels array
+  await Map.updateMany({ "levels.quizId": req.params.id }, { $pull: { levels: { quizId: req.params.id } } });
+
+  // Step 3: Return success response
+  res.status(200).json({ status: "success", data: null });
+});

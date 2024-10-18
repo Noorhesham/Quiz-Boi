@@ -26,6 +26,7 @@ router
     .route("/:quizId/like")
     .post(authController.protect, quizController.likeQuiz)
     .delete(authController.protect, quizController.unLikeQuiz);
+router.get("/all", quizController.getAll);
 router
     .route("/:id")
     .get(authController.protect, quizController.checkIfAuthor, quizController.getQuiz)

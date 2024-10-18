@@ -3,6 +3,7 @@ const slugify = require("slugify");
 interface QuizProps extends Document {
   title: string;
   questions: Array<mongoose.Types.ObjectId>;
+  map: mongoose.Types.ObjectId;
   description: string;
   author: mongoose.Types.ObjectId;
   likes: Array<mongoose.Types.ObjectId>;
@@ -19,6 +20,7 @@ interface QuizProps extends Document {
   numberOfQuestions?: number;
   attemptsNum?: number;
   color: "orange" | "pink" | "blue" | "purple" | "green";
+  done: boolean;
 }
 
 const quizSchema = new Schema<QuizProps>(
@@ -54,6 +56,14 @@ const quizSchema = new Schema<QuizProps>(
     published: { type: Boolean, default: false },
     color: { type: String, default: "purple" },
     likesCount: { type: Number, default: 0 },
+    map: {
+      type: Schema.Types.ObjectId,
+      ref: "Map",
+    },
+    done: {
+      type: Boolean,
+      default: false,
+    },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

@@ -57,6 +57,14 @@ const quizSchema = new mongoose_1.Schema({
     published: { type: Boolean, default: false },
     color: { type: String, default: "purple" },
     likesCount: { type: Number, default: 0 },
+    map: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Map",
+    },
+    done: {
+        type: Boolean,
+        default: false,
+    },
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 quizSchema.pre("save", function (next) {
     var _a, _b, _c, _d;

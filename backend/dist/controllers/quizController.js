@@ -21,6 +21,7 @@ const multer_1 = __importDefault(require("multer"));
 const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
 const questionModel_1 = __importDefault(require("../models/questionModel"));
 const ApiFeatures_1 = __importDefault(require("../utils/ApiFeatures"));
+const mapModel_1 = __importDefault(require("../models/mapModel"));
 const catchAsync = require("../utils/catchError");
 const multerStorage = multer_1.default.memoryStorage();
 const multerFilter = (req, file, cb) => {
@@ -74,7 +75,7 @@ exports.completeQuiz = catchAsync((req, res, next) => __awaiter(void 0, void 0, 
         if (!userAttempt || !userAttempt._id) {
             return next(new AppError_1.default("Failed to create a user attempt.", 500));
         }
-        yield quizModel_1.default.findByIdAndUpdate(quizId, { $push: { usersAttempted: userAttempt._id } });
+        yield quizModel_1.default.findByIdAndUpdate(quizId, { $push: { usersAttempted: userAttempt._id }, done: true });
     }
     let totalPoints = 0;
     let points = 0;
@@ -130,7 +131,7 @@ exports.unLikeQuiz = catchAsync((req, res, next) => __awaiter(void 0, void 0, vo
 exports.checkIfAuthor = catchAsync((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     const quiz = yield quizModel_1.default.findById(req.params.id || req.params.quizId).populate("author");
-    console.log(req.params);
+    console.log(req.user.id, quiz, req.params);
     console.log(((_a = quiz === null || quiz === void 0 ? void 0 : quiz.author) === null || _a === void 0 ? void 0 : _a._id) !== req.user.id, quiz === null || quiz === void 0 ? void 0 : quiz.author._id, req.user.id);
     if (((_b = quiz === null || quiz === void 0 ? void 0 : quiz.author) === null || _b === void 0 ? void 0 : _b.id) !== req.user.id && req.user.role !== "admin")
         return next(new AppError_1.default(`You cannot edit someone's else quiz.`, 403));
@@ -151,11 +152,34 @@ exports.solveQuiz = catchAsync((req, res, next) => __awaiter(void 0, void 0, voi
     next();
 }));
 const quizFactory = new handlerFactory_1.default(quizModel_1.default, "quiz");
-exports.uploadQuiz = quizFactory.createOne();
+exports.uploadQuiz = catchAsync((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
+    const newDoc = yield quizModel_1.default.create(req.body);
+    if (req.body.map) {
+        const updatedMap = yield mapModel_1.default.findOneAndUpdate({ _id: req.body.map }, {
+            $push: {
+                levels: {
+                    quizId: newDoc._id,
+                    position: { x: 0, y: 0 },
+                    difficulty: req.body.difficulty || "medium",
+                },
+            },
+        }, { new: true });
+        if (!updatedMap) {
+            return res.status(404).json({ status: "fail", message: "Map not found" });
+        }
+    }
+    console.log(newDoc);
+    res.status(200).json({ status: "success", data: { quiz: newDoc } });
+}));
+exports.getAll = quizFactory.getAll();
 exports.getAllQuizes = catchAsync((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.params);
     let filters = {};
     if (req.params.quizId)
         filters = { quizId: req.params.quizId };
+    if (req.params.map)
+        filters = { map: req.params.map };
     //@ts-ignore
     filters.published = true;
     let query = quizModel_1.default.find(filters)
@@ -190,5 +214,16 @@ exports.getAllQuizes = catchAsync((req, res, next) => __awaiter(void 0, void 0, 
 }));
 exports.getQuiz = quizFactory.getOne("id", { path: "questions" });
 exports.updateQuiz = quizFactory.updateOne();
-exports.deleteQuiz = quizFactory.deleteOne();
+exports.deleteQuiz = catchAsync((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    // Step 1: Find and delete the quiz
+    const deletedQuiz = yield quizModel_1.default.findByIdAndDelete(req.params.id);
+    // Check if quiz exists
+    if (!deletedQuiz) {
+        return next(new AppError_1.default(`There is no Quiz found with that id`, 404));
+    }
+    // Step 2: Remove the quiz from all maps where it exists in the levels array
+    yield mapModel_1.default.updateMany({ "levels.quizId": req.params.id }, { $pull: { levels: { quizId: req.params.id } } });
+    // Step 3: Return success response
+    res.status(200).json({ status: "success", data: null });
+}));
 //# sourceMappingURL=quizController.js.map
