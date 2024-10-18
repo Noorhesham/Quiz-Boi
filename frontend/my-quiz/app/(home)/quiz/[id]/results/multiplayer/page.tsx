@@ -27,7 +27,7 @@ function howGood(percentage: number): string {
 const page = async ({ params: { id } }: { params: { id: string } }) => {
   const data = await fetch(`${API_URL}/attempts?sessionId=${id}`, { cache: "no-store" }).then((res) => res.json());
   const quiz = await SolveQuiz(data.data.attempt[0].quizId);
-  const attempts = data.data.attempt;
+  const attempts = data?.data?.attempt;
   console.log(quiz);
   const { questions } = quiz;
   const theWinnwerIndex = attempts[0].totalPoints > attempts[1].totalPoints ? 0 : 1;

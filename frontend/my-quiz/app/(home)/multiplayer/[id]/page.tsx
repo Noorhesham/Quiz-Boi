@@ -38,7 +38,7 @@ const QuizPage = () => {
   const [waitingForOpponent, setWaitingForOpponent] = useState(false);
   const [clicked, setClicked] = useState(false);
   useEffect(() => {
-    const socketInstance = io("http://127.0.0.1:3000");
+    const socketInstance = io("https://quiz-boi.onrender.com");
     setSocket(socketInstance);
 
     socketInstance.on("connect", () => {
