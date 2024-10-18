@@ -24,37 +24,33 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const userAttemptSchema = new mongoose_1.Schema({
-    userId: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: "User",
-        required: function () {
-            return !this.username;
-        },
+const prerequisiteSchema = new mongoose_1.Schema({
+    title: {
+        type: String,
+        required: [true, "Prerequisite must have a title"],
+        trim: true,
+        minlength: [3, "Prerequisite title is too short"],
     },
-    quizId: {
+    type: {
+        type: String,
+        required: true,
+        enum: ["pdf", "link"],
+    },
+    url: {
+        type: String,
+        required: [true, "Prerequisite must have a URL"],
+    },
+    description: {
+        type: String,
+        trim: true,
+        maxlength: [200, "Description is too long"],
+    },
+    quiz: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Quiz",
         required: true,
     },
-    username: {
-        type: String,
-        required: function () {
-            return !this.userId;
-        },
-    },
-    answers: { type: [{ answer: Number, id: mongoose_1.Schema.Types.ObjectId, duration: Number }], required: true },
-    points: {
-        type: Number,
-        required: true,
-        default: 0,
-    },
-    isPublic: { type: Boolean, default: true },
-    totalPoints: { type: Number },
-    percentage: { type: Number },
-    attemptedAt: { type: Date, default: new Date(Date.now()) },
-    sessionId: { type: String },
 });
-const UserAttempt = mongoose_1.default.model("UserAttempt", userAttemptSchema);
-exports.default = UserAttempt;
-//# sourceMappingURL=userAttemptsModel.js.map
+const Prerequisite = mongoose_1.default.model("Prerequisite", prerequisiteSchema);
+exports.default = Prerequisite;
+//# sourceMappingURL=Prerequiset.js.map

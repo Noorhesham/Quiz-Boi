@@ -8,7 +8,7 @@ interface QuizProps extends Document {
   likes: Array<mongoose.Types.ObjectId>;
   usersAttempted: Array<mongoose.Types.ObjectId>;
   questionNum: number;
-  likesCount:number|0
+  likesCount: number | 0;
   comments: [mongoose.Types.ObjectId];
   tags: [string];
   slug: string;
@@ -53,7 +53,7 @@ const quizSchema = new Schema<QuizProps>(
     usersAttempted: [{ type: Schema.Types.ObjectId, ref: "UserAttempt" }],
     published: { type: Boolean, default: false },
     color: { type: String, default: "purple" },
-    likesCount:{type:Number,default:0}
+    likesCount: { type: Number, default: 0 },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -63,7 +63,7 @@ quizSchema.pre("save", function (next) {
   this.questionNum = this.questions?.length;
   this.attemptsNum = this.usersAttempted?.length;
   this.numberOfQuestions = this.questions?.length;
-  this.likesCount=this.likes?.length
+  this.likesCount = this.likes?.length;
   next();
 });
 
@@ -77,20 +77,27 @@ quizSchema.virtual("likes", {
   localField: "_id",
   foreignField: "quiz",
 });
-
+// quizSchema.virtual("prerequisites", {
+//   ref: "Prerequisite",
+//   foreignField: "quiz",
+// });
 quizSchema.pre(/^find/, function (this: any, next) {
-    // this.populate({
-    //   path: "likes",
-    // })
-//       .populate({
-//         path: "author",
-//         select: " name photo id _id followingCount quizzes followersCount",
-//       })
-//       .populate({
-//         path: "comments",
-//         select: "content user ",
-//       });
-  
+  // this.populate({
+  //   path: "prerequisites",
+  //   select: "title type url description",
+  // });
+  // this.populate({
+  //   path: "likes",
+  // })
+  //       .populate({
+  //         path: "author",
+  //         select: " name photo id _id followingCount quizzes followersCount",
+  //       })
+  //       .populate({
+  //         path: "comments",
+  //         select: "content user ",
+  //       });
+
   next();
 });
 // quizSchema.pre<any>("findOne", function (next: any) {

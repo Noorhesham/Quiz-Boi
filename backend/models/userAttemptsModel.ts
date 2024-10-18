@@ -32,7 +32,7 @@ const userAttemptSchema = new Schema<UserAttemptProps>({
       return !this.userId;
     },
   },
-  answers: { type: [{ answer: Number, id: Schema.Types.ObjectId }], required: true },
+  answers: { type: [{ answer: Number, id: Schema.Types.ObjectId,duration: Number }], required: true },
   points: {
     type: Number,
     required: true,

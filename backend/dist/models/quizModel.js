@@ -56,7 +56,7 @@ const quizSchema = new mongoose_1.Schema({
     usersAttempted: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "UserAttempt" }],
     published: { type: Boolean, default: false },
     color: { type: String, default: "purple" },
-    likesCount: { type: Number, default: 0 }
+    likesCount: { type: Number, default: 0 },
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 quizSchema.pre("save", function (next) {
     var _a, _b, _c, _d;
@@ -77,7 +77,15 @@ quizSchema.virtual("likes", {
     localField: "_id",
     foreignField: "quiz",
 });
+// quizSchema.virtual("prerequisites", {
+//   ref: "Prerequisite",
+//   foreignField: "quiz",
+// });
 quizSchema.pre(/^find/, function (next) {
+    // this.populate({
+    //   path: "prerequisites",
+    //   select: "title type url description",
+    // });
     // this.populate({
     //   path: "likes",
     // })
