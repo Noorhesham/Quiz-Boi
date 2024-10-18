@@ -40,6 +40,7 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
       correctAnswerIndex: question?.correctAnswerIndex || 0,
       explain: question?.explain || "",
       hint: { text: question?.hint?.text || "" } || {},
+      coverImage: question?.coverImage || "",
     },
   });
   const { handleSubmit, control, reset, getValues, setValue, register, formState } = form;
@@ -120,8 +121,8 @@ const AddQuestion = ({ setOpen, question }: { setOpen?: (b: boolean) => void; qu
       {isPending && <Spinner />}
       <form onSubmit={handleSubmit(onSubmit)} className=" space-y-3 md:space-y-4 md:p-16 md:pb-5 md:pt-5">
         <AddPhotoForm
+          name="coverImage"
           selectedImage={selectedImage}
-          question={question}
           control={control}
           setSelectedImage={setSelectedImage}
         />

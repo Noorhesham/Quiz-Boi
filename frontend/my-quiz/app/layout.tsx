@@ -11,18 +11,6 @@ export const metadata: Metadata = {
   description:
     "Quiz Boi is your ultimate destination for solving quizzes, offering a wide range of categories and challenges.",
   icons: { icon: "/favicon.ico" },
-  openGraph: {
-    type: "website",
-    title: "Noor Hesham Portfolio",
-    description: "MERN Stack Developer specializing in React, Next.js, TypeScript, Node.js, MongoDB, and Tailwind CSS.",
-    images: [
-      {
-        url: "/favicon.ico",
-        alt: "Quiz Boi - Your Biggest Platform for Quizzes",
-      },
-    ],
-    url: "https://quiz-boi.vercel.app/",
-  },
 };
 
 export default async function RootLayout({

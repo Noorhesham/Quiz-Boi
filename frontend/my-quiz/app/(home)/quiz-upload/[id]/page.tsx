@@ -34,12 +34,12 @@ const page = async ({ params }: { params: { id: string } }) => {
       </div>
 
       <Heading icon={<AddQuestionIcon type="icon" />} text="All Questions" image="/ques.png" />
-      <ul className="flex items-center gap-3">
+      <div className="flex items-center gap-3">
         <h4 className=" text-2xl mt-2 font-semibold">Related Topics :</h4>
         {quiz.tags.map((tag: string) => (
           <Topic tag={tag} />
         ))}
-      </ul>
+      </div>
 
       <section className=" flex flex-col gap-5 px-10 py-5">
         {quiz.questions.length < 1 && <Empty text="You have not added any question yet !" />}

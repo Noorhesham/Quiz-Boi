@@ -25,7 +25,7 @@ const DialogueQuiz = ({
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{btn}</DialogTrigger>
-        <DialogContent className=" max-h-[90%]  top-[60%]  min-h-fit overflow-y-scroll sm:max-w-[100%]">
+        <DialogContent className="   top-[60%] h-full max-h-[80vh]  min-h-fit overflow-y-scroll sm:max-w-[100%]">
           {React.cloneElement(content, { setOpen })}
         </DialogContent>
       </Dialog>

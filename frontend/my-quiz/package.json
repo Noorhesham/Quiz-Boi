@@ -52,6 +52,7 @@
     "react-lazy-load-image-component": "^1.6.0",
     "react-multi-select-component": "^4.3.4",
     "react-toastify": "^10.0.5",
+    "react-zoom-pan-pinch": "^3.6.1",
     "recharts": "^2.12.4",
     "socket.io-client": "^4.8.0",
     "tailwind-merge": "^2.2.2",

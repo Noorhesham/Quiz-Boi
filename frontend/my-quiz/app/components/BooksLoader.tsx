@@ -1,5 +1,5 @@
 import React from "react";
-
+import '../loader.css'
 const BooksLoader = () => {
   return (
     <div className="bookshelf_wrapper">

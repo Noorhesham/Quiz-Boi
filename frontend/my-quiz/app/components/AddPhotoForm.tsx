@@ -6,6 +6,7 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { MdModeEdit } from "react-icons/md";
 import InputImage from "./InputImage";
 import { useColor } from "../context/ColorContext";
+import { useFormContext } from "react-hook-form";
 
 const AddPhotoForm = ({
   setSelectedImage,
@@ -14,7 +15,8 @@ const AddPhotoForm = ({
   quiz,
   selectedImage,
   question,
-  user,hint
+  user,
+  hint,
 }: {
   setSelectedImage: (f: any) => void;
   name?: string;
@@ -22,8 +24,10 @@ const AddPhotoForm = ({
   quiz?: QuizProps;
   selectedImage: any;
   question?: QuestionProps;
-  user?: UserProps;hint?:any
+  user?: UserProps;
+  hint?: any;
 }) => {
+  const form = useFormContext();
   const { color } = useColor();
   const backStyles = ` relative hover:backdrop-blur-sm rounded-lg hover:bg-red-200 cursor-pointer flex items-center flex-col backdrop-blur-lg  group duration-150`;
   return (
@@ -35,7 +39,13 @@ const AddPhotoForm = ({
           <FormControl>
             <>
               <label>
-                {!quiz?.coverImage && !question?.coverImage && !selectedImage && !user?.photo&&!hint?.coverImage ? (
+                {!quiz?.coverImage &&
+                !question?.coverImage &&
+                name &&
+                !form.getValues(name) &&
+                !selectedImage &&
+                !user?.photo &&
+                !hint?.coverImage ? (
                   <div
                     className={`flex flex-col hover:opacity-90 cursor-pointer text-gray-50 rounded-lg gap-3 py-6 px-12 items-center  ${color}`}
                   >
@@ -52,12 +62,14 @@ const AddPhotoForm = ({
                     </h3>
                     <img
                       className=" w-[20rem] group-hover:blur-sm "
-                      alt={(quiz && quiz.title) || (question && question.question)}
+                      alt={(quiz && quiz.title) || (question && question.question) || (name && form.getValues(name))}
                       src={
                         selectedImage
                           ? URL.createObjectURL(selectedImage)
                           : user
                           ? user.photo
+                          : name
+                          ? form.getValues(name)
                           : question
                           ? question.coverImage
                           : hint

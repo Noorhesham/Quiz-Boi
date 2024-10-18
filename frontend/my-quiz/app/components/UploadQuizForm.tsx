@@ -20,7 +20,7 @@ import TextInput from "./QuestionInput";
 import MyButton from "./MyButton";
 import TaggingComponent from "./TaggingComponent";
 
-const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) => {
+const UploadQuizForm = ({ setOpen, quiz, map }: { setOpen?: any; quiz?: QuizProps; map?: string }) => {
   const [error, setFormError] = useState<string | any>("");
   const [success, setFormSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -32,8 +32,9 @@ const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) 
       title: quiz?.title || "",
       questionNum: quiz?.questionNum || 10,
       tags: quiz?.tags || [],
-      description:quiz?.description||"",
+      description: quiz?.description || "",
       duration: quiz?.duration || 2,
+      coverImage: quiz?.coverImage || undefined,
     },
   });
   const { handleSubmit, control, reset, formState } = form;
@@ -51,6 +52,7 @@ const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) 
       });
       formData.append("duration", String(values.duration));
       formData.append("description", String(values.description));
+      if(map) formData.append("map", map);
       if (values.coverImage) {
         formData.append("coverImage", values.coverImage[0]);
       }
@@ -74,7 +76,7 @@ const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) 
               reset();
             } else {
               router.refresh();
-              router.push(`/quiz-upload/${res.data.quiz._id}`); 
+              router.push(`/quiz-upload/${res.data.quiz._id}`);
             }
           })
           .catch(() => setFormError("something went wrong !"));
@@ -85,7 +87,7 @@ const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) 
     <Form {...form}>
       {isPending && <Loader text={quiz ? "Editing quiz" : "Adding quiz"} image="/loading2.png" />}
       <form onSubmit={handleSubmit(onSubmit)} className=" space-y-1 md:space-y-4 md:p-16 md:pb-5 md:pt-5">
-        <AddPhotoForm selectedImage={selectedImage} quiz={quiz} control={control} setSelectedImage={setSelectedImage} />
+        <AddPhotoForm name="coverImage" selectedImage={selectedImage}  control={control} setSelectedImage={setSelectedImage} />
         <TextInput
           name="title"
           required={true}
@@ -101,7 +103,7 @@ const UploadQuizForm = ({ setOpen, quiz }: { setOpen?: any; quiz?: QuizProps }) 
         {/* <TagsForm control={control} isPending={isPending} /> */}
         {/* @ts-ignore*/}
         <TaggingComponent defaultVal={formState.defaultValues?.tags} control={control} />
-        <Description  control={control} isPending={isPending} />
+        <Description control={control} isPending={isPending} />
         <FormError message={error} />
         <FormSuccess message={success} />
         <div className="space-y-4">
