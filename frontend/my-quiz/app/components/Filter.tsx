@@ -25,15 +25,15 @@ const Filter = ({ categories }: { categories: any }) => {
 
   return (
     <MaxWidthWrapper className=" relative pt-5">
-      <div className="md:p-8 p-4 flex md:flex-row flex-col items-stretch justify-between">
+      <div className="md:p-8 p-4 flex md:flex-row flex-col items-start justify-between">
         <Heading
           text="Find your desired quiz now !"
           paragraph="You can Filter the Quizzes by Topics here... just click on the desired topic and quizzes will be filtered ! 🚀👩‍🚀 "
         />
-        <div className="flex items-center justify-between gap-10 ">
+        <div className="flex items-center justify-between gap-4 ">
           <button
             onClick={() => handleSearch("")}
-            className=" text-lg md:text-3xl font-semibold text-red-400 hover:underline hover:text-red-500 cursor-pointer duration-150"
+            className=" text-lg md:text-xl font-semibold text-nowrap text-purple-400 hover:underline hover:text-purple-500 cursor-pointer duration-150"
           >
             Reset Categories
           </button>
@@ -44,7 +44,7 @@ const Filter = ({ categories }: { categories: any }) => {
             btn={
               <button
                 onClick={() => handleSearch("")}
-                className=" text-lg md:text-3xl flex items-center font-semibold text-red-400 underline hover:text-red-500 cursor-pointer duration-150"
+                className=" text-lg md:text-xl flex items-center font-semibold text-nowrap text-purple-400 hover:underline hover:text-purple-500 cursor-pointer duration-150"
               >
                 View All <IoIosArrowForward />
               </button>

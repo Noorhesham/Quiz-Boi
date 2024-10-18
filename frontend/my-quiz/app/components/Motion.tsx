@@ -15,11 +15,25 @@ const Motion = ({
   id?: string;
 }) => {
   return animate ? (
-    <motion.div id={id} className={`${className || ""}`} viewport={{ once: true }} initial="hidden" animate="visible" variants={container}>
+    <motion.div
+      id={id}
+      className={`${className || ""}`}
+      // viewport={{ once: true }}
+      initial="hidden"
+      animate="visible"
+      variants={container}
+    >
       {children}
     </motion.div>
   ) : (
-    <motion.div id={id} className={`${className || ""}`} viewport={{ once: true }} initial="hidden" whileInView="visible" variants={container}>
+    <motion.div
+      id={id}
+      className={`${className || ""}`}
+      // viewport={{ once: true }}
+      initial="hidden"
+      whileInView="visible"
+      variants={container}
+    >
       {children}
     </motion.div>
   );

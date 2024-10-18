@@ -15,7 +15,7 @@ const AnswerResult = ({
     <div
       className={`${
         correct === i
-          ? "green text-gray-100"
+          ? " bg-green-500 text-gray-100"
           : yourAnswer === i && yourAnswer !== correct
           ? "bg-red-500"
           : "bg-white text-gray-800 "

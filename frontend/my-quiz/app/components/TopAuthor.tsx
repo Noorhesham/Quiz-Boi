@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { UserProps } from "@/types";
 import { createPortal } from "react-dom";
@@ -28,7 +27,7 @@ const TopAuthor = ({ user }: { user: UserProps }) => {
           </h6>
         </Link>
       </HoverCardTrigger>
-      {createPortal(<UserInfro author={user} />, document?.body)}
+      {createPortal(<UserInfro author={user} />, global?.document?.body)}
     </HoverCard>
   );
 };

@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-interface QuizContextType {
+interface MultiPlayerContextType {
   answers: number[];
   setAnswers: React.Dispatch<React.SetStateAction<number[]>>;
   questionIndex: number;
@@ -10,7 +10,8 @@ interface QuizContextType {
   handleReset: any;
 }
 
-const QuizContext = createContext<QuizContextType | any>(undefined);
+const MultiPlayerContext = createContext<MultiPlayerContextType | any>(undefined);
+
 const getStorage = function (key: string, value: any) {
   const storedValue = global?.localStorage?.getItem(key);
   try {
@@ -22,29 +23,14 @@ const getStorage = function (key: string, value: any) {
   }
   return value;
 };
-export const QuizProvider = ({ children, initial, id }: { children: React.ReactNode; initial: number; id: string }) => {
-  const [answers, setAnswers] = useState<{ answer: number; id: string }[]>(getStorage("answers", []));
-  const [questionIndex, setQuestionIndex] = useState(getStorage("questionIndex", 0));
-  const [progress, setProgress] = useState(getStorage("progress", 0));
+export const MultiPlayerProvider = ({ children }: { children: React.ReactNode }) => {
+  const [answers, setAnswers] = useState<{ answer: number; id: string }[]>([]);
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [submitting, setSubmitting] = useState(false);
-  const [timer, setTimer] = useState<number>(getStorage("timer", initial));
   const [start, setStart] = useState(false);
-  const [Id, setId] = useState(getStorage("currentquiz", id));
-
-  useEffect(() => {
-    const timerId = setInterval(() => {
-      setTimer((prevTimer) => prevTimer - 1);
-    }, 1000);
-    if (submitting) clearInterval(timerId);
-    if (timer <= 0) {
-      clearInterval(timerId);
-      localStorage.removeItem("timer");
-    }
-    return () => clearInterval(timerId);
-  }, [start]);
-
+  console.log(answers)
   const handleStart = function (duration: number) {
-    setTimer(duration);
     setQuestionIndex(0);
     setProgress(0);
     setStart(true);
@@ -53,11 +39,7 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
   useEffect(() => {
     localStorage.setItem("answers", JSON.stringify(answers));
     localStorage.setItem("questionIndex", questionIndex.toString());
-    localStorage.setItem("progress", progress.toString() || 0);
-    localStorage.setItem("timer", timer?.toString());
-    localStorage.setItem("currentquiz", JSON.stringify(Id));
-    if (timer <= 0) localStorage.removeItem("timer");
-  }, [answers, questionIndex, timer]);
+  }, [answers, questionIndex]);
 
   const handleNext = function (answer: { answer: number; id: string }, len: number) {
     setAnswers((prev) => {
@@ -95,30 +77,16 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
     setAnswers([]);
     setQuestionIndex(0);
     setProgress(0);
-    localStorage.removeItem("timer");
   };
   const handleQuizEnd = function () {
     setStart(false);
     handleReset();
-    localStorage.removeItem("timer");
+
     localStorage.removeItem("answers");
     localStorage.removeItem("questionIndex");
-    localStorage.removeItem("progress");
-    localStorage.removeItem("currentquiz");
   };
-  useEffect(
-    function () {
-      if (id !== Id) {
-        handleQuizEnd();
-        setId(id);
-        localStorage.setItem("currentquiz", Id);
-        handleStart(initial);
-      }
-    },
-    [Id]
-  );
   return (
-    <QuizContext.Provider
+    <MultiPlayerContext.Provider
       value={{
         answers,
         setAnswers,
@@ -130,16 +98,14 @@ export const QuizProvider = ({ children, initial, id }: { children: React.ReactN
         setSubmitting,
         progress,
         setProgress,
-        timer,
-        setTimer,
         handleStart,
         setStart,
         handlePrev,
       }}
     >
       {children}
-    </QuizContext.Provider>
+    </MultiPlayerContext.Provider>
   );
 };
 
-export const useQuiz = () => useContext(QuizContext);
+export const useMultiPlayer = () => useContext(MultiPlayerContext);

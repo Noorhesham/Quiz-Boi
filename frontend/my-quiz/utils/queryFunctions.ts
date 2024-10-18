@@ -100,10 +100,10 @@ export const useGetMyPlayed = (id?: string) => {
   return { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage };
 };
 export const useGetUsers = (query?: string) => {
-  console.log(query)
+  console.log(query);
   const { data, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: [`users ${query}`],
-    queryFn: async ({ pageParam = 1 ,}) => {
+    queryFn: async ({ pageParam = 1 }) => {
       const data = await getAllAuthors(query || "", pageParam);
       return data;
     },
@@ -231,9 +231,10 @@ export const useStartQuiz = (id: string) => {
   });
   return { quiz, isLoading, error };
 };
-export const useSubmitQuiz = () => {
+export const useSubmitQuiz = (noend: boolean = false) => {
   const router = useRouter();
-  const { handleQuizEnd } = useQuiz();
+  const handleQuizEnd = noend ? undefined : useQuiz()?.handleQuizEnd;
+
   const {
     mutate: SubmitQuiz,
     error,
@@ -243,15 +244,18 @@ export const useSubmitQuiz = () => {
     mutationFn: async (params: {
       values: { answers: [{ answer: number; id: string }]; username?: string; userId?: string };
       quizId: string;
+      sessionId?: string;
     }) => {
-      const { values, quizId } = params;
-      return await CompleteQuiz(values, quizId);
+      const { values, quizId, sessionId } = params;
+      return await CompleteQuiz(values, quizId, sessionId);
     },
     onSuccess: (data) => {
       console.log(data);
       if (data.status === "success") {
-        handleQuizEnd();
-        router.push(`/quiz/${data.data.userAttempt._id}/results`);
+        !noend && handleQuizEnd();
+        noend
+          ? router.push(`/quiz/${data.data.userAttempt.sessionId}/results/multiplayer`)
+          : router.push(`/quiz/${data.data.userAttempt._id}/results`);
         toast.success("Quiz successfully submitted .. we are redirecting you to your results page ! 😺");
       }
       if (data.error) {
@@ -265,6 +269,7 @@ export const useSubmitQuiz = () => {
   });
   return { SubmitQuiz, isPending, error, isSuccess };
 };
+
 export const useLikeQuiz = () => {
   const querClient = useQueryClient();
   const {
@@ -520,7 +525,7 @@ export const useGetQuizzes = (catergorey: string, page: number) => {
   });
   return { quizzes, isLoading, error };
 };
-export const useGetAttempts = (id:string) => {
+export const useGetAttempts = (id: string) => {
   const {
     data: attemptedUsers,
     isLoading,
@@ -530,12 +535,12 @@ export const useGetAttempts = (id:string) => {
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: [`attempt ${id}`],
-    queryFn: async ({ pageParam = 1 }) => await  GetusersforAttempt(id,pageParam),
+    queryFn: async ({ pageParam = 1 }) => await GetusersforAttempt(id, pageParam),
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage?.length === 0) return undefined;
       return allPages.length + 1;
     },
     initialPageParam: 1,
   });
-  return { attemptedUsers,isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage};
+  return { attemptedUsers, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage };
 };

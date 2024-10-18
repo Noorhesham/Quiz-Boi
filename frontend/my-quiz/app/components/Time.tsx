@@ -3,7 +3,7 @@ import { FcAlarmClock } from 'react-icons/fc'
 
 const Time = ({duration,className}:{duration:number,className?:string}) => {
   return (
-    <div className={` text-sm text-nowrap flex items-center gap-1 font-semibold ${className||"text-gray-600"}`}>
+    <div className={` text-sm text-nowrap w-full flex items-center gap-1 font-semibold ${className||"text-gray-600"}`}>
     <FcAlarmClock />
     Duration:{duration} min
   </div>

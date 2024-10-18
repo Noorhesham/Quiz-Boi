@@ -32,7 +32,7 @@ const Avatar = ({ user }: { user: UserProps }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-white z-[999999999999] duration-200 gap-4 shadow-md text-gray-800 fixed w-[20rem] rounded-lg border-[1px] border-gray-200 flex flex-col items-center py-5 px-8 top-[4.3rem] right-10"
+            className="bg-white z-[999999999999] duration-200 gap-4 shadow-md text-gray-800 fixed w-[20rem] rounded-lg border-[1px] border-gray-200 flex flex-col items-center py-5 px-8 top-[3.6rem] right-10"
           >
             <div>
               <Link className=" flex flex-col gap-2 items-center" href={"/my-profile"}>

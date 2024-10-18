@@ -17,6 +17,9 @@ import Date from "./Date";
 import Points from "./Points";
 import { BsArrowRightShort } from "react-icons/bs";
 import Image from "next/image";
+import MotionItem from "./MotionItem";
+import { FaFireAlt } from "react-icons/fa";
+import FireButton from "./FireButton";
 const QuizCard = ({
   quiz,
   card = false,
@@ -35,7 +38,7 @@ const QuizCard = ({
   const [hover, setHover] = useState(false);
   console.log(quiz);
   return (
-    <motion.div
+    <MotionItem
       variants={item}
       className="relative  h-full cursor-pointer rounded-2xl bg-white/60 shadow-md items-start flex flex-col"
       onMouseEnter={() => setHover(true)}
@@ -110,11 +113,14 @@ const QuizCard = ({
           <Date date={quiz.createdAt} />
         </div>
         {points && <Points className=" mb-2" points={points} />}
-        <div className="flex mb-2 flex-1 py-1  border-b-2 border-gray-200  text-gray-800 flex-wrap justify-between items-center">
-          <div className={`${card && "gap-2"} ml-auto flex flex-wrap items-center justify-between self-end flex-1`}>
-            <StartButton id={quiz._id} />
-            <Time duration={quiz.duration} />
+        <div className="flex mb-2 flex-1 py-1  border-b-2 border-gray-200  text-gray-800 flex-col justify-between items-center">
+          <div className={`${card && "gap-2"}  w-full flex flex-wrap items-center justify-between flex-1`}>
+            <div className=" flex  justify-between items-start lg:items-center gap-2">
+              <StartButton id={quiz._id} />
+              <FireButton id={quiz._id} />
+            </div>
           </div>
+            <Time duration={quiz.duration} />
         </div>
 
         {!card && <Author quiz={quiz} author={quiz.author} />}
@@ -128,7 +134,7 @@ const QuizCard = ({
           </Link>
         )}
       </div>
-    </motion.div>
+    </MotionItem>
   );
 };
 
