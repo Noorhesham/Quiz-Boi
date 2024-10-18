@@ -8,7 +8,7 @@ const Compatetor = ({ otherUser }: { otherUser: any }) => {
         <Image src={otherUser?.avatar ||otherUser?.photo|| "/4000_5_02.jpg"} alt={otherUser?.userName} fill className=" object-cover" />
       </div>
       <h2 className=" text-white line-clamp-1  text-center w-[120px] lg:w-[140px] text-xs  bg-pink-500 font-semibold px-3 py-2 rounded-full border border-purple-200">
-        {otherUser.name||otherUser?.userName}
+        {otherUser?.userName||otherUser?.name}
       </h2>
     </div>
   );

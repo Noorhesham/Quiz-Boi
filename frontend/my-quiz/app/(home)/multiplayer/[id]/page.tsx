@@ -180,7 +180,7 @@ const QuizPage = () => {
         <MultiPlayerProvider>
           <MaxWidthWrapper className=" w-full flex items-center gap-5 flex-col">
             <div className=" mx-auto justify-center flex items-center gap-5">
-              <Compatetor otherUser={user} />
+              <Compatetor otherUser={user||{name:userName,}} />
               <h2 className=" font-bold text-purple-400 text-xl">VS</h2>
               <Compatetor otherUser={otherUser} />
             </div>
