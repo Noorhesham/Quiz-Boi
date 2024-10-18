@@ -1,5 +1,4 @@
 "use client";
-import Search from "./Search";
 import Heading from "./Heading";
 import Categories from "./Categories";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

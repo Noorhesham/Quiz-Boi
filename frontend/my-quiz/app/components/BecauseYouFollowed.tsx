@@ -44,7 +44,7 @@ const BecauseYouFollowed = ({
         {list.map((quiz: any, i: number) => {
           if (!quiz || !quiz.title) return null;
           return (
-            <CarouselItem key={i} className="md:basis-1/2 lg:basis-1/4">
+            <CarouselItem key={i} className="md:basis-1/2 lg:basis-1/3">
               <QuizCard  quiz={quiz} />
             </CarouselItem>
           );

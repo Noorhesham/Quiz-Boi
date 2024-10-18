@@ -16,6 +16,7 @@ import QuizMultiPlayer from "@/app/components/QuizMultiPlayer";
 import { MultiPlayerProvider } from "@/app/context/MultiPlayerContext";
 import { toast } from "react-toastify";
 import { API_URL } from "@/constants";
+import Compatetor from "@/app/components/Compatetor";
 /*
 create a room with quiz id then 2 users join it 
 start the quiz for both  when the users join 1.show the quiz in the frontend after an event emited in the backend 
@@ -85,7 +86,7 @@ const QuizPage = () => {
   if (isLoading || isLoading2) return <Loader />;
 
   return (
-    <section className=" lg:pt-32 pt-10 quizbg flex items-center justify-center lg:px-20 bg-gray-100 rounded-md min-h-[100vh] ">
+    <section className=" lg:pt-32 pt-10 quizbg flex items-center w-full justify-center lg:px-20 bg-gray-100 rounded-md min-h-[100vh] ">
       {!isQuizStarted && (
         <MaxWidthWrapper
           className=" w-full grid grid-cols-1 lg:grid-cols-2 bg-gray-100 
@@ -99,7 +100,7 @@ const QuizPage = () => {
                   className=" text-center font-bold text-rose-400 lg:text-4xl text-3xl"
                   title="PLAY AGAINST PLAYER ALL AROUND THE WORLD "
                 />
-                {!isQuizStarted&&!waitingForOpponent && (
+                {!isQuizStarted && !waitingForOpponent && (
                   <div className=" flex flex-col py-4 px-8 gap-5 text-3xl">
                     {!user && (
                       <Input
@@ -109,7 +110,7 @@ const QuizPage = () => {
                         value={userName}
                       />
                     )}
-                    {err&&<p className=" text-xs text-red-500  font-semibold text-center">{err}</p>}
+                    {err && <p className=" text-xs text-red-500  font-semibold text-center">{err}</p>}
                     {!clicked && (
                       <Button
                         className="px-12 py-6 relative z-50
@@ -157,7 +158,7 @@ const QuizPage = () => {
               className={`relative w-full md:h-[22rem] text-nowrap  flex text-center justify-center  items-center  `}
             >
               <div className=" absolute right-2 font-normal py-1 px-2 text-sm text-gray-100 rounded-xl bg-violet-600 bottom-2 z-10">
-                {data.questionNum} Qs
+                {data?.questions.length} Qs
               </div>
               <div className=" w-full aspect-square h-72 relative">
                 <Image
@@ -177,35 +178,16 @@ const QuizPage = () => {
       )}
       {isQuizStarted && (
         <MultiPlayerProvider>
-          <section className=" flex items-center gap-2 flex-col">
+          <MaxWidthWrapper className=" w-full flex items-center gap-5 flex-col">
             <div className=" mx-auto justify-center flex items-center gap-5">
-              <div className=" flex flex-col items-center">
-                <div className=" relative rounded-full overflow-hidden w-32 h-32">
-                  <Image src={user?.photo || "/4000_5_02.jpg"} alt={user?.name} fill className=" object-cover" />
-                </div>
-                <h2 className=" text-white line-clamp-1 text-center w-[120px] lg:w-[140px] text-xs  bg-pink-500 font-semibold px-3 py-2 rounded-full border border-purple-200">
-                  {user?.name || userName}
-                </h2>
-              </div>
+              <Compatetor otherUser={user} />
               <h2 className=" font-bold text-purple-400 text-xl">VS</h2>
-              <div className=" flex flex-col items-center">
-                <div className=" relative rounded-full overflow-hidden w-32 h-32">
-                  <Image
-                    src={otherUser?.avatar || "/4000_5_02.jpg"}
-                    alt={otherUser?.userName}
-                    fill
-                    className=" object-cover"
-                  />
-                </div>
-                <h2 className=" text-white line-clamp-1  text-center w-[120px] lg:w-[140px] text-xs  bg-pink-500 font-semibold px-3 py-2 rounded-full border border-purple-200">
-                  {otherUser?.userName}
-                </h2>
-              </div>
+              <Compatetor otherUser={otherUser} />
             </div>
             {(user || userName) && (
               <QuizMultiPlayer sessionId={sessionId} userName={userName} socket={socket} quiz={data} />
             )}
-          </section>
+          </MaxWidthWrapper>
         </MultiPlayerProvider>
       )}
     </section>

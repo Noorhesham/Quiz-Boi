@@ -8,7 +8,7 @@ const Results = ({ list, answers }: { list: Array<any>; answers: Array<{ answer:
 
   return (
     <>
-      <Heading text="Review Your Results Here ..." />
+      <Heading className=" text-center" text="Review Your Results Here ..." />
       <section className="grid grid-cols-1 md:grid-cols-2 mt-5  gap-2  items-stretch justify-center">
         {list &&
           list.map((question: QuestionProps, i: number) => (

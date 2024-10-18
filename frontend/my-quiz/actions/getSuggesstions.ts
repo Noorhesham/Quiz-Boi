@@ -7,7 +7,7 @@ export const GetSuggesstions = async () => {
     const token = cookies().get("jwt")?.value;
     if (!token) return null;
 
-    const response = await fetch(`${API_URL}/users/suggessions`, {
+    const response = await fetch(`${API_URL}/users/suggessions?limit=6`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

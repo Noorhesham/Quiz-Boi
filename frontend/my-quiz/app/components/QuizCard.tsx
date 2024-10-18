@@ -10,15 +10,12 @@ import DialogueQuiz from "./DialogueQuiz";
 import Link from "next/link";
 import { MdModeEdit } from "react-icons/md";
 import Share from "./Share";
-import { item } from "../motion";
 import Time from "./Time";
 import StartButton from "./StartButton";
 import Date from "./Date";
 import Points from "./Points";
 import { BsArrowRightShort } from "react-icons/bs";
 import Image from "next/image";
-import MotionItem from "./MotionItem";
-import { FaFireAlt } from "react-icons/fa";
 import FireButton from "./FireButton";
 const QuizCard = ({
   quiz,
@@ -38,8 +35,7 @@ const QuizCard = ({
   const [hover, setHover] = useState(false);
   console.log(quiz);
   return (
-    <MotionItem
-      variants={item}
+    <div
       className="relative  h-full cursor-pointer rounded-2xl bg-white/60 shadow-md items-start flex flex-col"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -120,7 +116,7 @@ const QuizCard = ({
               <FireButton id={quiz._id} />
             </div>
           </div>
-            <Time duration={quiz.duration} />
+          <Time duration={quiz.duration} />
         </div>
 
         {!card && <Author quiz={quiz} author={quiz.author} />}
@@ -134,7 +130,7 @@ const QuizCard = ({
           </Link>
         )}
       </div>
-    </MotionItem>
+    </div>
   );
 };
 

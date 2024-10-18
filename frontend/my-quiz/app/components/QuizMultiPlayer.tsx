@@ -166,7 +166,7 @@ const QuizMultiPlayer = ({ quiz, socket, userName, sessionId }: QuizMultiPlayerP
   };
   const totalQuestions = quiz.questions.length;
   return (
-    <div className="flex mt-4 min-h-[50vh] flex-col items-center w-full md:w-[80%]">
+    <div className="flex col-span-full mt-4 min-h-[50vh] flex-col items-center w-full md:w-[80%]">
       {!sendResults && (
         <>
           {showTimer && timer > 0 && (
@@ -194,6 +194,7 @@ const QuizMultiPlayer = ({ quiz, socket, userName, sessionId }: QuizMultiPlayerP
             <>
               <QuestionMulti
                 answer={answer}
+                duration={timer}
                 setAnswer={setAnswer}
                 len={totalQuestions}
                 nextFn={+questionIndex === totalQuestions - 1 ? handleSend : handleNextEvent}

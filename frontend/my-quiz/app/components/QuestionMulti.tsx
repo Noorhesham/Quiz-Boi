@@ -7,7 +7,17 @@ import Hint from "./Hint";
 import { useMultiPlayer } from "../context/MultiPlayerContext";
 import Status from "./Status";
 
-const QuestionMulti = ({ question, len, nextFn }: { question: QuestionProps; len: number; nextFn?: any }) => {
+const QuestionMulti = ({
+  question,
+  len,
+  nextFn,
+  duration,
+}: {
+  question: QuestionProps;
+  len: number;
+  nextFn?: any;
+  duration?: number;
+}) => {
   const { handleNext, questionIndex, handleQuizEnd, answers, handlePrev } = useMultiPlayer();
   const [answer, setAnswer] = useState<{ answer: number | undefined; id: string }>();
   const [finish, setFinish] = useState(false);
@@ -33,7 +43,7 @@ const QuestionMulti = ({ question, len, nextFn }: { question: QuestionProps; len
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 w-full p-3 gap-4 ">
         {question.answers.map((a, i) => (
-          <Answer
+          <Answer duration={duration}
             active={answers.filter((ans: any) => ans?.id === question._id)[0]?.answer === i}
             key={i}
             i={i}
@@ -47,7 +57,8 @@ const QuestionMulti = ({ question, len, nextFn }: { question: QuestionProps; len
 
       <div className="flex justify-between gap-10 py-5 px-10  items-center">
         {!finish ? (
-          <Button disabled={!answer}
+          <Button
+            disabled={!answer}
             size="lg"
             variant="default"
             className={` rounded-full w-full hover:bg-red-400 self-center  py-5 px-10 bg-gray-200 hover:text-white   text-gray-800`}

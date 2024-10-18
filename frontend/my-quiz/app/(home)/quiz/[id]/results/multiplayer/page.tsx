@@ -30,37 +30,50 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
   const list = await Promise.all(quiz.questions.map((question: any) => GetQuestions(question._id)));
 
   const attempts = data?.data?.attempt;
-  console.log(quiz);
-  const theWinnwerIndex = attempts[0].totalPoints > attempts[1].totalPoints ? 0 : 1;
-  const theWinnwer = attempts[theWinnwerIndex];
-  const theLoser = attempts[1 - theWinnwerIndex];
-  console.log(list);
+
+  // Calculate total duration for each user
+  const durations = attempts.map((attempt) => {
+    return attempt.answers.reduce((acc, curr) => acc + curr.duration, 0);
+  });
+
+  let theWinnerIndex;
+  if (attempts[0].points === attempts[1].points) {
+    // If points are equal, the winner is determined by total duration
+    theWinnerIndex = durations[0] < durations[1] ? 0 : 1;
+  } else {
+    // Winner based on points
+    theWinnerIndex = attempts[0].points > attempts[1].points ? 0 : 1;
+  }
+
+  const theWinner = attempts[theWinnerIndex];
+  const theLoser = attempts[1 - theWinnerIndex];
+
   return (
-    <main className=" relative spacer  flex flex-col items-center">
+    <main className="relative spacer flex flex-col items-center">
       <Celebrate
-        text={`${theWinnwer.username || theWinnwer.userId.name} Won The Game With ${theWinnwer.points}`}
-        img={howGood(theWinnwer.percentage)}
+        text={`${theWinner.username || theWinner.userId.name} Won The Game With ${theWinner.points} from ${
+          theWinner.totalPoints
+        }`}
+        img={howGood(theWinner.percentage)}
       />
       <FloatingTool />
-      <Tabs defaultValue="winner" className="py-3 px-6 w-full  xl:w-[75%]">
+      <Tabs defaultValue="winner" className="py-3 px-6 w-full xl:w-[75%]">
         <TabsList className="grid md:text-base text-sm grid-cols-2">
-          <TabsTrigger value="winner">{theWinnwer.username || theWinnwer.userId.name}</TabsTrigger>
+          <TabsTrigger value="winner">{theWinner.username || theWinner.userId.name}</TabsTrigger>
           <TabsTrigger value="loser">{theLoser.username || theLoser.userId.name}</TabsTrigger>
         </TabsList>
-        <TabsContent className=" min-w-full mt-5 " value="winner">
+        <TabsContent className="mt-5 flex flex-col items-center w-full min-w-full" value="winner">
           <Heading
-            className=" text-center"
-            text={`${theWinnwer.username|| theWinnwer.userId.name} percentage is ${Math.trunc(theWinnwer.percentage)}%`}
+            className="text-center"
+            text={`${theWinner.username || theWinner.userId.name} percentage is ${Math.trunc(theWinner.percentage)}%`}
           />
-          {<Heading className=" text-center" text={`Hey ${theWinnwer.username || theWinnwer.userId.name}`} />}
-          <Results answers={theWinnwer.answers} list={list} />
+          <Results answers={theWinner.answers} list={list} />
         </TabsContent>
-        <TabsContent value="loser" className=" mt-5 min-w-full">
+        <TabsContent value="loser" className="mt-5 flex flex-col items-center w-full min-w-full">
           <Heading
-            className=" text-center"
+            className="text-center"
             text={`${theLoser.username || theLoser.userId.name} percentage is ${Math.trunc(theLoser.percentage)}%`}
           />
-          {<Heading className=" text-center" text={`Hey ${theLoser.username || theLoser.userId.name}`} />}
           <Results answers={theLoser.answers} list={list} />
         </TabsContent>
       </Tabs>

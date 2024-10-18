@@ -18,7 +18,7 @@ const Celebrate = ({ img, text }: { img?: string; text?: string }) => {
     <div className=" pt-20 z-10 relative overflow-hidden rounded-lg py-3 px-6 flex flex-col items-center justify-center">
       {isRunning && <Confetti numberOfPieces={100} width={1000} height={600} />}
       {img&&<Image className="z-10" alt="result" width={400} height={400} src={`/${img}.png`} />}
-      {text&&<Heading text={`${text} points !`} />}
+      {text&&<Heading className=" text-center " text={`${text} points !`} />}
       <BlobBackground />
     </div>
   );

@@ -6,6 +6,7 @@ import NotFound from "./NotFound";
 import PaginationHome from "./Pagination";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import MotionContainer from "./MotionContainer";
+import MotionItem from "./MotionItem";
 
 const QuizzesList = async ({ page, categorey }: { page: number; categorey: string }) => {
   const { data, totalPages, totalResults, results } = await FilterQuizzesHome(categorey, page);
@@ -17,7 +18,9 @@ const QuizzesList = async ({ page, categorey }: { page: number; categorey: strin
         className=" grid grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-3 items-stretch gap-5"
       >
         {data.quizzes?.map((quiz: QuizProps, i: number) => (
-          <QuizCard key={i} quiz={quiz} />
+          <MotionItem key={i}>
+            <QuizCard key={i} quiz={quiz} />
+          </MotionItem>
         ))}
       </MotionContainer>
       <PaginationHome

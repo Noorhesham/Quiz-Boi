@@ -14,7 +14,7 @@ const QuestionResults = ({
   return (
     <div className={`flex flex-col  mb-auto  gap-2  self-stretch  rounded-lg py-3 px-6`}>
       <div className="bg-white shadow-md mt-auto mb-auto min-h-[10rem] flex flex-col gap-3   py-5 px-10 relative border-gray-300 border-2 rounded-md">
-        <h2 className="  text-xl text-left text-gray-800 font-semibold">{question.question}</h2>
+        <h2 className="  text-xl  text-left text-gray-800 font-semibold">{question.question}</h2>
         {question.explain && (
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-3">
