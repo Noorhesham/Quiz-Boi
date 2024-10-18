@@ -5,8 +5,6 @@ import FloatingTool from "@/app/components/FloatingTool";
 import GlobalButton from "@/app/components/GlobalButton";
 import Heading from "@/app/components/Heading";
 import MaxWidthWrapper from "@/app/components/MaxWidthWrapper";
-import Motion from "@/app/components/Motion";
-import MotionContainer from "@/app/components/MotionContainer";
 import PaginationHome from "@/app/components/Pagination";
 import QuizCard from "@/app/components/QuizCard";
 import UploadQuizForm from "@/app/components/UploadQuizForm";

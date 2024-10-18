@@ -37,7 +37,7 @@ const NavBar = () => {
         nav ? "bg-gray-200  bg-opacity-45 shadow-md duration-150" : " bg-transparent"
       } fixed z-50 top-0 left-0 w-full transition-all ease-in-out`}
     >
-      <MaxWidthWrapper noPadding className="flex items-center justify-between w-full">
+      <MaxWidthWrapper  className="flex items-center justify-between w-full">
         <MiniLogo />
         <div className="flex items-center gap-2 md:gap-10">
           {isLoading ? (
