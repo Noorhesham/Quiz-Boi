@@ -65,14 +65,14 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
         <TabsContent className="mt-5 flex flex-col items-center w-full min-w-full" value="winner">
           <Heading
             className="text-center"
-            text={`${theWinner.username || theWinner.userId.name} percentage is ${Math.trunc(theWinner.percentage)}%`}
+            text={`${theWinner.username || theWinner.userId.name} percentage is ${theWinner.percentage}%`}
           />
           <Results answers={theWinner.answers} list={list} />
         </TabsContent>
         <TabsContent value="loser" className="mt-5 flex flex-col items-center w-full min-w-full">
           <Heading
             className="text-center"
-            text={`${theLoser.username || theLoser.userId.name} percentage is ${Math.trunc(theLoser.percentage)}%`}
+            text={`${theLoser.username || theLoser.userId.name} percentage is ${theLoser.percentage}%`}
           />
           <Results answers={theLoser.answers} list={list} />
         </TabsContent>
