@@ -14,6 +14,7 @@ router
     .get(mapController.getAllMaps)
     .post(authController.protect, mapController.upload, mapController.resizeMapPhoto, mapController.createMap);
 router.route("/positions/:id").post(authController.protect, mapController.updatePositions);
+router.route("/:id/publish").patch(authController.protect, mapController.publishMap);
 router
     .route("/:id")
     .get(mapController.getMap)

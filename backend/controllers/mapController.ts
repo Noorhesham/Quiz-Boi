@@ -78,3 +78,11 @@ export const updatePositions = catchAsync(async (req: Request, res: Response, ne
 
   res.status(200).json({ status: "success", data: { map } });
 });
+exports.publishMap = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const quiz = await Map.findById(req.params.id);
+  console.log(quiz);
+  if (!quiz) return next(new AppError("could not find a map with that id!", 404));
+  quiz.public = true;
+  await quiz.save();
+  res.status(201).json({ status: "success", data: { quiz } });
+});

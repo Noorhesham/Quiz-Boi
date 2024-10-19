@@ -75,7 +75,7 @@ exports.completeQuiz = catchAsync((req, res, next) => __awaiter(void 0, void 0, 
         if (!userAttempt || !userAttempt._id) {
             return next(new AppError_1.default("Failed to create a user attempt.", 500));
         }
-        yield quizModel_1.default.findByIdAndUpdate(quizId, { $push: { usersAttempted: userAttempt._id }, done: true });
+        yield quizModel_1.default.findByIdAndUpdate(quizId, { $push: { usersAttempted: userAttempt._id } });
     }
     let totalPoints = 0;
     let points = 0;
@@ -89,6 +89,8 @@ exports.completeQuiz = catchAsync((req, res, next) => __awaiter(void 0, void 0, 
         totalPoints += question.points || 10;
     }
     const percentage = (points / totalPoints) * 100;
+    if (percentage > 60)
+        yield quizModel_1.default.findByIdAndUpdate(quizId, { done: true });
     const updatedAttempt = yield userAttemptsModel_1.default.findOneAndUpdate(find, {
         $set: {
             points,

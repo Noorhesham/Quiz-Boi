@@ -74,7 +74,7 @@ exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: Next
       return next(new AppError("Failed to create a user attempt.", 500));
     }
 
-    await Quiz.findByIdAndUpdate(quizId, { $push: { usersAttempted: userAttempt._id }, done: true });
+    await Quiz.findByIdAndUpdate(quizId, { $push: { usersAttempted: userAttempt._id } });
   }
 
   let totalPoints = 0;
@@ -91,6 +91,7 @@ exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: Next
   }
 
   const percentage = (points / totalPoints) * 100;
+  if (percentage > 60) await Quiz.findByIdAndUpdate(quizId, { done: true });
   const updatedAttempt = await UserAttempt.findOneAndUpdate(
     find,
     {

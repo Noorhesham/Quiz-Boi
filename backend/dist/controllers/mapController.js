@@ -84,4 +84,13 @@ exports.updatePositions = catchAsync((req, res, next) => __awaiter(void 0, void 
     yield map.save();
     res.status(200).json({ status: "success", data: { map } });
 }));
+exports.publishMap = catchAsync((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const quiz = yield mapModel_1.default.findById(req.params.id);
+    console.log(quiz);
+    if (!quiz)
+        return next(new AppError_1.default("could not find a map with that id!", 404));
+    quiz.public = true;
+    yield quiz.save();
+    res.status(201).json({ status: "success", data: { quiz } });
+}));
 //# sourceMappingURL=mapController.js.map
