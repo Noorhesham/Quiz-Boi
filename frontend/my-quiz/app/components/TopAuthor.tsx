@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { UserProps } from "@/types";
 import { createPortal } from "react-dom";
@@ -6,6 +6,12 @@ import { HoverCard, HoverCardTrigger } from "@/components/ui/hover-card";
 import UserInfro from "./UserInfo";
 import Image from "next/image";
 const TopAuthor = ({ user }: { user: UserProps }) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  if (!isMounted) return null;
   return (
     <HoverCard>
       <HoverCardTrigger asChild>

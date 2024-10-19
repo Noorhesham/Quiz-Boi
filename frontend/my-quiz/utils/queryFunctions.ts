@@ -200,17 +200,19 @@ export const useDeleteQuestion = () => {
   });
   return { DeleteQuestion, isSuccess, isPending, error };
 };
-export const usePublishQuiz = () => {
+export const usePublishQuiz = (entity: string = "quiz") => {
+  console.log(entity);
+
   const {
     mutate: PublishQuiz,
     error,
     isSuccess,
     isPending,
   } = useMutation({
-    mutationFn: (id: string) => PublishQuizApi(id),
+    mutationFn: (id: string) => PublishQuizApi(id, entity),
     onSuccess: (data) => {
       if (data.error) throw new Error(data.message);
-      toast.success(`Quiz published Successfully`);
+      toast.success(`${entity||'Quiz'} published Successfully`);
     },
     onError: (err) => {
       console.log(err);

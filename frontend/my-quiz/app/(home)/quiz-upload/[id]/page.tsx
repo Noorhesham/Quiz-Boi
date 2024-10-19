@@ -9,12 +9,10 @@ import Heading from "@/app/components/Heading";
 import NotFound from "@/app/components/NotFound";
 import OrderQuestions from "@/app/components/OrderQuestions";
 import PublishQuiz from "@/app/components/PublishQuiz";
-import Question from "@/app/components/Question";
 import Topic from "@/app/components/Topic";
-import { QuestionProps, QuizProps } from "@/types";
+import { QuizProps } from "@/types";
 import { redirect } from "next/navigation";
 import React from "react";
-
 
 const page = async ({ params }: { params: { id: string } }) => {
   const user = await getUser();

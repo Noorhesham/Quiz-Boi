@@ -4,11 +4,11 @@ import axios from "axios";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
-export const PublishQuiz = async (id: string) => {
+export const PublishQuiz = async (id: string,entitiy='quiz') => {
   try {
     const token = cookies().get("jwt")?.value;
     if (!token) return null;
-    const res = await axios.patch(`${API_URL}/quiz/${id}/publish`, "", {
+    const res = await axios.patch(`${API_URL}/${entitiy}/${id}/publish`, "", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

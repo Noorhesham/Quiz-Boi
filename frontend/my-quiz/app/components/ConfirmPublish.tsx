@@ -11,15 +11,17 @@ const ConfirmPublish = ({
   paragraph,
   image,
   disabled = false,
+  entity,
 }: {
   setOpen?: (b: boolean) => void;
   text: string;
   paragraph: string;
   image: string;
   disabled?: boolean;
+  entity?: string;
 }) => {
   const { id }: { id: string } = useParams();
-  const { isPending, error, PublishQuiz, isSuccess } = usePublishQuiz();
+  const { isPending, error, PublishQuiz, isSuccess } = usePublishQuiz(entity || "quiz");
   const router = useRouter();
   return (
     <div className="flex flex-col  items-center gap-10">
@@ -46,7 +48,7 @@ const ConfirmPublish = ({
           onClick={() => {
             PublishQuiz(id);
             if (isSuccess) {
-              router.push(`/quiz/${id}`);
+              if (entitiy === "quiz") router.push(`/quiz/${id}`);
               setOpen && setOpen(false);
             }
           }}

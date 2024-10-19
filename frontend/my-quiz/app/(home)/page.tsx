@@ -8,6 +8,7 @@ import ThreeDSpace from "../components/ThreeDSpace";
 import Welcome from "../components/Welcome";
 import QuizSkeleton from "../components/QuizSkeleton";
 import MaxWidthWrapper from "../components/MaxWidthWrapper";
+import MapGames from "../components/MapGames";
 
 export default async function Page({
   searchParams,
@@ -34,6 +35,7 @@ export default async function Page({
         }
       >
         <HomeFetches />
+        <MapGames/>
         <QuizzesList page={page} categorey={categorey} />
       </Suspense>
       <MaxWidthWrapper className="flex flex-col md:mb-20 md:flex-row items-center">

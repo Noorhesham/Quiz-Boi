@@ -7,8 +7,16 @@ import QuizCard from "./QuizCard";
 import MyButton from "./MyButton";
 import Date from "./Date";
 import Time from "./Time";
-const MapPlay = ({ map }: { map: any }) => {
+import { Empty } from "./Empty";
+const MapPlay = ({ map, myquizzes }: { map: any; myquizzes: any }) => {
   const dots = map.levels;
+  console.log(map);
+  if (map.public === false)
+    return (
+      <div className=" h-screen flex justify-center items-center">
+        <Empty text="This map is private." />
+      </div>
+    );
   return (
     <div className="col-span-2 w-full relative h-screen overflow-hidden">
       <TransformWrapper initialScale={1.3}>
@@ -24,8 +32,9 @@ const MapPlay = ({ map }: { map: any }) => {
           >
             {dots.map((dot, i) => {
               const quiz = dot.quizId;
-              const isDisabled = i !== 0 && dots[i - 1]?.done === false;
-              console.log(isDisabled);
+              const target = myquizzes.find((q) => q.quizId._id === dots[i-1]?.quizId?._id);
+              const isDisabled = i === 0 || (target && target.percentage >= 50) ? false : true;
+                    console.log(target)
               return (
                 <DialogCustom
                   title="Play Now"
@@ -75,7 +84,17 @@ const MapPlay = ({ map }: { map: any }) => {
                         <div className="flex mb-2 flex-1 py-1  border-b-2 border-gray-200  text-gray-800 flex-col justify-between items-center">
                           <div className={`  w-full flex flex-wrap items-center justify-between flex-1`}>
                             <div className=" flex  justify-between items-start lg:items-center gap-2">
-                              <MyButton text="Start Level" disabled={isDisabled} href={`/quiz/${quiz._id}`} />
+                              <MyButton
+                                text={
+                                  !target && i !== 0
+                                    ? "Complete the previous level first"
+                                    : target?.percentage < 50 && i !== 0
+                                    ? "You need to score at least 50% to unlock the next level"
+                                    : "Start Level"
+                                }
+                                disabled={isDisabled}
+                                href={`/quiz/${quiz._id}`}
+                              />
                             </div>
                           </div>
                           <Time duration={quiz.duration} />

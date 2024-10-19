@@ -5,7 +5,10 @@ import FloatingTool from "@/app/components/FloatingTool";
 import GlobalButton from "@/app/components/GlobalButton";
 import Heading from "@/app/components/Heading";
 import MapForm from "@/app/components/MapForm";
+import MyButton from "@/app/components/MyButton";
+import PublishQuiz from "@/app/components/PublishQuiz";
 import UploadQuizForm from "@/app/components/UploadQuizForm";
+import { Button } from "@/components/ui/button";
 import { API_URL } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,6 +25,12 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
         <Heading text={`Your ${map.name} Map is here ! Get prepared to add levels to it !`} />
         <div className="flex items-center gap-2">
           <DialogCustom title="Edit  Map" btn={<GlobalButton text="Edit Map" />} content={<MapForm map={map} />} />
+          <Link href={`/map/${map._id}`}>
+            <Button className=" rounded-full shadow-lg text-lg bg-pink-400 hover:bg-transparent hover:text-pink-400 duration-200 text-gray-100">
+              EDIT POSITIONS
+            </Button>
+          </Link>
+
           <Delete entity="map" id={map._id} />
         </div>
       </div>
@@ -56,6 +65,7 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
           btn={<GlobalButton text="Create A level now" />}
           content={<UploadQuizForm map={map._id} />}
         />
+        <PublishQuiz entity="map" />
       </div>
     </main>
   );

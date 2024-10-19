@@ -29,10 +29,7 @@ const Authors = ({
   return (
     <section className=" md:px-4 md:py-2">
       <div className="friends  rounded-xl px-1 md:px-0">
-        <MaxWidthWrapper
-          noPadding
-          className="  flex flex-col md:flex-row  justify-center md:justify-around px-2 md:pl-10  xl:pl-[17.5rem]  items-center rounded-xl relative"
-        >
+        <MaxWidthWrapper className="  flex flex-col md:flex-row  justify-center md:justify-around px-2 md:pl-10  xl:pl-[17.5rem]  items-center rounded-xl relative">
           <p className=" text-gray-100   max-w-full text-base py-4 p-2 md:text-lg  lg:text-2xl md:max-w-full  lg:max-w-[26rem] text-center md:text-left md:font-semibold">
             Connect with friends, challenge them, and track their progress effortlessly. Whether you're in the same room
             or continents apart, Quiz Boi makes every quiz night unforgettable.

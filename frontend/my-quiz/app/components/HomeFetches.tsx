@@ -12,7 +12,7 @@ const HomeFetches = async () => {
 
   return (
     <section>
-      <MaxWidthWrapper>
+      <MaxWidthWrapper >
         {suggesstions && (
           <BecauseYouFollowed DELAY={4000} text="Based On Your " span="Followings :" suggesstions={suggesstions} />
         )}

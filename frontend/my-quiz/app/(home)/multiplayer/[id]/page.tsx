@@ -15,7 +15,7 @@ import Date from "@/app/components/Date";
 import QuizMultiPlayer from "@/app/components/QuizMultiPlayer";
 import { MultiPlayerProvider } from "@/app/context/MultiPlayerContext";
 import { toast } from "react-toastify";
-import { API_URL } from "@/constants";
+import { API_URL, SOCKET_URL } from "@/constants";
 import Compatetor from "@/app/components/Compatetor";
 /*
 create a room with quiz id then 2 users join it 
@@ -42,7 +42,7 @@ const QuizPage = () => {
     avatar: string;
   }>({ userName: "", avatar: "" });
   useEffect(() => {
-    const socketInstance = io("https://quiz-boi.onrender.com");
+    const socketInstance = io(SOCKET_URL);
     setSocket(socketInstance);
 
     socketInstance.on("connect", () => {
