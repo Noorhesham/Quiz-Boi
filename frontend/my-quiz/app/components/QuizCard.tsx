@@ -33,7 +33,6 @@ const QuizCard = ({
   points?: number;
 }) => {
   const [hover, setHover] = useState(false);
-  console.log(quiz);
   return (
     <div
       className="relative  h-full cursor-pointer rounded-2xl bg-white/60 shadow-md items-start flex flex-col"

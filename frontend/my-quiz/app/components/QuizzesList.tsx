@@ -5,8 +5,7 @@ import { QuizProps } from "@/types";
 import NotFound from "./NotFound";
 import PaginationHome from "./Pagination";
 import MaxWidthWrapper from "./MaxWidthWrapper";
-import MotionContainer from "./MotionContainer";
-import MotionItem from "./MotionItem";
+
 import Quizzes from "./Quizzes";
 
 const QuizzesList = async ({ page, categorey }: { page: number; categorey: string }) => {

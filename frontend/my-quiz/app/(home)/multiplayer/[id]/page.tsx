@@ -42,8 +42,7 @@ const QuizPage = () => {
     avatar: string;
   }>({ userName: "", avatar: "" });
   useEffect(() => {
-    const socketInstance = io("https://quiz-boi.onrender.com
-      ");
+    const socketInstance = io("https://quiz-boi.onrender.com");
     setSocket(socketInstance);
 
     socketInstance.on("connect", () => {

@@ -7,7 +7,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
+
+// Ensure btn can accept refs using forwardRef
+const ButtonWithRef = forwardRef<HTMLButtonElement, any>((props, ref) => (
+  <div ref={ref} {...props}>
+    {props.children}
+  </div>
+));
+
+ButtonWithRef.displayName = "ButtonWithRef";
 
 const DialogCustom = ({
   btn,
@@ -27,8 +36,10 @@ const DialogCustom = ({
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>{btn}</DialogTrigger>
-        <DialogContent className="  z-50 max-h-full min-h-fit overflow-y-scroll sm:max-w-[825px]">
+        <DialogTrigger asChild>
+          <ButtonWithRef>{btn}</ButtonWithRef>
+        </DialogTrigger>
+        <DialogContent className="z-50 max-h-full min-h-fit overflow-y-scroll sm:max-w-[825px]">
           <DialogHeader>
             <DialogTitle>{title ? title : "Add a Question"}</DialogTitle>
             <DialogDescription>

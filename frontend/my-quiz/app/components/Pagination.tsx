@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Pagination,
   PaginationContent,
@@ -21,19 +21,22 @@ export default function PaginationHome({
 }) {
   const searchParams = useSearchParams();
   const [start, setStart] = useState(1);
-  const { replace } = useRouter();
+  const {replace} = useRouter();
   const pathname = usePathname();
   const [end, setEnd] = useState(function () {
     if (totalPages > 3) return 3;
     else return totalPages;
   });
-  function handlePagination(page: string) {
-    const params = new URLSearchParams(searchParams);
-    if (page) params.set("page", page);
-    else params.delete("page");
-    replace(`${pathname}?${params.toString()}`, { scroll: false });
+  function handlePagination(page: number | string) {
+    console.log("clicked page:", page); // Add a log to ensure it's firing
+    const url = new URL(window.location.href);
+
+    url.searchParams.set("page", page);
+    replace(url.toString(), { scroll: false });
   }
+
   const handleNext = () => {
+    console.log("next");
     setStart(start + 1);
     setEnd(end + 1);
   };
@@ -69,7 +72,7 @@ export default function PaginationHome({
 
         {end > totalPages && hasNext && (
           <PaginationItem>
-            <Button onClick={handleNext}>Next</Button>
+            <Button onClick={() => handleNext()}>Next</Button>
           </PaginationItem>
         )}
       </PaginationContent>
