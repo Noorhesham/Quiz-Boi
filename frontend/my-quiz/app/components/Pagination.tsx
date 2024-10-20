@@ -1,11 +1,5 @@
 "use client";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-} from "@/components/ui/pagination";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -20,21 +14,23 @@ export default function PaginationHome({
   hasNext: boolean;
 }) {
   const searchParams = useSearchParams();
-  const [start, setStart] = useState(1);
-  const {replace} = useRouter();
+  const router = useRouter();
   const pathname = usePathname();
-  const [end, setEnd] = useState(function () {
-    if (totalPages > 3) return 3;
-    else return totalPages;
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [start, setStart] = useState(1);
+  const [end, setEnd] = useState(() => {
+    return totalPages > 3 ? 3 : totalPages;
   });
-  function handlePagination(page: number | string) {
-    console.log("clicked page:", page); // Add a log to ensure it's firing
+
+  // Function to handle page changes
+  const handlePageChange = (page: number) => {
     const url = new URL(window.location.href);
-
+    //@ts-ignore
     url.searchParams.set("page", page);
-    replace(url.toString(), { scroll: false });
-  }
-
+    router.replace(url.toString(), { scroll: false });
+    setCurrentPage(page);
+  };
   const handleNext = () => {
     console.log("next");
     setStart(start + 1);
@@ -45,7 +41,9 @@ export default function PaginationHome({
     setStart(start - 1);
     setEnd(end - 1);
   };
+
   const links = Array.from({ length: end - start + 1 }, (_, index) => start + index);
+
   return (
     <Pagination className="flex sm:col-span-2 pb-20 sm:pb-0 sm:mb-20 lg:col-span-3 xl:col-span-4 self-center justify-center w-full py-6 mx-auto">
       <PaginationContent className="mx-auto">
@@ -54,25 +52,26 @@ export default function PaginationHome({
             <Button onClick={handlePrev}>Previous</Button>
           </PaginationItem>
         )}
-        {links.map((item: number | string) => (
+        {links.map((item) => (
           <PaginationItem key={item}>
-            {/*@ts-ignore*/}
             <PaginationLink
               className={`${
-                //@ts-ignore
-                +searchParams.get("page") === item && " bg-pink-400 hover:bg-red-400 "
+                currentPage === item ? " bg-pink-400  hover:bg-red-400 " : ""
               } select-none text-white cursor-pointer`}
-              //@ts-ignore
-              onClick={() => handlePagination(item)}
+              href="#"
+              isActive={currentPage === item}
+              onClick={(e) => {
+                e.preventDefault();
+                handlePageChange(item);
+              }}
             >
               {item}
             </PaginationLink>
           </PaginationItem>
         ))}
-
-        {end > totalPages && hasNext && (
+        {end < totalPages && hasNext && (
           <PaginationItem>
-            <Button onClick={() => handleNext()}>Next</Button>
+            <Button onClick={handleNext}>Next</Button>
           </PaginationItem>
         )}
       </PaginationContent>

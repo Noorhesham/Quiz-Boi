@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import Heading from "./Heading";
 import { API_URL } from "@/constants";
@@ -6,7 +5,7 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 import Maps from "./Maps";
 
 const MapGames = async () => {
-  const data = await fetch(`${API_URL}/map?public=true`, { cache: "no-store" }).then((res) => res.json());
+  const data = await fetch(`${API_URL}/map?public=true`, { next:{revalidate:3600}}).then((res) => res.json());
 
   const maps = data.data.map;
   return (

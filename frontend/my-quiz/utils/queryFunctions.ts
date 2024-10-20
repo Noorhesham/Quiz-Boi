@@ -1,3 +1,4 @@
+"use client"
 import { AddComment, EditComment, RemoveComment } from "@/actions/AddComment";
 import { Follow, UnFollow } from "@/actions/AddFollow";
 import { AddLike, RemoveLike } from "@/actions/AddLike";

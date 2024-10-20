@@ -1,3 +1,4 @@
+"use client";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useGetUser } from "@/utils/queryFunctions";
 import Autoplay from "embla-carousel-autoplay";
