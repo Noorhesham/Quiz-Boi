@@ -33,7 +33,7 @@ export function WhoAmI({ className, ...props }: CardProps) {
       </CardContent>
       <CardFooter>
         <Button className="w-full">
-          <Link className="flex items-center gap-2" href={"https://noor-hesham-portfolio.netlify.app/"}>
+          <Link className="flex items-center gap-2" href={"https://new-portfolio-noor-hesham.vercel.app/"}>
             {" "}
             <CheckIcon className="mr-2 h-4 w-4" />
             View My Portfolio
