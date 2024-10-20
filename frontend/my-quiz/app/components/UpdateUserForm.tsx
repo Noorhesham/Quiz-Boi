@@ -14,6 +14,7 @@ import AddPhotoForm from "./AddPhotoForm";
 import { UpdateMe } from "@/actions/UpdateMe";
 import { useRouter } from "next/navigation";
 import { useGetUser } from "@/utils/queryFunctions";
+import { toast } from "react-toastify";
 
 const UpdateUserForm = ({ setOpen, user }: { setOpen?: any; user: UserProps }) => {
   const [error, setFormError] = useState<string | any>("");
@@ -45,6 +46,9 @@ const UpdateUserForm = ({ setOpen, user }: { setOpen?: any; user: UserProps }) =
       UpdateMe(formData)
         .then((res) => {
           console.log(res);
+          if(res.status==='success') {
+            return toast.success('User updated successfully'); 
+          }
           if (res.error) {
             setFormError(res.message || res.error.errors);
             reset();
