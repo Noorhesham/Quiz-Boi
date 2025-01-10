@@ -6,7 +6,7 @@ export const getMyPlayedQuizzes = async (page: number = 1) => {
   try {
     const token = cookies().get("jwt")?.value;
     if (!token) return null;
-    const res = await fetch(`${API_URL}/users/me-attempted?page=${page}&limit=10`, {
+    const res = await fetch(`${API_URL}/users/me-attempted?page=${page}&limit=20`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
