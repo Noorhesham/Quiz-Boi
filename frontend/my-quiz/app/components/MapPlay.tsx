@@ -34,7 +34,7 @@ const MapPlay = ({ map, myquizzes }: { map: any; myquizzes: any }) => {
               const quiz = dot.quizId;
               const target = myquizzes.find((q) => q.quizId?._id === dots[i-1]?._id);
               const isDisabled = i === 0 || (target && target.percentage >= 50) ? false : true;
-                    console.log(target)
+                    console.log(target,myquizzes);
               return (
                 <DialogCustom
                   title="Play Now"
