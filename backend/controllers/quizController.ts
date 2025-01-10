@@ -81,7 +81,8 @@ exports.completeQuiz = catchAsync(async (req: Request, res: Response, next: Next
   let points = 0;
 
   for (let i = 0; i < answers?.length; i++) {
-    const question = await Question.findById(answers[i].id);
+    if(!answers[i]?.id) continue;
+    const question = await Question.findById(answers[i]?.id);
     if (!question) continue;
 
     if (question.correctAnswerIndex === +answers[i].answer) {
