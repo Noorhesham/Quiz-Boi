@@ -19,10 +19,12 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = (0, express_1.default)();
+const xss_clean_1 = __importDefault(require("xss-clean")); // Import xss-clean
 app.use(express_1.default.json({ limit: "10kb" }));
 app.use(cookieParser());
 app.use(express_1.default.static(`${__dirname}/public`));
 app.use(cors());
+app.use((0, xss_clean_1.default)());
 app.use(express_1.default.urlencoded({ extended: true, limit: "10kb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/v1/users", userRouter);

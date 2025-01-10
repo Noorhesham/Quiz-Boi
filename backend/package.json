@@ -40,7 +40,8 @@
     "socket.io": "^4.8.0",
     "typescript": "^5.4.3",
     "uuid": "^10.0.0",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "xss-clean": "^0.1.4"
   },
   "devDependencies": {
     "@types/node": "^20.12.5",

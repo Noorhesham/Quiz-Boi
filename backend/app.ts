@@ -14,12 +14,13 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
+import xssClean from "xss-clean";  // Import xss-clean
 
 app.use(express.json({ limit: "10kb" }));
 app.use(cookieParser());
 app.use(express.static(`${__dirname}/public`));
 app.use(cors());
-
+app.use(xssClean()); 
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
