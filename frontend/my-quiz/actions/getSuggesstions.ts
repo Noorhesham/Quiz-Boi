@@ -8,21 +8,21 @@ export const GetSuggesstions = async () => {
     if (!token) return null;
 
     const response = await fetch(`${API_URL}/users/suggessions?limit=6`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(errorMessage || 'Failed to fetch');
+      return null;
     }
     const responseData = await response.json();
-    console.log(responseData)
+    console.log(responseData);
     return responseData.data.suggestedQuizzes;
-  } catch (err:any) {
+  } catch (err: any) {
     console.error(err);
     if (err.message === "Failed to fetch") {
       err.message = `Unable to reach the server. Please check your internet connection...`;
